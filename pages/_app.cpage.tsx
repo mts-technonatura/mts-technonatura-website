@@ -9,11 +9,16 @@ import Head from 'next/head';
 import ProgressLoad from 'components/ProgressLoad';
 import React, { useEffect } from 'react';
 import { SidebarProvider } from 'context/SidebarContext';
-
+import { Provider } from 'react-redux';
+import store from '../redux_file/';
 import Navbar from 'components/Navbar';
 import { Windmill } from '@windmill/react-ui';
+import { CookiesProvider } from 'react-cookie';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  useEffect(() => {
+    console.log(process.env.SIGNUP_API);
+  }, []);
   return (
     <>
       <Head>
@@ -49,16 +54,20 @@ function MyApp({ Component, pageProps }: AppProps) {
       `}</style>
 
       <DefaultSeo />
-      <ChakraProvider>
-        <SidebarProvider>
-          <Windmill usePreferences={true}>
-            <Navbar>
-              <ProgressLoad />
-              <Component {...pageProps} />
-            </Navbar>
-          </Windmill>
-        </SidebarProvider>
-      </ChakraProvider>
+      <CookiesProvider>
+        <ChakraProvider>
+          <SidebarProvider>
+            <Windmill usePreferences={true}>
+              <Provider store={store}>
+                <Navbar>
+                  <ProgressLoad />
+                  <Component {...pageProps} />
+                </Navbar>
+              </Provider>
+            </Windmill>
+          </SidebarProvider>
+        </ChakraProvider>
+      </CookiesProvider>
     </>
   );
 }

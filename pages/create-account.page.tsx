@@ -5,13 +5,20 @@ import {
   Input,
   InputRightElement,
   InputGroup,
+  useToast,
 } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
+import { AuthSignup } from '@/redux/actions/index';
+import _ from 'underscore';
+import { useCookies, Cookies } from 'react-cookie';
+import ms from 'millisecond';
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const ImageLight = '/assets/img/create-account-office.jpeg';
 const ImageDark = '/assets/img/create-account-office-dark.jpeg';
@@ -25,9 +32,8 @@ const validationSchema = yup.object({
   name: yup
     .string()
     .trim()
-    .min(8, 'Name should be of minimum 8 characters length')
-
-    .required('username is required'),
+    .min(8, 'Name should be of minimum 6 characters length')
+    .required('name is required'),
   password: yup
     .string()
     .trim()
@@ -37,11 +43,16 @@ const validationSchema = yup.object({
 });
 
 function Login() {
-  const [show, setShow] = React.useState(false);
+  const tokenCookieKey = process.env.JWT_AUTH_TOKEN || 'siodjfoi43r23roimal';
+  const [cookies, setCookie] = useCookies([tokenCookieKey]);
 
+  const toast = useToast();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootStore) => state.auth);
+  const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
 
-  const [submitting, setSubmit] = useState<boolean>(false);
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -50,8 +61,30 @@ function Login() {
       name: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      await dispatch(AuthSignup(formik.values));
+    },
   });
+  useEffect(() => {
+    if (!_.isEmpty(authState.errors)) {
+      formik.setErrors(authState.errors);
+    }
+  }, [authState.errors]);
+
+  useEffect(() => {
+    if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
+      setCookie(tokenCookieKey, authState.token, { path: '/' });
+
+      toast({
+        title: `Account Created`,
+        position: 'top-right',
+        isClosable: true,
+        status: 'success',
+      });
+      router.push('/app');
+    }
+  }, [authState.token]);
+
   return (
     <div className='flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900'>
       <div className='flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800'>
@@ -88,7 +121,7 @@ function Login() {
                     errorBorderColor={`${formik.errors.username && 'red.400'}`}
                     value={formik.values.username}
                     onChange={formik.handleChange}
-                    placeholder='Nama anda'
+                    placeholder='Username anda'
                   />
                   <Text
                     mt='8px'
@@ -130,7 +163,7 @@ function Login() {
                     errorBorderColor={`${formik.errors.email && 'red.400'}`}
                     value={formik.values.email}
                     onChange={formik.handleChange}
-                    placeholder='Nama anda'
+                    placeholder='Email anda'
                   />
                   <Text
                     mt='8px'
@@ -182,8 +215,22 @@ function Login() {
                   <span className='underline'>privacy policy</span>
                 </span>
               </Label> */}
-
+                <a className='text-sm font-medium text-purple-400 dark:text-purple-400 '>
+                  by signup you agree to our{' '}
+                  <Link href='/page/terms'>
+                    <span className='hover:underline text-purple-600'>
+                      terms
+                    </span>
+                  </Link>{' '}
+                  and{' '}
+                  <Link href='/page/terms'>
+                    <span className='hover:underline text-purple-600'>
+                      privacy policy
+                    </span>
+                  </Link>
+                </a>
                 <Button
+                  isLoading={authState.loading}
                   type='submit'
                   block
                   colorScheme='purple'
