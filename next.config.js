@@ -89,6 +89,15 @@ const plugins = [
       }),
     ],
   ],
+  [
+    withPWA,
+    {
+      pwa: {
+        disable: process.env.NODE_ENV === 'development',
+        dest: 'public',
+      },
+    },
+  ],
 ];
 
 module.exports = withPlugins([...plugins], nextConfig);
