@@ -18,7 +18,8 @@
       "@/components/*": ["components/*"],
       "@/ts/*": ["ts/*"],
       "@/pages/*": ["pages/*"],
-      "@/redux/*": ["redux_file/*"]
+      "@/redux/*": ["redux_file/*"],
+      "@utils/*": ["utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

@@ -119,7 +119,7 @@ function Login() {
           <main className='flex items-center justify-center p-6 sm:p-12 md:w-1/2'>
             <div className='w-full'>
               <h1 className='mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200'>
-                Create account {JSON.stringify(process.env)}
+                Create account
               </h1>
               <form noValidate onSubmit={formik.handleSubmit}>
                 <Stack mt={4}>
