@@ -1,1 +1,1 @@
-export { AuthLogin, AuthSignup } from './auth';
+export { AuthLogin, AuthSignup, SavedUserToRedux } from './auth';

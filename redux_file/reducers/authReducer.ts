@@ -3,8 +3,8 @@ import {
   Auth_LOADING,
   Auth_SUCCESS,
   AuthDispatchTypes,
-  UserType,
 } from '../actions/types/AuthActionTypes.d';
+import { UserType } from '@/ts/index';
 
 interface DefaultStateI {
   loading: boolean;

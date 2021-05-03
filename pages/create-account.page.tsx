@@ -7,19 +7,27 @@ import {
   InputGroup,
   useToast,
 } from '@chakra-ui/react';
+
+import { NextSeo } from 'next-seo';
+import { GetServerSideProps } from 'next';
+import axios from 'axios';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { AuthSignup } from '@/redux/actions/index';
+import * as AuthMethods from '@/redux/actions/index';
+
+import { ssr } from '@/ts/index';
 import _ from 'underscore';
-import { useCookies, Cookies } from 'react-cookie';
-import ms from 'millisecond';
+import { useCookies } from 'react-cookie';
+import ms from 'ms';
 
 import React, { Fragment, useState, useEffect } from 'react';
 import Link from 'next/link';
 import {} from 'next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useRouter, NextRouter } from 'next/router';
+import { useRouter } from 'next/router';
 
 const ImageLight = '/assets/img/create-account-office.jpeg';
 const ImageDark = '/assets/img/create-account-office-dark.jpeg';
@@ -43,13 +51,10 @@ const validationSchema = yup.object({
   email: yup.string().trim().email().required('email is required'),
 });
 
-function Login() {
-  const tokenCookieKey = process.env.JWT_AUTH_TOKEN || 'siodjfoi43r23roimal';
+function CreateAccountPage({ message, user }: ssr) {
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const [cookies, setCookie] = useCookies([tokenCookieKey]);
-  console.log(
-    'process.env.NEXT_PUBLIC_SIGNUP_API',
-    process.env.NEXT_PUBLIC_SIGNUP_API,
-  );
 
   const toast = useToast();
   const router = useRouter();
@@ -57,6 +62,13 @@ function Login() {
   const authState = useSelector((state: RootStore) => state.auth);
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  useEffect(() => {
+    if (message == 'success') {
+      dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
+      router.push('/app');
+    }
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -76,12 +88,8 @@ function Login() {
     }
   }, [authState.errors]);
 
-  console.log(process.env);
-
   useEffect(() => {
     if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
-      setCookie(tokenCookieKey, authState.token, { path: '/' });
-
       if (router)
         toast({
           title: `Account Created`,
@@ -93,10 +101,19 @@ function Login() {
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
       } else {
+        setCookie(tokenCookieKey, authState.token, {
+          path: '/',
+          maxAge: ms('1y'),
+        });
+
         router.push('/app');
       }
     }
   }, [authState.token]);
+
+  if (message == 'success') {
+    return <></>;
+  }
 
   return (
     <div className='flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900'>
@@ -134,7 +151,7 @@ function Login() {
                     errorBorderColor={`${formik.errors.username && 'red.400'}`}
                     value={formik.values.username}
                     onChange={formik.handleChange}
-                    placeholder='Username anda'
+                    placeholder='i.e. elonmusk'
                   />
                   <Text
                     mt='8px'
@@ -154,7 +171,7 @@ function Login() {
                     errorBorderColor={`${formik.errors.name && 'red.400'}`}
                     value={formik.values.name}
                     onChange={formik.handleChange}
-                    placeholder='Nama anda'
+                    placeholder='i.e. Elon Must At Tesla'
                   />
                   <Text
                     mt='8px'
@@ -221,23 +238,16 @@ function Login() {
                   </Text>
                 </Stack>
 
-                {/* <Label className='mt-6' check>
-                <Input type='checkbox' />
-                <span className='ml-2'>
-                  I agree to the{' '}
-                  <span className='underline'>privacy policy</span>
-                </span>
-              </Label> */}
                 <a className='text-sm font-medium text-purple-400 dark:text-purple-400 '>
                   by signup you agree to our{' '}
-                  <Link href='/page/terms'>
-                    <span className='hover:underline text-purple-600'>
+                  <Link href='/page/terms-of-use'>
+                    <span className='hover:underline text-purple-600 cursor-pointer	'>
                       terms
                     </span>
                   </Link>{' '}
                   and{' '}
-                  <Link href='/page/terms'>
-                    <span className='hover:underline text-purple-600'>
+                  <Link href='/page/privacy-policy'>
+                    <span className='hover:underline text-purple-600 cursor-pointer	'>
                       privacy policy
                     </span>
                   </Link>
@@ -269,4 +279,33 @@ function Login() {
   );
 }
 
-export default Login;
+export const getServerSideProps: GetServerSideProps<Partial<ssr>> = async (
+  ctx,
+) => {
+  // const verses = await FetchVerses(router.query.verse);
+  //@ts-ignore
+  // const surah = await FetchSurah(ctx.query.chapter);
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
+  const token = ctx.req.cookies[tokenCookieKey];
+
+  if (token) {
+    const user = await axios.post<ssr>('http://localhost:3030/auth/checkJWT', {
+      token: token,
+    });
+
+    return {
+      props: {
+        ...user.data,
+      },
+    };
+  }
+
+  return {
+    props: {
+      message: 'no token',
+    },
+  };
+};
+
+export default CreateAccountPage;

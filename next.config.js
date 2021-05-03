@@ -23,7 +23,6 @@ const dualENV = {
 const env = {
   ...dualENV[NODE_ENV],
   isProduction: NODE_ENV === 'production',
-  contactURL: process.env.NEXT_PUBLIC_SIGNUP_API,
 };
 
 // next.js configuration

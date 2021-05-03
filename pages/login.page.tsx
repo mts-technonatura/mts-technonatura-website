@@ -1,10 +1,27 @@
-import { Button, Text, Stack, Input, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  Text,
+  Stack,
+  Input,
+  useToast,
+  InputRightElement,
+  InputGroup,
+} from '@chakra-ui/react';
 
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import axios from 'axios';
+import { ssr } from '@/ts/index';
+import { GetServerSideProps } from 'next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/router';
+import * as AuthMethods from '@/redux/actions/index';
+import { RootStore } from '@/redux/index';
+import ms from 'ms';
+import _ from 'underscore';
 
 const validationSchema = yup.object({
   username: yup
@@ -19,8 +36,16 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-export default function loginPage() {
+export default function LoginPage({ message, user }: Readonly<ssr>) {
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const toast = useToast();
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootStore) => state.auth);
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+  const [cookies, setCookie] = useCookies([tokenCookieKey]);
+  const router = useRouter();
 
   const [submitting, setSubmit] = useState<boolean>(false);
   const formik = useFormik({
@@ -29,8 +54,46 @@ export default function loginPage() {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async (values) => {},
+    onSubmit: async (values) => {
+      await dispatch(AuthMethods.AuthLogin(formik.values));
+    },
   });
+
+  useEffect(() => {
+    if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
+      if (router)
+        toast({
+          title: `Login successfully`,
+          position: 'top-right',
+          isClosable: true,
+          status: 'success',
+        });
+
+      if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
+        router.push(`/auth/?next=${router.query.next}`);
+      } else {
+        setCookie(tokenCookieKey, authState.token, {
+          path: '/',
+          maxAge: ms('1y'),
+        });
+
+        router.push('/app');
+      }
+    }
+  }, [authState.token]);
+
+  useEffect(() => {
+    if (!_.isEmpty(authState.errors)) {
+      formik.setErrors(authState.errors);
+    }
+  }, [authState.errors]);
+
+  useEffect(() => {
+    if (message == 'success') {
+      dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
+      router.push('/app');
+    }
+  }, []);
 
   return (
     <div className='flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900'>
@@ -79,20 +142,31 @@ export default function loginPage() {
                   </Text>
                 </Stack>
 
-                <Stack mt={3}>
+                <Stack mt={4}>
                   <Text color={`${formik.errors.password && 'red.400'}`}>
-                    Password
+                    password
                   </Text>
-                  <Input
-                    isInvalid={Boolean(formik.errors.password)}
-                    type='text'
-                    id='password'
-                    name='password'
-                    errorBorderColor={`${formik.errors.password && 'red.400'}`}
-                    value={formik.values.password}
-                    onChange={formik.handleChange}
-                    placeholder='*********'
-                  />
+
+                  <InputGroup size='md'>
+                    <Input
+                      isInvalid={Boolean(formik.errors.password)}
+                      id='password'
+                      name='password'
+                      errorBorderColor={`${
+                        formik.errors.password && 'red.400'
+                      }`}
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      pr='4.5rem'
+                      type={show ? 'text' : 'password'}
+                      placeholder='Enter password'
+                    />
+                    <InputRightElement width='4.5rem'>
+                      <Button h='1.75rem' size='sm' onClick={handleClick}>
+                        {show ? 'Hide' : 'Show'}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
                   <Text
                     mt='8px'
                     fontSize='13px'
@@ -106,6 +180,7 @@ export default function loginPage() {
                   colorScheme='purple'
                   type='submit'
                   className='mt-4'
+                  isLoading={authState.loading}
                   style={{ width: '100%', outline: 'none' }}
                 >
                   Log in
@@ -133,3 +208,32 @@ export default function loginPage() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps<
+  Readonly<Partial<ssr>>
+> = async (ctx) => {
+  // const verses = await FetchVerses(router.query.verse);
+  //@ts-ignore
+  // const surah = await FetchSurah(ctx.query.chapter);
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
+  const token = ctx.req.cookies[tokenCookieKey];
+
+  if (token) {
+    const user = await axios.post<ssr>('http://localhost:3030/auth/checkJWT', {
+      token: token,
+    });
+
+    return {
+      props: {
+        ...user.data,
+      },
+    };
+  }
+
+  return {
+    props: {
+      message: 'no token',
+    },
+  };
+};
