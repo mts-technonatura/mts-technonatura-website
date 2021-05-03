@@ -58,7 +58,9 @@ export const AuthSignup = (inputs: signupI) => async (
       token?: string;
       user?: UserType;
     }>(
-      'http://localhost:3030/auth/signup' || process.env.NEXT_PUBLIC_SIGNUP_API,
+      'http://localhost:3030/auth/signup' ||
+        process.env.NEXT_PUBLIC_SIGNUP_API ||
+        process.env.SIGNUP_API,
       { ...inputs },
       {
         withCredentials: true,
