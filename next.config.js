@@ -17,13 +17,13 @@ const dualENV = {
   development: {
     PUBLIC_URL: 'http://localhost:3000',
   },
-  signup: process.env.SIGNUP_API,
+  signup: process.env.NEXT_PUBLIC_SIGNUP_API,
 };
 
 const env = {
   ...dualENV[NODE_ENV],
   isProduction: NODE_ENV === 'production',
-  contactURL: process.env.SIGNUP_API,
+  contactURL: process.env.NEXT_PUBLIC_SIGNUP_API,
 };
 
 // next.js configuration

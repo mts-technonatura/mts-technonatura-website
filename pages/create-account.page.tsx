@@ -46,6 +46,10 @@ const validationSchema = yup.object({
 function Login() {
   const tokenCookieKey = process.env.JWT_AUTH_TOKEN || 'siodjfoi43r23roimal';
   const [cookies, setCookie] = useCookies([tokenCookieKey]);
+  console.log(
+    'process.env.NEXT_PUBLIC_SIGNUP_API',
+    process.env.NEXT_PUBLIC_SIGNUP_API,
+  );
 
   const toast = useToast();
   const router = useRouter();
