@@ -17,7 +17,7 @@ import { CookiesProvider } from 'react-cookie';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    console.log(process.env.SIGNUP_API);
+    console.log('process.env', process.env);
   }, []);
   return (
     <>

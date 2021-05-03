@@ -16,9 +16,10 @@ import ms from 'millisecond';
 
 import React, { Fragment, useState, useEffect } from 'react';
 import Link from 'next/link';
+import {} from 'next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useRouter } from 'next/router';
+import { useRouter, NextRouter } from 'next/router';
 
 const ImageLight = '/assets/img/create-account-office.jpeg';
 const ImageDark = '/assets/img/create-account-office-dark.jpeg';
@@ -71,17 +72,25 @@ function Login() {
     }
   }, [authState.errors]);
 
+  console.log(process.env);
+
   useEffect(() => {
     if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
       setCookie(tokenCookieKey, authState.token, { path: '/' });
 
-      toast({
-        title: `Account Created`,
-        position: 'top-right',
-        isClosable: true,
-        status: 'success',
-      });
-      router.push('/app');
+      if (router)
+        toast({
+          title: `Account Created`,
+          position: 'top-right',
+          isClosable: true,
+          status: 'success',
+        });
+
+      if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
+        router.push(`/auth/?next=${router.query.next}`);
+      } else {
+        router.push('/app');
+      }
     }
   }, [authState.token]);
 
@@ -106,7 +115,7 @@ function Login() {
           <main className='flex items-center justify-center p-6 sm:p-12 md:w-1/2'>
             <div className='w-full'>
               <h1 className='mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200'>
-                Create account
+                Create account {JSON.stringify(process.env)}
               </h1>
               <form noValidate onSubmit={formik.handleSubmit}>
                 <Stack mt={4}>

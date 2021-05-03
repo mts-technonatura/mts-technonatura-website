@@ -58,7 +58,7 @@ export const AuthSignup = (inputs: signupI) => async (
       token?: string;
       user?: UserType;
     }>(
-      'http://localhost:3030/auth/signup',
+      'http://localhost:3030/auth/signup' || process.env.signup,
       { ...inputs },
       {
         withCredentials: true,
