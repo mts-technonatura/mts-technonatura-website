@@ -248,7 +248,7 @@ export const getServerSideProps: GetServerSideProps<
   if (token) {
     try {
       const user = await axios.get<ssr>(
-        process.env.NEXT_PUBLIC_CHECKJWT ||
+        `${process.env.NEXT_PUBLIC_CHECKJWT}/${token}` ||
           `http://localhost:3030/auth/checkJWT/${token}`,
       );
 
