@@ -6,9 +6,12 @@ import {
   AuthDispatchTypes,
   AuthCheckJwtFail,
   AUTH_LOGOUT,
+  Auth_JWT_SUCCESS,
   AuthSuccess,
   Auth_Check_JwtFail,
   AUTH_REMOVE_ERRORS,
+  Auth_SIGNUP_SUCCESS,
+  Auth_LOGIN_SUCCESS,
 } from '../types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
 import axios from 'axios';
@@ -32,6 +35,7 @@ export const AuthLogin = (Auth: signIn) => async (
       type: Auth_LOADING,
     });
 
+    // console.log('hey');
     const res = await axios.post<{
       errors?: any;
       token?: string;
@@ -49,7 +53,7 @@ export const AuthLogin = (Auth: signIn) => async (
       });
     } else {
       dispatch<AuthSuccess>({
-        type: Auth_SUCCESS,
+        type: Auth_LOGIN_SUCCESS,
         token: res.data.token,
         user: res.data.user,
       });
@@ -99,7 +103,7 @@ export const AuthVerifyJWT = (token: string) => async (
       console.log('user.data', user.data);
       if (user.data.user) {
         dispatch({
-          type: Auth_SUCCESS,
+          type: Auth_JWT_SUCCESS,
           user: user.data.user,
           token: token,
         });
@@ -178,7 +182,7 @@ export const AuthSignup = (inputs: signupI) => async (
       });
     } else {
       dispatch({
-        type: Auth_SUCCESS,
+        type: Auth_SIGNUP_SUCCESS,
         token: res.data.token,
         user: res.data.user,
       });

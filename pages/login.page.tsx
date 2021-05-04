@@ -66,7 +66,11 @@ export default function LoginPage() {
   }, [authState.errors]);
 
   useEffect(() => {
-    if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
+    if (
+      _.isString(authState.token) &&
+      _.isEmpty(authState.errors) &&
+      authState.message == 'login successfully'
+    ) {
       if (router)
         toast({
           title: `Login successfully`,
@@ -77,17 +81,17 @@ export default function LoginPage() {
 
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
-      } else {
-        // console.log(tokenCookieKey);
-        setCookie(tokenCookieKey, authState.token, {
-          path: '/',
-          maxAge: ms('1y'),
-        });
       }
+
+      // console.log(tokenCookieKey);
+      setCookie(tokenCookieKey, authState.token, {
+        path: '/',
+        maxAge: ms('1y'),
+      });
+      router.push('/app');
     }
 
-    if (authState.message == 'success') {
-      // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
+    if (authState.message == 'jwtSuccess') {
       router.push('/app');
       return;
     } else if (authState.message == 'server error') {
@@ -101,10 +105,11 @@ export default function LoginPage() {
     }
 
     // dispatch(AuthMethods.AuthLogout());
-  }, [authState.fetched]);
+  }, [authState.token]);
 
   // check JWT
   useEffect(() => {
+    // console.log('hey', cookies[tokenCookieKey], cookies);
     if (!authState.fetched) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }

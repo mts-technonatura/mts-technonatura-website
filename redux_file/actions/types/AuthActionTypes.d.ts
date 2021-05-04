@@ -7,6 +7,9 @@ export const Auth_SUCCESS = 'Auth_SUCCESS';
 export const AuthCheckJwtFail = 'AuthCheckJwtFail';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const AUTH_REMOVE_ERRORS = 'AUTH_REMOVE_ERRORS';
+export const Auth_JWT_SUCCESS = 'Auth_JWT_SUCCESS';
+export const Auth_LOGIN_SUCCESS = 'Auth_LOGIN_SUCCESS';
+export const Auth_SIGNUP_SUCCESS = 'Auth_SIGNUP_SUCCESS';
 
 export type SocialMedia = {
   name: string;
@@ -28,7 +31,7 @@ export interface Auth_Check_JwtFail {
 }
 
 export interface AuthSuccess {
-  type: typeof Auth_SUCCESS;
+  type: typeof Auth_SUCCESS | Auth_LOGIN_SUCCESS;
   token?: string;
   user?: UserType;
 }
@@ -46,4 +49,7 @@ export type AuthDispatchTypes =
   | AuthSuccess
   | Auth_Check_JwtFail
   | AUTH_LOGOUT
-  | AUTH_REMOVE_ERRORS;
+  | AUTH_REMOVE_ERRORS
+  | Auth_SIGNUP_SUCCESS
+  | Auth_LOGIN_SUCCESS
+  | Auth_JWT_SUCCESS;

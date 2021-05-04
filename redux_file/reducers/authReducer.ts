@@ -6,6 +6,9 @@ import {
   AuthDispatchTypes,
   AUTH_LOGOUT,
   AuthCheckJwtFail,
+  Auth_JWT_SUCCESS,
+  Auth_LOGIN_SUCCESS,
+  Auth_SIGNUP_SUCCESS,
 } from '../actions/types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
 import { JWTTokenResponse } from '@/ts/index';
@@ -46,6 +49,30 @@ const authReducer = (
         fetched: true,
         message: 'success',
       });
+    case Auth_LOGIN_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        token: action.token,
+        user: action.user,
+        fetched: true,
+        message: 'login successfully',
+      });
+    case Auth_SIGNUP_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        token: action.token,
+        user: action.user,
+        fetched: true,
+        message: 'account created',
+      });
+    case Auth_JWT_SUCCESS:
+      return Object.assign({}, state, {
+        loading: false,
+        token: action.token,
+        user: action.user,
+        fetched: true,
+        message: 'jwtSuccess',
+      });
     case AuthCheckJwtFail:
       return Object.assign({}, state, {
         fetched: true,
@@ -57,6 +84,8 @@ const authReducer = (
         fetched: true,
         loading: false,
         user: undefined,
+        token: '',
+        message: 'notSignedIn',
       });
     case AUTH_REMOVE_ERRORS:
       return Object.assign({}, state, {

@@ -14,7 +14,11 @@ export type JWTTokenResponse =
   | 'success'
   | 'invalid token'
   | 'no token'
-  | 'server error';
+  | 'server error'
+  | 'jwtSuccess'
+  | 'login successfully'
+  | 'account created'
+  | 'notSignedIn';
 
 export interface ssr {
   user: UserType;

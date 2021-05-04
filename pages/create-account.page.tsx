@@ -75,7 +75,7 @@ function CreateAccountPage({ message, user }: ssr) {
 
   useEffect(() => {
     // console.log(authState);
-    if (authState.message == 'success') {
+    if (authState.message == 'jwtSuccess') {
       // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
       router.push('/app');
       return;
@@ -100,26 +100,6 @@ function CreateAccountPage({ message, user }: ssr) {
   }, []);
 
   useEffect(() => {
-    if (!authState.fetched) {
-      if (message == 'server error') {
-        toast({
-          title: "Couldn't connect to server",
-          position: 'bottom-right',
-          isClosable: false,
-          status: 'error',
-          duration: 2000,
-        });
-      }
-      if (message == 'success') {
-        dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
-        router.push('/app');
-        return;
-      }
-      dispatch(AuthMethods.AuthLogout());
-    }
-  }, []);
-
-  useEffect(() => {
     if (!_.isEmpty(authState.errors)) {
       formik.setErrors(authState.errors);
     }
@@ -129,15 +109,14 @@ function CreateAccountPage({ message, user }: ssr) {
     if (
       _.isString(authState.token) &&
       _.isEmpty(authState.errors) &&
-      !authState.user
+      authState.message == 'account created'
     ) {
-      if (router)
-        toast({
-          title: `Account Created`,
-          position: 'top-right',
-          isClosable: true,
-          status: 'success',
-        });
+      toast({
+        title: `Account Created`,
+        position: 'top-right',
+        isClosable: true,
+        status: 'success',
+      });
 
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
