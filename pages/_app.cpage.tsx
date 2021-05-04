@@ -3,7 +3,7 @@ import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import { AppProps } from 'next/app';
+import { AppContext, AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
 import Head from 'next/head';
 import ProgressLoad from 'components/ProgressLoad';
@@ -17,7 +17,7 @@ import { CookiesProvider } from 'react-cookie';
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
-    console.log('process.env', process.env);
+    console.log('process.env', pageProps);
   }, []);
   return (
     <>
@@ -71,7 +71,5 @@ function MyApp({ Component, pageProps }: AppProps) {
     </>
   );
 }
-
-// export getServerSideProps
 
 export default MyApp;

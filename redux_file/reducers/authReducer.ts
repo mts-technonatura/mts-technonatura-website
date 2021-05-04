@@ -6,21 +6,21 @@ import {
 } from '../actions/types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
 
-interface DefaultStateI {
+export interface AuthState {
   loading: boolean;
   user?: UserType;
   errors?: any;
   token?: string;
 }
 
-const defaultState: DefaultStateI = {
+const defaultState: AuthState = {
   loading: false,
 };
 
 const authReducer = (
-  state: DefaultStateI = defaultState,
+  state: AuthState = defaultState,
   action: AuthDispatchTypes,
-): DefaultStateI => {
+): AuthState => {
   switch (action.type) {
     case Auth_FAIL:
       return {

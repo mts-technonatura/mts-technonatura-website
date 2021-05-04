@@ -13,7 +13,8 @@ export type JWTTokenResponse =
   | 'invalid password, password might has changed'
   | 'success'
   | 'invalid token'
-  | 'no token';
+  | 'no token'
+  | 'server error';
 
 export interface ssr {
   user: UserType;

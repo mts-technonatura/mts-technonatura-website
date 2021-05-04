@@ -1,6 +1,8 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 // import { GA_TRACKING_ID } from '../utils/gtag';
 import React from 'react';
+import { Provider } from 'react-redux';
+import store from '../redux_file/';
 export default class Root extends Document {
   render() {
     return (
@@ -112,7 +114,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             `,
             }}
           ></noscript>
+          {/* <Provider store={store}> */}
           <Main />
+          {/* </Provider> */}
 
           <NextScript />
         </body>

@@ -47,7 +47,6 @@ export default function LoginPage({ message, user }: Readonly<ssr>) {
   const [cookies, setCookie] = useCookies([tokenCookieKey]);
   const router = useRouter();
 
-  const [submitting, setSubmit] = useState<boolean>(false);
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -92,6 +91,14 @@ export default function LoginPage({ message, user }: Readonly<ssr>) {
     if (message == 'success') {
       dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
       router.push('/app');
+    } else if (message == 'server error') {
+      toast({
+        title: "Couldn't connect to server",
+        position: 'bottom-right',
+        isClosable: false,
+        status: 'error',
+        duration: 2000,
+      });
     }
   }, []);
 
@@ -212,23 +219,31 @@ export default function LoginPage({ message, user }: Readonly<ssr>) {
 export const getServerSideProps: GetServerSideProps<
   Readonly<Partial<ssr>>
 > = async (ctx) => {
-  // const verses = await FetchVerses(router.query.verse);
-  //@ts-ignore
-  // const surah = await FetchSurah(ctx.query.chapter);
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const token = ctx.req.cookies[tokenCookieKey];
 
   if (token) {
-    const user = await axios.post<ssr>('http://localhost:3030/auth/checkJWT', {
-      token: token,
-    });
+    try {
+      const user = await axios.post<ssr>(
+        'http://localhost:3030/auth/checkJWT',
+        {
+          token: token,
+        },
+      );
 
-    return {
-      props: {
-        ...user.data,
-      },
-    };
+      return {
+        props: {
+          ...user.data,
+        },
+      };
+    } catch (err) {
+      return {
+        props: {
+          message: 'server error',
+        },
+      };
+    }
   }
 
   return {

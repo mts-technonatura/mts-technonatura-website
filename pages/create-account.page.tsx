@@ -89,6 +89,18 @@ function CreateAccountPage({ message, user }: ssr) {
   }, [authState.errors]);
 
   useEffect(() => {
+    if (message == 'server error') {
+      toast({
+        title: "Couldn't connect to server",
+        position: 'bottom-right',
+        isClosable: false,
+        status: 'error',
+        duration: 2000,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
       if (router)
         toast({
@@ -290,15 +302,26 @@ export const getServerSideProps: GetServerSideProps<Partial<ssr>> = async (
   const token = ctx.req.cookies[tokenCookieKey];
 
   if (token) {
-    const user = await axios.post<ssr>('http://localhost:3030/auth/checkJWT', {
-      token: token,
-    });
+    try {
+      const user = await axios.post<ssr>(
+        'http://localhost:3030/auth/checkJWT',
+        {
+          token: token,
+        },
+      );
 
-    return {
-      props: {
-        ...user.data,
-      },
-    };
+      return {
+        props: {
+          ...user.data,
+        },
+      };
+    } catch (err) {
+      return {
+        props: {
+          message: 'server error',
+        },
+      };
+    }
   }
 
   return {
