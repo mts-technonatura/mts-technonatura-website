@@ -259,6 +259,7 @@ export const getServerSideProps: GetServerSideProps<
       return {
         props: {
           message: err,
+          token,
         },
       };
     }
