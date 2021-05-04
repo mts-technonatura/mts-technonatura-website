@@ -260,7 +260,7 @@ export const getServerSideProps: GetServerSideProps<
       console.log(process.env.NEXT_PUBLIC_CHECKJWT, err, token);
       return {
         props: {
-          message: 'server error',
+          message: err,
           token,
           p: process.env.NEXT_PUBLIC_CHECKJWT,
         },
