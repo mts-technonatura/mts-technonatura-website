@@ -89,6 +89,7 @@ export default function LoginPage({ message, user }: Readonly<ssr>) {
   }, [authState.errors]);
 
   useEffect(() => {
+    console.log(message, user);
     if (!authState.fetched) {
       if (message == 'success') {
         dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
@@ -103,6 +104,7 @@ export default function LoginPage({ message, user }: Readonly<ssr>) {
           duration: 2000,
         });
       }
+
       dispatch(AuthMethods.AuthLogout());
     }
   }, []);
