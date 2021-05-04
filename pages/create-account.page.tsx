@@ -92,6 +92,7 @@ function CreateAccountPage({ message, user }: ssr) {
     // dispatch(AuthMethods.AuthLogout());
   }, [authState.message]);
 
+  // check JWT
   useEffect(() => {
     if (!authState.fetched) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
@@ -153,6 +154,7 @@ function CreateAccountPage({ message, user }: ssr) {
     return <></>;
   }
 
+  // If failed check the JWT token
   if (authState.message == 'server error') {
     return (
       <ErrorPage
