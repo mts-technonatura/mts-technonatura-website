@@ -258,7 +258,7 @@ export const getServerSideProps: GetServerSideProps<
     } catch (err) {
       return {
         props: {
-          message: 'server error',
+          message: err,
         },
       };
     }
