@@ -61,7 +61,11 @@ export default function LoginPage(props: Readonly<ssr>) {
   });
 
   useEffect(() => {
-    if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
+    if (
+      _.isString(authState.token) &&
+      _.isEmpty(authState.errors) &&
+      !authState.user
+    ) {
       if (router)
         toast({
           title: `Login successfully`,
@@ -243,13 +247,9 @@ export const getServerSideProps: GetServerSideProps<
 
   if (token) {
     try {
-      const user = await axios.post<ssr>(
+      const user = await axios.get<ssr>(
         process.env.NEXT_PUBLIC_CHECKJWT ||
-          'http://localhost:3030/auth/checkJWT',
-        {
-          token: token,
-        },
-        { withCredentials: true },
+          `http://localhost:3030/auth/checkJWT/${token}`,
       );
 
       return {
