@@ -249,6 +249,7 @@ export const getServerSideProps: GetServerSideProps<
         {
           token: token,
         },
+        { withCredentials: true },
       );
 
       return {
