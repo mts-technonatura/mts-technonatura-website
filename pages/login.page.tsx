@@ -37,7 +37,8 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-export default function LoginPage({ message, user }: Readonly<ssr>) {
+export default function LoginPage(props: Readonly<ssr>) {
+  const { message, user } = props;
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const toast = useToast();
@@ -89,7 +90,7 @@ export default function LoginPage({ message, user }: Readonly<ssr>) {
   }, [authState.errors]);
 
   useEffect(() => {
-    console.log(message, user);
+    console.log(props);
     if (!authState.fetched) {
       if (message == 'success') {
         dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
@@ -259,8 +260,9 @@ export const getServerSideProps: GetServerSideProps<
       console.log(process.env.NEXT_PUBLIC_CHECKJWT, err, token);
       return {
         props: {
-          message: err,
+          message: 'server error',
           token,
+          p: process.env.NEXT_PUBLIC_CHECKJWT,
         },
       };
     }
