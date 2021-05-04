@@ -19,4 +19,5 @@ export type JWTTokenResponse =
 export interface ssr {
   user: UserType;
   message: JWTTokenResponse;
+  token: string;
 }

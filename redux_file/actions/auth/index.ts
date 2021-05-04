@@ -4,8 +4,10 @@ import {
   Auth_LOADING,
   Auth_SUCCESS,
   AuthDispatchTypes,
-  authMethod,
+  AuthCheckJwtFail,
+  AUTH_LOGOUT,
 } from '../types/AuthActionTypes.d';
+import { ssr } from '@/ts/index';
 import { UserType } from '@/ts/index';
 import axios from 'axios';
 
@@ -68,6 +70,59 @@ export const SavedUserToRedux = (Auth: UserType, token: string) => (
   dispatch({
     type: Auth_SUCCESS,
     user: Auth,
+    token: token,
+  });
+};
+
+export const AuthVerifyJWT = (token: string) => async (
+  dispatch: Dispatch<AuthDispatchTypes>,
+) => {
+  if (token) {
+    dispatch({
+      type: Auth_LOADING,
+    });
+    console.log('heyyy');
+
+    try {
+      const user = await axios.post<ssr>(
+        process.env.NEXT_PUBLIC_CHECKJWT ||
+          'http://localhost:3030/auth/checkJWT',
+        {
+          token: token,
+        },
+      );
+
+      if (user.data.user) {
+        dispatch({
+          type: Auth_SUCCESS,
+          user: user.data.user,
+          token: token,
+        });
+        return;
+      }
+      dispatch({
+        type: AuthCheckJwtFail,
+      });
+      return;
+    } catch (err) {
+      dispatch({
+        type: AuthCheckJwtFail,
+      });
+      return;
+    }
+  }
+
+  dispatch({
+    type: AuthCheckJwtFail,
+  });
+  return;
+};
+
+export const AuthLogout = () => async (
+  dispatch: Dispatch<AuthDispatchTypes>,
+) => {
+  dispatch({
+    type: AUTH_LOGOUT,
   });
 };
 
@@ -84,7 +139,6 @@ export const AuthSignup = (inputs: signupI) => async (
     // );
     dispatch({
       type: Auth_LOADING,
-      method: authMethod.AUTH_SIGNUP,
     });
 
     const res = await axios.post<{

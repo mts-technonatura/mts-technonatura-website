@@ -2,7 +2,9 @@ import {
   Auth_FAIL,
   Auth_LOADING,
   Auth_SUCCESS,
+  AuthCheckJwtFail,
   AuthDispatchTypes,
+  AUTH_LOGOUT,
 } from '../actions/types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
 
@@ -11,10 +13,11 @@ export interface AuthState {
   user?: UserType;
   errors?: any;
   token?: string;
+  fetched?: boolean;
 }
 
 const defaultState: AuthState = {
-  loading: false,
+  loading: true,
 };
 
 const authReducer = (
@@ -26,6 +29,7 @@ const authReducer = (
       return {
         loading: false,
         errors: action.errors,
+        fetched: true,
       };
     case Auth_LOADING:
       return {
@@ -36,6 +40,18 @@ const authReducer = (
         loading: false,
         token: action.token,
         user: action.user,
+        fetched: true,
+      };
+    case AuthCheckJwtFail:
+      return {
+        fetched: true,
+        loading: false,
+      };
+    case AUTH_LOGOUT:
+      return {
+        fetched: true,
+        loading: false,
+        user: undefined,
       };
     default:
       return state;

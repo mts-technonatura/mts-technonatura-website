@@ -10,7 +10,7 @@ import {
 
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
-import axios from 'axios';
+import serverAuth from '@utils/server-auth';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
@@ -22,9 +22,8 @@ import _ from 'underscore';
 import { useCookies } from 'react-cookie';
 import ms from 'ms';
 
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
-import {} from 'next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useRouter } from 'next/router';
@@ -52,24 +51,6 @@ const validationSchema = yup.object({
 });
 
 function CreateAccountPage({ message, user }: ssr) {
-  const tokenCookieKey =
-    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies([tokenCookieKey]);
-
-  const toast = useToast();
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const authState = useSelector((state: RootStore) => state.auth);
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
-
-  useEffect(() => {
-    if (message == 'success') {
-      dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
-      router.push('/app');
-    }
-  }, []);
-
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -82,6 +63,18 @@ function CreateAccountPage({ message, user }: ssr) {
       await dispatch(AuthSignup(formik.values));
     },
   });
+
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
+  const [cookies, setCookie] = useCookies([tokenCookieKey]);
+
+  const toast = useToast();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootStore) => state.auth);
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
+
   useEffect(() => {
     if (!_.isEmpty(authState.errors)) {
       formik.setErrors(authState.errors);
@@ -89,14 +82,22 @@ function CreateAccountPage({ message, user }: ssr) {
   }, [authState.errors]);
 
   useEffect(() => {
-    if (message == 'server error') {
-      toast({
-        title: "Couldn't connect to server",
-        position: 'bottom-right',
-        isClosable: false,
-        status: 'error',
-        duration: 2000,
-      });
+    if (!authState.fetched) {
+      if (message == 'server error') {
+        toast({
+          title: "Couldn't connect to server",
+          position: 'bottom-right',
+          isClosable: false,
+          status: 'error',
+          duration: 2000,
+        });
+      }
+      if (message == 'success') {
+        dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
+        router.push('/app');
+        return;
+      }
+      dispatch(AuthMethods.AuthLogout());
     }
   }, []);
 
@@ -164,6 +165,7 @@ function CreateAccountPage({ message, user }: ssr) {
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     placeholder='i.e. elonmusk'
+                    className=' dark:text-white'
                   />
                   <Text
                     mt='8px'
@@ -180,6 +182,7 @@ function CreateAccountPage({ message, user }: ssr) {
                     type='text'
                     id='name'
                     name='name'
+                    className=' dark:text-white'
                     errorBorderColor={`${formik.errors.name && 'red.400'}`}
                     value={formik.values.name}
                     onChange={formik.handleChange}
@@ -201,6 +204,7 @@ function CreateAccountPage({ message, user }: ssr) {
                     isInvalid={Boolean(formik.errors.email)}
                     type='text'
                     id='email'
+                    className=' dark:text-white'
                     name='email'
                     errorBorderColor={`${formik.errors.email && 'red.400'}`}
                     value={formik.values.email}
@@ -229,6 +233,7 @@ function CreateAccountPage({ message, user }: ssr) {
                       errorBorderColor={`${
                         formik.errors.password && 'red.400'
                       }`}
+                      className=' dark:text-white'
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       pr='4.5rem'
@@ -294,39 +299,11 @@ function CreateAccountPage({ message, user }: ssr) {
 export const getServerSideProps: GetServerSideProps<Partial<ssr>> = async (
   ctx,
 ) => {
-  // const verses = await FetchVerses(router.query.verse);
-  //@ts-ignore
-  // const surah = await FetchSurah(ctx.query.chapter);
-  const tokenCookieKey =
-    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const token = ctx.req.cookies[tokenCookieKey];
-
-  if (token) {
-    try {
-      const user = await axios.post<ssr>(
-        'http://localhost:3030/auth/checkJWT',
-        {
-          token: token,
-        },
-      );
-
-      return {
-        props: {
-          ...user.data,
-        },
-      };
-    } catch (err) {
-      return {
-        props: {
-          message: 'server error',
-        },
-      };
-    }
-  }
+  const AuthProcess = await serverAuth(ctx);
 
   return {
     props: {
-      message: 'no token',
+      ...AuthProcess,
     },
   };
 };

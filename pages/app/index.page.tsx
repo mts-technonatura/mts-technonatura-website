@@ -9,45 +9,26 @@ import PageTitle from 'components/Typography/PageTitle';
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../../icons';
 import RoundIcon from 'components/RoundIcon';
 import response from 'utils/demo/tableData';
-import {
-  TableBody,
-  TableContainer,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-  TableFooter,
-  Avatar,
-  Badge,
-  Pagination,
-  Button,
-} from '@windmill/react-ui';
-
-import {
-  doughnutOptions,
-  lineOptions,
-  doughnutLegends,
-  lineLegends,
-} from 'utils/demo/chartsData';
+import { Button, ButtonGroup } from '@chakra-ui/react';
+import { useCookies } from 'react-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import * as AuthMethods from '@/redux/actions/index';
+import { RootStore } from '@/redux/index';
 
 function Dashboard() {
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootStore) => state.auth);
+
   const [page, setPage] = useState(1);
-  // const [data, setData] = useState([]);
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
+  const [cookies, setCookie] = useCookies();
 
-  // pagination setup
-  const resultsPerPage = 10;
-  const totalResults = response.length;
-
-  // pagination change control
-  // function onPageChange(p) {
-  //   setPage(p);
-  // }
-
-  // on page change, load new sliced data
-  // here you would make another server request for new data
-  // useEffect(() => {
-  // setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage));
-  // }, [page]);
+  useEffect(() => {
+    if (!authState.fetched) {
+      dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
+    }
+  }, []);
 
   return (
     <div className='md:px-8 sm:px-20'>

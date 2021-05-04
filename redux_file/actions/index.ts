@@ -1,1 +1,7 @@
-export { AuthLogin, AuthSignup, SavedUserToRedux } from './auth';
+export {
+  AuthLogin,
+  AuthSignup,
+  SavedUserToRedux,
+  AuthVerifyJWT,
+  AuthLogout,
+} from './auth';

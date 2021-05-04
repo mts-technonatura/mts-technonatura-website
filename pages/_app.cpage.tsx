@@ -16,9 +16,6 @@ import { Windmill } from '@windmill/react-ui';
 import { CookiesProvider } from 'react-cookie';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useEffect(() => {
-    console.log('process.env', pageProps);
-  }, []);
   return (
     <>
       <Head>
