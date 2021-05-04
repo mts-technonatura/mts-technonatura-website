@@ -33,7 +33,7 @@ function Header() {
     removeCookie(tokenCookieKey);
     dispatch(AuthLogout());
   }
-  console.log(authState.user);
+  // console.log(authState.user);
 
   return (
     <header className='z-40 py-4 bg-white shadow-bottom dark:bg-gray-800'>

@@ -1,10 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import NProgress from 'nprogress';
 import Router from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
+import * as AuthMethods from '@/redux/actions/index';
 
-let timer = null;
+let timer: NodeJS.Timeout;
 
 export default function ProgressLoad() {
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootStore) => state.auth);
   const [state] = useState({
     color: '#29D',
     startPosition: 0.3,
@@ -15,11 +20,12 @@ export default function ProgressLoad() {
   const routeChangeStart = useCallback(() => {
     NProgress.set(state.startPosition);
     NProgress.start();
-  });
+  }, []);
   const routeChangeEnd = useCallback(() => {
     clearTimeout(timer);
     timer = setTimeout(() => void NProgress.done(true), state.stopDelayMs);
-  });
+    dispatch(AuthMethods.AuthRemoveErrors());
+  }, []);
 
   useEffect(() => {
     NProgress.configure({ easing: 'ease', speed: 500 });

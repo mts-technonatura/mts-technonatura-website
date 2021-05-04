@@ -6,10 +6,13 @@ import {
   AuthDispatchTypes,
   AuthCheckJwtFail,
   AUTH_LOGOUT,
+  AuthSuccess,
+  Auth_Check_JwtFail,
+  AUTH_REMOVE_ERRORS,
 } from '../types/AuthActionTypes.d';
-import { ssr } from '@/ts/index';
 import { UserType } from '@/ts/index';
 import axios from 'axios';
+import { ssr, JWTTokenResponse } from '@/ts/index';
 
 interface signIn {
   username: string;
@@ -34,9 +37,7 @@ export const AuthLogin = (Auth: signIn) => async (
       token?: string;
       user?: UserType;
     }>(
-      process.env.LOGIN_API ||
-        process.env.NEXT_PUBLIC_LOGIN_API ||
-        'http://localhost:3030/auth/login',
+      process.env.NEXT_PUBLIC_LOGIN_API || 'http://localhost:3030/auth/login',
       Auth,
     );
 
@@ -47,7 +48,7 @@ export const AuthLogin = (Auth: signIn) => async (
         errors: res.data.errors,
       });
     } else {
-      dispatch({
+      dispatch<AuthSuccess>({
         type: Auth_SUCCESS,
         token: res.data.token,
         user: res.data.user,
@@ -77,13 +78,16 @@ export const SavedUserToRedux = (Auth: UserType, token: string) => (
 export const AuthVerifyJWT = (token: string) => async (
   dispatch: Dispatch<AuthDispatchTypes>,
 ) => {
+  // console.log('token', token);
+
   if (token) {
     dispatch({
       type: Auth_LOADING,
     });
-    console.log('heyyy');
 
     try {
+      // console.log('user.data', token);
+
       const user = await axios.post<ssr>(
         process.env.NEXT_PUBLIC_CHECKJWT ||
           'http://localhost:3030/auth/checkJWT',
@@ -92,6 +96,7 @@ export const AuthVerifyJWT = (token: string) => async (
         },
       );
 
+      console.log('user.data', user.data);
       if (user.data.user) {
         dispatch({
           type: Auth_SUCCESS,
@@ -100,13 +105,15 @@ export const AuthVerifyJWT = (token: string) => async (
         });
         return;
       }
-      dispatch({
+      dispatch<Auth_Check_JwtFail>({
         type: AuthCheckJwtFail,
+        message: 'invalid token',
       });
       return;
     } catch (err) {
-      dispatch({
+      dispatch<Auth_Check_JwtFail>({
         type: AuthCheckJwtFail,
+        message: 'server error',
       });
       return;
     }
@@ -123,6 +130,14 @@ export const AuthLogout = () => async (
 ) => {
   dispatch({
     type: AUTH_LOGOUT,
+  });
+};
+
+export const AuthRemoveErrors = () => async (
+  dispatch: Dispatch<AuthDispatchTypes>,
+) => {
+  dispatch({
+    type: AUTH_REMOVE_ERRORS,
   });
 };
 

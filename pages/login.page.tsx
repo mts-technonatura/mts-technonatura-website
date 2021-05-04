@@ -12,17 +12,15 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import axios from 'axios';
-import { ssr } from '@/ts/index';
-import { GetServerSideProps } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
-import * as AuthMethods from '@/redux/actions/index';
-import { RootStore } from '@/redux/index';
 import ms from 'ms';
 import _ from 'underscore';
 import { NextSeo } from 'next-seo';
+import ErrorPage from 'components/500';
+import * as AuthMethods from '@/redux/actions/index';
 
 const validationSchema = yup.object({
   username: yup
@@ -37,8 +35,9 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-export default function LoginPage(props: Readonly<ssr>) {
-  const { message, user } = props;
+// props: Readonly<ssr>
+export default function LoginPage() {
+  // const { message, user } = props;
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const toast = useToast();
@@ -61,11 +60,13 @@ export default function LoginPage(props: Readonly<ssr>) {
   });
 
   useEffect(() => {
-    if (
-      _.isString(authState.token) &&
-      _.isEmpty(authState.errors) &&
-      !authState.user
-    ) {
+    if (!_.isEmpty(authState.errors)) {
+      formik.setErrors(authState.errors);
+    }
+  }, [authState.errors]);
+
+  useEffect(() => {
+    if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
       if (router)
         toast({
           title: `Login successfully`,
@@ -77,42 +78,67 @@ export default function LoginPage(props: Readonly<ssr>) {
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
       } else {
+        // console.log(tokenCookieKey);
         setCookie(tokenCookieKey, authState.token, {
           path: '/',
           maxAge: ms('1y'),
         });
-
-        router.push('/app');
       }
     }
-  }, [authState.token]);
 
-  useEffect(() => {
-    if (!_.isEmpty(authState.errors)) {
-      formik.setErrors(authState.errors);
+    if (authState.message == 'success') {
+      // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
+      router.push('/app');
+      return;
+    } else if (authState.message == 'server error') {
+      toast({
+        title: "Couldn't connect to server",
+        position: 'bottom-right',
+        isClosable: false,
+        status: 'error',
+        duration: 2000,
+      });
     }
-  }, [authState.errors]);
 
+    // dispatch(AuthMethods.AuthLogout());
+  }, [authState.fetched]);
+
+  // check JWT
   useEffect(() => {
-    console.log(props);
     if (!authState.fetched) {
-      if (message == 'success') {
-        dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
-        router.push('/app');
-        return;
-      } else if (message == 'server error') {
-        toast({
-          title: "Couldn't connect to server",
-          position: 'bottom-right',
-          isClosable: false,
-          status: 'error',
-          duration: 2000,
-        });
-      }
-
-      dispatch(AuthMethods.AuthLogout());
+      dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
+
+  // If failed check the JWT token
+  if (authState.message == 'server error') {
+    return (
+      <ErrorPage
+        NextSeoProps={{
+          title: '500 Server Error ',
+        }}
+      >
+        <>
+          <h1>500</h1>
+          <div className='ooo'>
+            <h2>
+              Couldn't Connect To Server |{' '}
+              <a
+                href='https://mts-technonatura.instatus.com/'
+                className='text-gray-600 underline'
+              >
+                Status
+              </a>
+            </h2>
+          </div>
+        </>
+      </ErrorPage>
+    );
+  }
+
+  if (authState.loading && !authState.fetched && !authState.errors) {
+    return <></>;
+  }
 
   return (
     <>
@@ -238,40 +264,40 @@ export default function LoginPage(props: Readonly<ssr>) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<
-  Readonly<Partial<ssr>>
-> = async (ctx) => {
-  const tokenCookieKey =
-    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const token = ctx.req.cookies[tokenCookieKey];
+// export const getServerSideProps: GetServerSideProps<
+//   Readonly<Partial<ssr>>
+// > = async (ctx) => {
+//   const tokenCookieKey =
+//     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
+//   const token = ctx.req.cookies[tokenCookieKey];
 
-  if (token) {
-    try {
-      const user = await axios.get<ssr>(
-        `${process.env.NEXT_PUBLIC_CHECKJWT}/${token}` ||
-          `http://localhost:3030/auth/checkJWT/${token}`,
-      );
+//   if (token) {
+//     try {
+//       const user = await axios.get<ssr>(
+//         `${process.env.NEXT_PUBLIC_CHECKJWT}/${token}` ||
+//           `http://localhost:3030/auth/checkJWT/${token}`,
+//       );
 
-      return {
-        props: {
-          ...user.data,
-        },
-      };
-    } catch (err) {
-      console.log(process.env.NEXT_PUBLIC_CHECKJWT, err, token);
-      return {
-        props: {
-          message: err,
-          token,
-          p: process.env.NEXT_PUBLIC_CHECKJWT,
-        },
-      };
-    }
-  }
+//       return {
+//         props: {
+//           ...user.data,
+//         },
+//       };
+//     } catch (err) {
+//       console.log(process.env.NEXT_PUBLIC_CHECKJWT, err, token);
+//       return {
+//         props: {
+//           message: err,
+//           token,
+//           p: process.env.NEXT_PUBLIC_CHECKJWT,
+//         },
+//       };
+//     }
+//   }
 
-  return {
-    props: {
-      message: 'no token',
-    },
-  };
-};
+//   return {
+//     props: {
+//       message: 'no token',
+//     },
+//   };
+// };

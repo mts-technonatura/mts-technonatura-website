@@ -8,9 +8,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 
-import { NextSeo } from 'next-seo';
-import { GetServerSideProps } from 'next';
-import serverAuth from '@utils/server-auth';
+import ErrorPage from 'components/500';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
@@ -76,10 +74,29 @@ function CreateAccountPage({ message, user }: ssr) {
   const handleClick = () => setShow(!show);
 
   useEffect(() => {
-    if (!_.isEmpty(authState.errors)) {
-      formik.setErrors(authState.errors);
+    // console.log(authState);
+    if (authState.message == 'success') {
+      // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
+      router.push('/app');
+      return;
+    } else if (authState.message == 'server error') {
+      toast({
+        title: "Couldn't connect to server",
+        position: 'bottom-right',
+        isClosable: false,
+        status: 'error',
+        duration: 2000,
+      });
     }
-  }, [authState.errors]);
+
+    // dispatch(AuthMethods.AuthLogout());
+  }, [authState.message]);
+
+  useEffect(() => {
+    if (!authState.fetched) {
+      dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
+    }
+  }, []);
 
   useEffect(() => {
     if (!authState.fetched) {
@@ -102,7 +119,17 @@ function CreateAccountPage({ message, user }: ssr) {
   }, []);
 
   useEffect(() => {
-    if (_.isString(authState.token) && _.isEmpty(authState.errors)) {
+    if (!_.isEmpty(authState.errors)) {
+      formik.setErrors(authState.errors);
+    }
+  }, [authState.errors]);
+
+  useEffect(() => {
+    if (
+      _.isString(authState.token) &&
+      _.isEmpty(authState.errors) &&
+      !authState.user
+    ) {
       if (router)
         toast({
           title: `Account Created`,
@@ -118,14 +145,37 @@ function CreateAccountPage({ message, user }: ssr) {
           path: '/',
           maxAge: ms('1y'),
         });
-
-        router.push('/app');
       }
     }
   }, [authState.token]);
 
-  if (message == 'success') {
+  if (authState.loading && !authState.fetched && !authState.errors) {
     return <></>;
+  }
+
+  if (authState.message == 'server error') {
+    return (
+      <ErrorPage
+        NextSeoProps={{
+          title: '500 Server Error ',
+        }}
+      >
+        <>
+          <h1>500</h1>
+          <div className='ooo'>
+            <h2>
+              Couldn't Connect To Server |{' '}
+              <a
+                href='https://mts-technonatura.instatus.com/'
+                className='text-gray-600 underline'
+              >
+                Status
+              </a>
+            </h2>
+          </div>
+        </>
+      </ErrorPage>
+    );
   }
 
   return (
@@ -296,16 +346,16 @@ function CreateAccountPage({ message, user }: ssr) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Partial<ssr>> = async (
-  ctx,
-) => {
-  const AuthProcess = await serverAuth(ctx);
+// export const getServerSideProps: GetServerSideProps<Partial<ssr>> = async (
+//   ctx,
+// ) => {
+//   const AuthProcess = await serverAuth(ctx);
 
-  return {
-    props: {
-      ...AuthProcess,
-    },
-  };
-};
+//   return {
+//     props: {
+//       ...AuthProcess,
+//     },
+//   };
+// };
 
 export default CreateAccountPage;

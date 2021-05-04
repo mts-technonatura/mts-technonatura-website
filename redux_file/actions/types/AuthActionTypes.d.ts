@@ -1,15 +1,12 @@
 import { UserType } from '@/ts/';
+import { JWTTokenResponse } from '@/ts/index';
+
 export const Auth_LOADING = 'Auth_LOADING';
 export const Auth_FAIL = 'Auth_FAIL';
 export const Auth_SUCCESS = 'Auth_SUCCESS';
 export const AuthCheckJwtFail = 'AuthCheckJwtFail';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
-
-export enum authMethod {
-  AUTH_LOGIN = 'AUTH_LOGIN',
-  AUTH_SIGNUP = 'AUTH_SIGNUP',
-  AUTH_LOGOUT = 'AUTH_LOGOUT',
-}
+export const AUTH_REMOVE_ERRORS = 'AUTH_REMOVE_ERRORS';
 
 export type SocialMedia = {
   name: string;
@@ -25,8 +22,9 @@ export interface AuthFail {
   errors?: any;
 }
 
-export interface AuthCheckJwtFail {
+export interface Auth_Check_JwtFail {
   type: typeof AuthCheckJwtFail;
+  message?: JWTTokenResponse;
 }
 
 export interface AuthSuccess {
@@ -35,9 +33,17 @@ export interface AuthSuccess {
   user?: UserType;
 }
 
+export interface authMethod {
+  AuthSuccess: AuthSuccess;
+  AuthCheckJwtFail: AuthCheckJwtFail;
+  AuthFail: AuthFail;
+  AuthLoading: AuthLoading;
+}
+
 export type AuthDispatchTypes =
   | AuthLoading
   | AuthFail
   | AuthSuccess
-  | AuthCheckJwtFail
-  | AUTH_LOGOUT;
+  | Auth_Check_JwtFail
+  | AUTH_LOGOUT
+  | AUTH_REMOVE_ERRORS;

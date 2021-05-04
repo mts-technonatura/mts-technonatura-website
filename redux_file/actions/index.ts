@@ -4,4 +4,5 @@ export {
   SavedUserToRedux,
   AuthVerifyJWT,
   AuthLogout,
+  AuthRemoveErrors,
 } from './auth';
