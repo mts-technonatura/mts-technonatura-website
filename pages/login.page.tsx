@@ -256,6 +256,7 @@ export const getServerSideProps: GetServerSideProps<
         },
       };
     } catch (err) {
+      console.log(process.env.NEXT_PUBLIC_CHECKJWT, err, token);
       return {
         props: {
           message: err,
