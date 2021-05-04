@@ -243,7 +243,8 @@ export const getServerSideProps: GetServerSideProps<
   if (token) {
     try {
       const user = await axios.post<ssr>(
-        'http://localhost:3030/auth/checkJWT',
+        process.env.NEXT_PUBLIC_CHECKJWT ||
+          'http://localhost:3030/auth/checkJWT',
         {
           token: token,
         },
