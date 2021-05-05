@@ -125,7 +125,10 @@ export default function Post({
         </VStack>
       </Flex>
 
-      <Container pt={10}>
+      {/* <Container pt={10}> */}
+
+      {/* </Container> */}
+      <div className='px-16'>
         <ReactMarkdown
           components={{
             h1: ({ node, children }) => (
@@ -181,7 +184,7 @@ export default function Post({
           skipHtml={false}
           children={post.content}
         />
-      </Container>
+      </div>
       <Box
         mt={20}
         bg={useColorModeValue('gray.50', 'gray.900')}

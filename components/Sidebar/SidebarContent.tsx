@@ -54,11 +54,13 @@ function SidebarContent() {
         </ul>
       </div>
       <div className='px-6 my-6'>
-        <Button>
-          Create account
-          <span className='ml-2' aria-hidden='true'>
-            +
-          </span>
+        <Button className='flex-col'>
+          {/* <img
+            src='https://www.tailwind-kit.com/images/landscape/2.jpg'
+            className='rounded-lg mb-2'
+            alt='Tree'
+          /> */}
+          Contribute to Project
         </Button>
       </div>
     </div>

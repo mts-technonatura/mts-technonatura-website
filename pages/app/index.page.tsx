@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as AuthMethods from '@/redux/actions/index';
 import { RootStore } from '@/redux/index';
 import TimeText from 'utils/timeText';
+import LoadingPage from 'components/loadingpage';
 
 function Dashboard() {
   const dispatch = useDispatch();
@@ -34,6 +35,13 @@ function Dashboard() {
     }
   }, []);
 
+  if (
+    (!authState.fetched && !authState.user) ||
+    (authState.fetched && authState.loading)
+  ) {
+    return <LoadingPage />;
+  }
+
   return (
     <>
       <PageTitle>
@@ -47,7 +55,7 @@ function Dashboard() {
         make a good friend with them! `
           : 'Welcome to MTs Technonatura Dashboard, discover mts-technonatura creations and read some blog posts from them'}
       </p>
-      {/* <CTA /> */}
+      {!authState.user && <CTA />}
 
       {/* <!-- Cards --> */}
       {authState.user && !authState.user?.isAccountVerified ? (

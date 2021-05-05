@@ -21,6 +21,7 @@ import _ from 'underscore';
 import { NextSeo } from 'next-seo';
 import ErrorPage from 'components/500';
 import * as AuthMethods from '@/redux/actions/index';
+import LoadingPage from 'components/loadingpage';
 
 const validationSchema = yup.object({
   username: yup
@@ -145,8 +146,19 @@ export default function LoginPage() {
     );
   }
 
-  if (authState.loading && !authState.fetched && !authState.errors) {
-    return <></>;
+  if (
+    (!authState.fetched && authState.loading) ||
+    (authState.fetched && authState.user)
+  ) {
+    return (
+      <>
+        <NextSeo
+          title='Login | mts-technonatura-dashboard'
+          description='Recover your mts-technonatura social account password'
+        />
+        <LoadingPage></LoadingPage>
+      </>
+    );
   }
 
   return (

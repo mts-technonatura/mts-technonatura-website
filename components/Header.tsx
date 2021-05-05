@@ -27,6 +27,7 @@ function Header() {
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { mode, toggleMode } = useContext(WindmillContext);
+
   const { toggleSidebar } = useContext(SidebarContext);
 
   function logout() {
