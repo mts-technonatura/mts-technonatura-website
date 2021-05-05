@@ -7,6 +7,7 @@ import { Button } from '@windmill/react-ui';
 import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import _ from 'underscore';
+import { checkRoles } from 'utils/checkRoles';
 
 function SidebarContent() {
   const authState = useSelector((state: RootStore) => state.auth);
@@ -36,18 +37,9 @@ function SidebarContent() {
               <>
                 {authState.user ? (
                   route.permission ? (
-                    _.filter(authState.user.roles, (role: string) => {
-                      if (Array.isArray(route.permission)) {
-                        if (route.permission.includes(role)) {
-                          return true;
-                        }
-                      } else {
-                        if (route.permission == role) {
-                          return true;
-                        }
-                      }
-                      return false;
-                    }).length >= 1 && <MenuItem asPath={asPath} route={route} />
+                    checkRoles(authState.user.roles, route.permission) && (
+                      <MenuItem asPath={asPath} route={route} />
+                    )
                   ) : (
                     <MenuItem asPath={asPath} route={route} />
                   )

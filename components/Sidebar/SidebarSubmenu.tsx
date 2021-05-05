@@ -7,6 +7,7 @@ import { routesI } from 'routes/sidebar';
 import { MenuItem } from './SidebarContent';
 import _ from 'underscore';
 import { UserType } from 'ts/index';
+import { checkRoles } from 'utils/checkRoles';
 
 function SidebarSubmenu({
   route,
@@ -54,18 +55,9 @@ function SidebarSubmenu({
               <>
                 {user ? (
                   route.permission ? (
-                    _.filter(user.roles, (role: string) => {
-                      if (Array.isArray(route.permission)) {
-                        if (route.permission.includes(role)) {
-                          return true;
-                        }
-                      } else {
-                        if (route.permission == role) {
-                          return true;
-                        }
-                      }
-                      return false;
-                    }).length >= 1 && <MenuItem asPath={asPath} route={route} />
+                    checkRoles(user.roles, route.permission) && (
+                      <MenuItem asPath={asPath} route={route} />
+                    )
                   ) : (
                     <MenuItem asPath={asPath} route={route} />
                   )

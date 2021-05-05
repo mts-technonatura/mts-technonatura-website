@@ -23,7 +23,7 @@ function Header() {
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies([tokenCookieKey]);
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -31,6 +31,7 @@ function Header() {
 
   function logout() {
     removeCookie(tokenCookieKey);
+    console.log('hey', cookies, tokenCookieKey);
     dispatch(AuthLogout());
   }
   // console.log(authState.user);

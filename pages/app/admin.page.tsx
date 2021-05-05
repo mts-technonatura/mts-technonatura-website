@@ -8,15 +8,26 @@ import ChartLegend from 'components/Chart/ChartLegend';
 import PageTitle from 'components/Typography/PageTitle';
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../../icons';
 import RoundIcon from 'components/RoundIcon';
-import response from 'utils/demo/tableData';
-import { Button, Alert, AlertIcon } from '@chakra-ui/react';
+import {
+  Button,
+  Alert,
+  AlertIcon,
+  Flex,
+  Stack,
+  SimpleGrid,
+  useColorModeValue,
+  useBreakpointValue,
+  Spinner,
+} from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AuthMethods from '@/redux/actions/index';
 import { RootStore } from '@/redux/index';
 import TimeText from 'utils/timeText';
+import { useRouter } from 'next/router';
 
 function Dashboard() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const authState = useSelector((state: RootStore) => state.auth);
 
@@ -33,7 +44,22 @@ function Dashboard() {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
+  useEffect(() => {
+    if (authState.fetched && !authState.user) {
+      router.push('/app');
+    }
+  }, [authState.fetched]);
 
+  if (
+    (!authState.fetched && !authState.user) ||
+    (authState.fetched && !authState.user)
+  ) {
+    return (
+      <div className='h-screen flex flex-row justify-center items-center'>
+        <Spinner></Spinner>
+      </div>
+    );
+  }
   return (
     <>
       <PageTitle>
@@ -96,7 +122,8 @@ function Dashboard() {
         </div>
       )}
 
-      <PageTitle>Charts</PageTitle>
+      <PageTitle>Unverified User</PageTitle>
+      <UserReuqestToVerify />
       {/* <div className='grid gap-6 mb-8 md:grid-cols-2'>
         <ChartCard title='Revenue'>
           <Doughnut {...doughnutOptions} />
@@ -109,6 +136,67 @@ function Dashboard() {
         </ChartCard>
       </div> */}
     </>
+  );
+}
+
+function UserReuqestToVerify() {
+  const data = [
+    { name: 'John Covv', email: 'contato@johncovv.com' },
+    { name: 'Michael Jackson', email: 'm_jackson@mail.com' },
+    { name: 'Julia', email: 'julia@mail.com' },
+    { name: 'Martin Madrazo', email: 'martin.madrazo@mail.com' },
+  ];
+  return (
+    <Flex mt={3} w='full' alignItems='center' justifyContent='center'>
+      <Stack
+        direction={{ base: 'column' }}
+        w='full'
+        bg={{ sm: useColorModeValue('white', 'gray.800') }}
+        shadow='lg'
+      >
+        {data.map((person, pid) => {
+          return (
+            <>
+              <SimpleGrid
+                spacingY={3}
+                columns={{ base: 1, sm: 3 }}
+                w={{ base: 100, sm: 'full' }}
+                textTransform='uppercase'
+                bg={useColorModeValue('gray.100', 'gray.700')}
+                py={{ base: 1, sm: 4 }}
+                px={{ base: 2, sm: 10 }}
+                fontSize='sm'
+                fontWeight='hairline'
+              >
+                <span>Name</span>
+                <span>Email</span>
+                <span>Actions</span>
+              </SimpleGrid>
+
+              <SimpleGrid
+                spacingY={3}
+                columns={{ base: 1, sm: 3 }}
+                w='full'
+                py={2}
+                px={10}
+                fontWeight='hairline'
+              >
+                <span>{person.name}</span>
+                <span>{person.email}</span>
+                <span>
+                  <Button variant='solid' colorScheme='red' size='sm'>
+                    Delete
+                  </Button>
+                  <Button ml={2} variant='solid' colorScheme='green' size='sm'>
+                    Accept
+                  </Button>
+                </span>
+              </SimpleGrid>
+            </>
+          );
+        })}
+      </Stack>
+    </Flex>
   );
 }
 

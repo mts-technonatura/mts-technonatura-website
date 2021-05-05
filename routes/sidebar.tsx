@@ -24,7 +24,7 @@ const routes: routesI[] = [
     name: 'Home', // name that appear in Sidebar
   },
   {
-    path: '/app/forms',
+    path: '/app/admin',
     Icon: Icons.FormsIcon,
     name: 'Admin Dashboard',
     permission: ['Developer', 'Owner'],
