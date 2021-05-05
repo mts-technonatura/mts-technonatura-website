@@ -74,6 +74,7 @@ const authReducer = (
         message: 'jwtSuccess',
       });
     case AuthCheckJwtFail:
+      console.log(action);
       return Object.assign({}, state, {
         fetched: true,
         loading: false,

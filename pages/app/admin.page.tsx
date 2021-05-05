@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import CTA from 'components/CTA';
 import InfoCard from 'components/Cards/InfoCard';
-import ChartCard from 'components/Chart/ChartCard';
-import { Doughnut, Line } from 'react-chartjs-2';
-import ChartLegend from 'components/Chart/ChartLegend';
 import PageTitle from 'components/Typography/PageTitle';
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../../icons';
 import RoundIcon from 'components/RoundIcon';
@@ -18,6 +14,11 @@ import {
   useColorModeValue,
   useBreakpointValue,
   Spinner,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
+  TabPanels,
 } from '@chakra-ui/react';
 import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,7 +85,15 @@ function Dashboard() {
         </Alert>
       ) : (
         <div className='grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
-          <InfoCard title='Followers' value='6389'>
+          <InfoCard title='Total Users' value='387'>
+            <RoundIcon
+              icon={PeopleIcon}
+              iconColorClass='text-blue-500 dark:text-blue-100'
+              bgColorClass='bg-blue-100 dark:bg-blue-500'
+              className='mr-4'
+            />
+          </InfoCard>
+          <InfoCard title='Unverified Users' value='200'>
             <RoundIcon
               icon={PeopleIcon}
               iconColorClass='text-orange-500 dark:text-orange-100'
@@ -93,7 +102,7 @@ function Dashboard() {
             />
           </InfoCard>
 
-          <InfoCard title='Blog Posts' value='$ 46,760.89'>
+          <InfoCard title='Blog Posts' value='88'>
             <RoundIcon
               icon={MoneyIcon}
               iconColorClass='text-green-500 dark:text-green-100'
@@ -102,16 +111,7 @@ function Dashboard() {
             />
           </InfoCard>
 
-          <InfoCard title='New sales' value='376'>
-            <RoundIcon
-              icon={CartIcon}
-              iconColorClass='text-blue-500 dark:text-blue-100'
-              bgColorClass='bg-blue-100 dark:bg-blue-500'
-              className='mr-4'
-            />
-          </InfoCard>
-
-          <InfoCard title='Pending contacts' value='35'>
+          <InfoCard title='Total Arduino Apps' value='35'>
             <RoundIcon
               icon={ChatIcon}
               iconColorClass='text-teal-500 dark:text-teal-100'
@@ -122,8 +122,48 @@ function Dashboard() {
         </div>
       )}
 
-      <PageTitle>Unverified User</PageTitle>
-      <UserReuqestToVerify />
+      <hr />
+      <div className='mt-10'></div>
+
+      <Tabs>
+        <TabList>
+          <Tab>Unverified</Tab>
+          <Tab>Verified Users</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <UserReuqestToVerify />
+          </TabPanel>
+          <TabPanel>
+            <UserReuqestToVerify />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+      <div className='mt-10'></div>
+
+      <hr />
+      <div className='mt-10'></div>
+
+      <Tabs>
+        <TabList>
+          <Tab>User Roles</Tab>
+          <Tab>User Badges</Tab>
+        </TabList>
+
+        <TabPanels>
+          <TabPanel>
+            <UserReuqestToVerify />
+          </TabPanel>
+          <TabPanel>
+            <UserReuqestToVerify />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+
+      <div className='mt-20'></div>
+      <hr />
+
       {/* <div className='grid gap-6 mb-8 md:grid-cols-2'>
         <ChartCard title='Revenue'>
           <Doughnut {...doughnutOptions} />
@@ -154,35 +194,34 @@ function UserReuqestToVerify() {
         bg={{ sm: useColorModeValue('white', 'gray.800') }}
         shadow='lg'
       >
+        <SimpleGrid
+          spacingY={3}
+          columns={{ base: 1, sm: 3 }}
+          w={{ base: 100, sm: 'full' }}
+          textTransform='uppercase'
+          bg={useColorModeValue('gray.100', 'gray.700')}
+          py={{ base: 1, sm: 4 }}
+          px={{ base: 2, sm: 10 }}
+          fontSize='sm'
+          fontWeight='medium'
+        >
+          <span>Name</span>
+          <span>Email</span>
+          <span>Actions</span>
+        </SimpleGrid>
         {data.map((person, pid) => {
           return (
             <>
               <SimpleGrid
                 spacingY={3}
                 columns={{ base: 1, sm: 3 }}
-                w={{ base: 100, sm: 'full' }}
-                textTransform='uppercase'
-                bg={useColorModeValue('gray.100', 'gray.700')}
-                py={{ base: 1, sm: 4 }}
-                px={{ base: 2, sm: 10 }}
-                fontSize='sm'
-                fontWeight='hairline'
-              >
-                <span>Name</span>
-                <span>Email</span>
-                <span>Actions</span>
-              </SimpleGrid>
-
-              <SimpleGrid
-                spacingY={3}
-                columns={{ base: 1, sm: 3 }}
                 w='full'
                 py={2}
                 px={10}
-                fontWeight='hairline'
+                fontWeight='medium'
               >
-                <span>{person.name}</span>
-                <span>{person.email}</span>
+                <span className='font-medium'>{person.name}</span>
+                <span className='font-medium'>{person.email}</span>
                 <span>
                   <Button variant='solid' colorScheme='red' size='sm'>
                     Delete
