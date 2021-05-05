@@ -14,12 +14,12 @@ import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import * as AuthMethods from '@/redux/actions/index';
 import { RootStore } from '@/redux/index';
+import TimeText from 'utils/timeText';
 
 function Dashboard() {
   const dispatch = useDispatch();
   const authState = useSelector((state: RootStore) => state.auth);
 
-  const [page, setPage] = useState(1);
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const [cookies, setCookie] = useCookies();
@@ -35,10 +35,19 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className='md:px-8 sm:px-20'>
-      <PageTitle>Dashboard</PageTitle>
-
-      <CTA />
+    <>
+      <PageTitle>
+        {authState.user
+          ? `${TimeText()} ${authState.user.name}`
+          : `${TimeText()} Stranger`}
+      </PageTitle>
+      <p className='mb-7 mt-2 text-gray-600 font-medium dark:text-cool-gray-400'>
+        {authState.user
+          ? `Welcome to MTs Technonatura Dashboard ${authState.user.name}, discover your friend creation and
+        make a good friend with them! `
+          : 'Welcome to MTs Technonatura Dashboard, discover mts-technonatura creations and read some blog posts from them'}
+      </p>
+      {/* <CTA /> */}
 
       {/* <!-- Cards --> */}
       <div className='grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
@@ -91,7 +100,7 @@ function Dashboard() {
           <ChartLegend legends={lineLegends} />
         </ChartCard>
       </div> */}
-    </div>
+    </>
   );
 }
 

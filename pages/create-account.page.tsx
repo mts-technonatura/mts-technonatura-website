@@ -192,7 +192,10 @@ function CreateAccountPage({ message, user }: ssr) {
               </h1>
               <form noValidate onSubmit={formik.handleSubmit}>
                 <Stack mt={4}>
-                  <Text color={`${formik.errors.username && 'red.400'}`}>
+                  <Text
+                    className='dark:text-cool-gray-300'
+                    color={`${formik.errors.username && 'red.400'}`}
+                  >
                     username
                   </Text>
                   <Input
@@ -215,7 +218,12 @@ function CreateAccountPage({ message, user }: ssr) {
                   </Text>
                 </Stack>
                 <Stack mt={4}>
-                  <Text color={`${formik.errors.name && 'red.400'}`}>name</Text>
+                  <Text
+                    className='dark:text-cool-gray-300'
+                    color={`${formik.errors.name && 'red.400'}`}
+                  >
+                    name
+                  </Text>
                   <Input
                     isInvalid={Boolean(formik.errors.name)}
                     type='text'
@@ -236,7 +244,10 @@ function CreateAccountPage({ message, user }: ssr) {
                   </Text>
                 </Stack>
                 <Stack mt={4}>
-                  <Text color={`${formik.errors.email && 'red.400'}`}>
+                  <Text
+                    className='dark:text-cool-gray-300'
+                    color={`${formik.errors.email && 'red.400'}`}
+                  >
                     Email
                   </Text>
                   <Input
@@ -260,7 +271,10 @@ function CreateAccountPage({ message, user }: ssr) {
                 </Stack>
 
                 <Stack mt={4}>
-                  <Text color={`${formik.errors.password && 'red.400'}`}>
+                  <Text
+                    className='dark:text-cool-gray-300'
+                    color={`${formik.errors.password && 'red.400'}`}
+                  >
                     password
                   </Text>
 

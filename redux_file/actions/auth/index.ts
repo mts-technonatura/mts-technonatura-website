@@ -100,7 +100,7 @@ export const AuthVerifyJWT = (token: string) => async (
         },
       );
 
-      console.log('user.data', user.data);
+      // console.log('user.data', user.data);
       if (user.data.user) {
         dispatch({
           type: Auth_JWT_SUCCESS,

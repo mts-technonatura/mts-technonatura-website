@@ -179,7 +179,10 @@ export default function LoginPage() {
                 </h1>
                 <form noValidate onSubmit={formik.handleSubmit}>
                   <Stack>
-                    <Text color={`${formik.errors.username && 'red.400'}`}>
+                    <Text
+                      className='dark:text-cool-gray-300'
+                      color={`${formik.errors.username && 'red.400'}`}
+                    >
                       Username
                     </Text>
                     <Input
@@ -205,7 +208,10 @@ export default function LoginPage() {
                   </Stack>
 
                   <Stack mt={4}>
-                    <Text color={`${formik.errors.password && 'red.400'}`}>
+                    <Text
+                      className='dark:text-cool-gray-300'
+                      color={`${formik.errors.password && 'red.400'}`}
+                    >
                       password
                     </Text>
 

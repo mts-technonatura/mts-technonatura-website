@@ -2,31 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://localhost:3000/create-account</loc>
-    <lastmod>2021-05-05T01:06:54.756Z</lastmod>
+    <lastmod>2021-05-05T02:29:38.671Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/forgot-password</loc>
-    <lastmod>2021-05-05T01:06:54.756Z</lastmod>
+    <lastmod>2021-05-05T02:29:38.671Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000</loc>
-    <lastmod>2021-05-05T01:06:54.756Z</lastmod>
+    <lastmod>2021-05-05T02:29:38.671Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/login</loc>
-    <lastmod>2021-05-05T01:06:54.756Z</lastmod>
+    <lastmod>2021-05-05T02:29:38.671Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/app</loc>
-    <lastmod>2021-05-05T01:06:54.756Z</lastmod>
+    <lastmod>2021-05-05T02:29:38.671Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/page/[slug]</loc>
-    <lastmod>2021-05-05T01:06:54.756Z</lastmod>
+    <lastmod>2021-05-05T02:29:38.671Z</lastmod>
   </url>
 </urlset>

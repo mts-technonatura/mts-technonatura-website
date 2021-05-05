@@ -5,7 +5,7 @@ export type UserType = {
   email: string;
   accountCreated: string;
   isAccountVerified: boolean;
-  roles: String<string>;
+  roles: Array<string>;
   socialMedias: Array<SocialMedia>;
 };
 

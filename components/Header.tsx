@@ -110,7 +110,7 @@ function Header() {
                       icon={<BiCog size='20px' />}
                       command='⌘N'
                     >
-                      Settings
+                      Account Settings
                     </MenuItem>
                     <MenuDivider />
                     <MenuItem

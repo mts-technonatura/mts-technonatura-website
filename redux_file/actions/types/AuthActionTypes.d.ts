@@ -25,22 +25,16 @@ export interface AuthFail {
   errors?: any;
 }
 
+// when API server returns an error as we check the JWT token
 export interface Auth_Check_JwtFail {
   type: typeof AuthCheckJwtFail;
   message?: JWTTokenResponse;
 }
 
 export interface AuthSuccess {
-  type: typeof Auth_SUCCESS | Auth_LOGIN_SUCCESS;
+  type: typeof Auth_SUCCESS | typeof Auth_LOGIN_SUCCESS;
   token?: string;
   user?: UserType;
-}
-
-export interface authMethod {
-  AuthSuccess: AuthSuccess;
-  AuthCheckJwtFail: AuthCheckJwtFail;
-  AuthFail: AuthFail;
-  AuthLoading: AuthLoading;
 }
 
 export type AuthDispatchTypes =

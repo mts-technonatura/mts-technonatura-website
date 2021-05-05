@@ -28,7 +28,7 @@ export default function NavbarComponent({
         <Sidebar />
         <div className='flex flex-col flex-1 w-full overflow-y-auto	'>
           <Header />
-          <>{children}</>
+          <div className='app-content md:px-8 sm:px-20'>{children}</div>
         </div>
       </div>
     );
