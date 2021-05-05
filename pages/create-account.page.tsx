@@ -113,7 +113,7 @@ function CreateAccountPage({ message, user }: ssr) {
   }, [authState.errors]);
 
   useEffect(() => {
-    console.log(authState);
+    // console.log(authState);
     if (
       _.isString(authState.token) &&
       _.isEmpty(authState.errors) &&
@@ -334,17 +334,5 @@ function CreateAccountPage({ message, user }: ssr) {
     </div>
   );
 }
-
-// export const getServerSideProps: GetServerSideProps<Partial<ssr>> = async (
-//   ctx,
-// ) => {
-//   const AuthProcess = await serverAuth(ctx);
-
-//   return {
-//     props: {
-//       ...AuthProcess,
-//     },
-//   };
-// };
 
 export default CreateAccountPage;

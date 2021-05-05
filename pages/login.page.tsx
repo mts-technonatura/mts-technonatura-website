@@ -113,7 +113,7 @@ export default function LoginPage() {
     if (
       !authState.fetched &&
       authState.message !== 'account created' &&
-      authState.message == 'login successfully'
+      authState.message !== 'login successfully'
     ) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
