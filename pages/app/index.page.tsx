@@ -25,7 +25,11 @@ function Dashboard() {
   const [cookies, setCookie] = useCookies();
 
   useEffect(() => {
-    if (!authState.fetched) {
+    if (
+      !authState.fetched &&
+      authState.message !== 'account created' &&
+      authState.message !== 'login successfully'
+    ) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);

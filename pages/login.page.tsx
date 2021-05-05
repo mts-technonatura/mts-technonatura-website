@@ -110,7 +110,11 @@ export default function LoginPage() {
   // check JWT
   useEffect(() => {
     // console.log('hey', cookies[tokenCookieKey], cookies);
-    if (!authState.fetched) {
+    if (
+      !authState.fetched &&
+      authState.message !== 'account created' &&
+      authState.message == 'login successfully'
+    ) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
@@ -268,41 +272,3 @@ export default function LoginPage() {
     </>
   );
 }
-
-// export const getServerSideProps: GetServerSideProps<
-//   Readonly<Partial<ssr>>
-// > = async (ctx) => {
-//   const tokenCookieKey =
-//     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-//   const token = ctx.req.cookies[tokenCookieKey];
-
-//   if (token) {
-//     try {
-//       const user = await axios.get<ssr>(
-//         `${process.env.NEXT_PUBLIC_CHECKJWT}/${token}` ||
-//           `http://localhost:3030/auth/checkJWT/${token}`,
-//       );
-
-//       return {
-//         props: {
-//           ...user.data,
-//         },
-//       };
-//     } catch (err) {
-//       console.log(process.env.NEXT_PUBLIC_CHECKJWT, err, token);
-//       return {
-//         props: {
-//           message: err,
-//           token,
-//           p: process.env.NEXT_PUBLIC_CHECKJWT,
-//         },
-//       };
-//     }
-//   }
-
-//   return {
-//     props: {
-//       message: 'no token',
-//     },
-//   };
-// };

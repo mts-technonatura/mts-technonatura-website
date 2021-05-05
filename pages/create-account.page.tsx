@@ -75,7 +75,10 @@ function CreateAccountPage({ message, user }: ssr) {
 
   useEffect(() => {
     // console.log(authState);
-    if (authState.message == 'jwtSuccess') {
+    if (
+      authState.message == 'jwtSuccess' ||
+      authState.message == 'account created'
+    ) {
       // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
       router.push('/app');
       return;
@@ -94,7 +97,11 @@ function CreateAccountPage({ message, user }: ssr) {
 
   // check JWT
   useEffect(() => {
-    if (!authState.fetched) {
+    if (
+      !authState.fetched &&
+      authState.message !== 'account created' &&
+      authState.message !== 'login successfully'
+    ) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
@@ -106,6 +113,7 @@ function CreateAccountPage({ message, user }: ssr) {
   }, [authState.errors]);
 
   useEffect(() => {
+    console.log(authState);
     if (
       _.isString(authState.token) &&
       _.isEmpty(authState.errors) &&

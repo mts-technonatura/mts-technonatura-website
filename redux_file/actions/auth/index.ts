@@ -149,13 +149,6 @@ export const AuthSignup = (inputs: signupI) => async (
   dispatch: Dispatch<AuthDispatchTypes>,
 ) => {
   try {
-    // console.log(
-    //   'signupAPIasdasd',
-    //   process.env.SIGNUP_API,
-    //   process.env.NEXT_PUBLIC_SIGNUP_API,
-    //   process.env.NODE_ENV,
-    //   process.env.PUBLIC_URL,
-    // );
     dispatch({
       type: Auth_LOADING,
     });
