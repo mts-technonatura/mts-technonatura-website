@@ -123,8 +123,9 @@ export const AuthVerifyJWT = (token: string) => async (
     }
   }
 
-  dispatch({
+  dispatch<Auth_Check_JwtFail>({
     type: AuthCheckJwtFail,
+    message: 'no token',
   });
   return;
 };

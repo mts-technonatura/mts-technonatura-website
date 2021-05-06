@@ -48,7 +48,7 @@ export default function NavbarComponent({
               <Icon as={BellIcon} fontSize='2xl' h='10' />
               <Text fontWeight='medium' marginEnd='2'>
                 Your account isn't verified yet, some{' '}
-                <Link href='unverified-account'>
+                <Link href='/page/unverified-account'>
                   <a className='underline'>features</a>
                 </Link>{' '}
                 are not accessibble for you.
@@ -74,9 +74,9 @@ export default function NavbarComponent({
           }`}
         >
           <Sidebar />
-          <div className='flex flex-col flex-1 w-full overflow-y-auto	'>
+          <div className='flex flex-col flex-1 w-full overflow-y-auto	pb-20'>
             <Header />
-            <div className='app-content md:px-8 sm:px-20'>{children}</div>
+            <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
           </div>
         </div>
       </>
