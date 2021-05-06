@@ -38,7 +38,7 @@ function Header() {
   // console.log(authState.user);
 
   return (
-    <header className='z-40 py-4 bg-white shadow-bottom dark:bg-gray-800'>
+    <header className='sticky top-0 z-20 py-4 bg-white shadow-bottom dark:bg-gray-800'>
       <div className=' flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300'>
         {/* <!-- Mobile hamburger --> */}
         <button

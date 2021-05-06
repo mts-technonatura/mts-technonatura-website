@@ -148,7 +148,9 @@ export default function LoginPage() {
 
   if (
     (!authState.fetched && authState.loading) ||
-    (authState.fetched && authState.user)
+    (authState.fetched &&
+      !authState.loading &&
+      authState.message == 'jwtSuccess')
   ) {
     return (
       <>

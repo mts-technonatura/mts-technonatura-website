@@ -1,10 +1,17 @@
 import { Link } from '@chakra-ui/layout';
+import styled from '@emotion/styled';
+
+const FeatureCard = styled.section`
+  &:hover {
+    transform: translate(0, -5px);
+  }
+`;
 
 export default function AppIndexTop() {
   return (
     <div className='grid grid-cols-1 md:grid-cols-3 gap-6 xl:gap-8'>
-      <section className='flex'>
-        <div className='w-full relative text-white overflow-hidden rounded-3xl flex shadow-lg'>
+      <FeatureCard className='flex duration-300	cursor-pointer'>
+        <div className='w-full hover:translate-y-6 relative text-white overflow-hidden rounded-3xl flex shadow-lg'>
           <div className='w-full flex md:flex-col bg-gradient-to-br from-purple-500 to-indigo-500'>
             <div className='sm:max-w-sm sm:flex-none md:w-auto md:flex-auto flex flex-col items-start relative z-10 p-6 xl:p-8'>
               <h2 className='text-xl font-semibold mb-2 text-shadow'>
@@ -449,8 +456,8 @@ export default function AppIndexTop() {
             }}
           ></div>
         </div>
-      </section>
-      <section className='flex'>
+      </FeatureCard>
+      <FeatureCard className='flex duration-300	cursor-pointer'>
         <div className='w-full relative text-white overflow-hidden rounded-3xl flex shadow-lg'>
           <div className='w-full flex md:flex-col bg-gradient-to-br from-pink-500 to-rose-500'>
             <div className='sm:max-w-sm sm:flex-none md:w-auto md:flex-auto flex flex-col items-start relative z-10 p-6 xl:p-8'>
@@ -766,8 +773,8 @@ export default function AppIndexTop() {
           </div>
           <div className='absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-rose-500 hidden sm:block'></div>
         </div>
-      </section>
-      <section className='flex'>
+      </FeatureCard>
+      <FeatureCard className='flex duration-300	cursor-pointer'>
         <div className='w-full relative text-white overflow-hidden rounded-3xl flex shadow-lg'>
           <div className='w-full flex md:flex-col bg-gradient-to-br from-yellow-400 to-orange-500'>
             <div className='sm:max-w-sm sm:flex-none md:w-auto md:flex-auto flex flex-col items-start relative z-10 p-6 xl:p-8'>
@@ -1176,7 +1183,7 @@ export default function AppIndexTop() {
           </div>
           <div className='absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-orange-500 hidden sm:block'></div>
         </div>
-      </section>
+      </FeatureCard>
     </div>
   );
 }

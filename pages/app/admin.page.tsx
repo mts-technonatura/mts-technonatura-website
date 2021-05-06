@@ -12,7 +12,6 @@ import {
   Stack,
   SimpleGrid,
   useColorModeValue,
-  useBreakpointValue,
   Spinner,
   Tabs,
   TabList,
@@ -20,36 +19,23 @@ import {
   TabPanel,
   TabPanels,
 } from '@chakra-ui/react';
-import { useCookies } from 'react-cookie';
-import { useDispatch, useSelector } from 'react-redux';
-import * as AuthMethods from '@/redux/actions/index';
+import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import TimeText from 'utils/timeText';
 import { useRouter } from 'next/router';
 
 function Dashboard() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const authState = useSelector((state: RootStore) => state.auth);
 
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies();
 
-  useEffect(() => {
-    if (
-      !authState.fetched &&
-      authState.message !== 'account created' &&
-      authState.message !== 'login successfully'
-    ) {
-      dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
-    }
-  }, []);
   useEffect(() => {
     if (authState.fetched && !authState.user) {
       router.push('/app');
     }
-  }, [authState.fetched]);
+  }, [authState.user]);
 
   if (
     (!authState.fetched && !authState.user) ||

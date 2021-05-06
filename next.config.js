@@ -59,6 +59,15 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/about',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       require('./utils/sitemap-robots-generator')(env.PUBLIC_URL);

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { DropdownIcon } from 'icons';
-import * as Icons from 'icons';
 import { Transition } from '@windmill/react-ui';
 import { routesI } from 'routes/sidebar';
 import { MenuItem } from './SidebarContent';

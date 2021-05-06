@@ -9,9 +9,7 @@ import PageTitle from 'components/Typography/PageTitle';
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../../icons';
 import RoundIcon from 'components/RoundIcon';
 import { Button, Alert, AlertIcon } from '@chakra-ui/react';
-import { useCookies } from 'react-cookie';
 import { useDispatch, useSelector } from 'react-redux';
-import * as AuthMethods from '@/redux/actions/index';
 import { RootStore } from '@/redux/index';
 import TimeText from 'utils/timeText';
 import LoadingPage from 'components/loadingpage';
@@ -19,27 +17,9 @@ import AppIndexTop from 'components/appIndex/top';
 import AppIndexFeature from 'components/appIndex/features';
 
 function Dashboard() {
-  const dispatch = useDispatch();
   const authState = useSelector((state: RootStore) => state.auth);
 
-  const tokenCookieKey =
-    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies();
-
-  useEffect(() => {
-    if (
-      !authState.fetched &&
-      authState.message !== 'account created' &&
-      authState.message !== 'login successfully'
-    ) {
-      dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
-    }
-  }, []);
-
-  if (
-    (!authState.fetched && !authState.user) ||
-    (authState.fetched && authState.loading)
-  ) {
+  if (!authState.fetched && authState.loading && !authState.message) {
     return <LoadingPage />;
   }
 
@@ -56,15 +36,6 @@ function Dashboard() {
         make a good friend with them! `
           : 'Welcome to MTs Technonatura Dashboard, discover mts-technonatura creations and read some blog posts from them'}
       </p>
-
-      {/* <!-- Cards --> */}
-      {authState.user && !authState.user?.isAccountVerified && (
-        <Alert status='error'>
-          <AlertIcon />
-          Your account isn't verified yet, some features are not accessibble for
-          you.
-        </Alert>
-      )}
 
       <AppIndexTop />
       {/* {!authState.user && <CTA />} */}
