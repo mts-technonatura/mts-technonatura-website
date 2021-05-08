@@ -92,7 +92,11 @@ function Dashboard() {
 
   const FetchAllDataAPI_ROUTE =
     process.env.NEXT_PUBLIC_ALL_DATA_API || 'http://localhost:3030/allData';
-
+  console.log(
+    process.env.NEXT_PUBLIC_ALL_DATA_API,
+    process.env.NEXT_PUBLIC_UNVERIFIED_USERS,
+    process.env.NEXT_PUBLIC_DELETE_USER,
+  );
   useEffect(() => {
     if (authState.fetched && !authState.user) {
       router.push('/app');

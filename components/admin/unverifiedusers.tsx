@@ -73,11 +73,12 @@ export default function DataTable({
 
   const accUser = async (userID: string) => {
     setBdOpen(true);
-    const deletedUser = (await axios.post)<DeletedUserResponseType>(
-      process.env.NEXT_PUBLIC_DELETE_USER ||
-        'http://localhost:3030/auth/acceptuserz',
+    const deletedUser = await axios.post<DeletedUserResponseType>(
+      process.env.NEXT_PUBLIC_ACC_USER ||
+        'http://localhost:3030/auth/acceptuser',
       { userID: userID, authToken },
     );
+    console.log(deletedUser);
     toast({
       title: (await deletedUser).data.message,
       status: (await deletedUser).data.status,

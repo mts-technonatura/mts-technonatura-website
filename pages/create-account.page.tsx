@@ -14,12 +14,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { AuthSignup } from '@/redux/actions/index';
 import * as AuthMethods from '@/redux/actions/index';
-
+import { NextSeo } from 'next-seo';
 import { ssr } from '@/ts/index';
 import _ from 'underscore';
 import { useCookies } from 'react-cookie';
 import ms from 'ms';
-
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
@@ -75,10 +74,7 @@ function CreateAccountPage({ message, user }: ssr) {
 
   useEffect(() => {
     // console.log(authState);
-    if (
-      authState.message == 'jwtSuccess' ||
-      authState.message == 'account created'
-    ) {
+    if (authState.message == 'jwtSuccess') {
       // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
       router.push('/app');
       return;
@@ -114,11 +110,7 @@ function CreateAccountPage({ message, user }: ssr) {
 
   useEffect(() => {
     // console.log(authState);
-    if (
-      _.isString(authState.token) &&
-      _.isEmpty(authState.errors) &&
-      authState.message == 'account created'
-    ) {
+    if (_.isString(authState.token) && authState.message == 'account created') {
       toast({
         title: `Account Created`,
         position: 'top-right',
@@ -126,13 +118,15 @@ function CreateAccountPage({ message, user }: ssr) {
         status: 'success',
       });
 
+      setCookie(tokenCookieKey, authState.token, {
+        path: '/',
+        maxAge: ms('1y'),
+      });
+
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
       } else {
-        setCookie(tokenCookieKey, authState.token, {
-          path: '/',
-          maxAge: ms('1y'),
-        });
+        router.push('/app');
       }
     }
   }, [authState.token]);
@@ -168,184 +162,192 @@ function CreateAccountPage({ message, user }: ssr) {
   }
 
   return (
-    <div className='flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900'>
-      <div className='flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800'>
-        <div className='flex flex-col overflow-y-auto md:flex-row'>
-          <div className='h-32 md:h-auto md:w-1/2'>
-            <img
-              aria-hidden='true'
-              className='object-cover w-full h-full dark:hidden'
-              src={ImageLight}
-              alt='Office'
-            />
-            <img
-              aria-hidden='true'
-              className='hidden object-cover w-full h-full dark:block'
-              src={ImageDark}
-              alt='Office'
-            />
-          </div>
-          <main className='flex items-center justify-center p-6 sm:p-12 md:w-1/2'>
-            <div className='w-full'>
-              <h1 className='mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200'>
-                Create account
-              </h1>
-              <form noValidate onSubmit={formik.handleSubmit}>
-                <Stack mt={4}>
-                  <Text
-                    className='dark:text-cool-gray-300'
-                    color={`${formik.errors.username && 'red.400'}`}
-                  >
-                    username
-                  </Text>
-                  <Input
-                    isInvalid={Boolean(formik.errors.username)}
-                    type='text'
-                    id='username'
-                    name='username'
-                    errorBorderColor={`${formik.errors.username && 'red.400'}`}
-                    value={formik.values.username}
-                    onChange={formik.handleChange}
-                    placeholder='i.e. elonmusk'
-                    className=' dark:text-white'
-                  />
-                  <Text
-                    mt='8px'
-                    fontSize='13px'
-                    color={`${formik.errors.username && 'red.400'}`}
-                  >
-                    {formik.errors.username}
-                  </Text>
-                </Stack>
-                <Stack mt={4}>
-                  <Text
-                    className='dark:text-cool-gray-300'
-                    color={`${formik.errors.name && 'red.400'}`}
-                  >
-                    name
-                  </Text>
-                  <Input
-                    isInvalid={Boolean(formik.errors.name)}
-                    type='text'
-                    id='name'
-                    name='name'
-                    className=' dark:text-white'
-                    errorBorderColor={`${formik.errors.name && 'red.400'}`}
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    placeholder='i.e. Elon Must At Tesla'
-                  />
-                  <Text
-                    mt='8px'
-                    fontSize='13px'
-                    color={`${formik.errors.name && 'red.400'}`}
-                  >
-                    {formik.errors.name}
-                  </Text>
-                </Stack>
-                <Stack mt={4}>
-                  <Text
-                    className='dark:text-cool-gray-300'
-                    color={`${formik.errors.email && 'red.400'}`}
-                  >
-                    Email
-                  </Text>
-                  <Input
-                    isInvalid={Boolean(formik.errors.email)}
-                    type='text'
-                    id='email'
-                    className=' dark:text-white'
-                    name='email'
-                    errorBorderColor={`${formik.errors.email && 'red.400'}`}
-                    value={formik.values.email}
-                    onChange={formik.handleChange}
-                    placeholder='Email anda'
-                  />
-                  <Text
-                    mt='8px'
-                    fontSize='13px'
-                    color={`${formik.errors.email && 'red.400'}`}
-                  >
-                    {formik.errors.email}
-                  </Text>
-                </Stack>
-
-                <Stack mt={4}>
-                  <Text
-                    className='dark:text-cool-gray-300'
-                    color={`${formik.errors.password && 'red.400'}`}
-                  >
-                    password
-                  </Text>
-
-                  <InputGroup size='md'>
-                    <Input
-                      isInvalid={Boolean(formik.errors.password)}
-                      id='password'
-                      name='password'
-                      errorBorderColor={`${
-                        formik.errors.password && 'red.400'
-                      }`}
-                      className=' dark:text-white'
-                      value={formik.values.password}
-                      onChange={formik.handleChange}
-                      pr='4.5rem'
-                      type={show ? 'text' : 'password'}
-                      placeholder='Enter password'
-                    />
-                    <InputRightElement width='4.5rem'>
-                      <Button h='1.75rem' size='sm' onClick={handleClick}>
-                        {show ? 'Hide' : 'Show'}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                  <Text
-                    mt='8px'
-                    fontSize='13px'
-                    color={`${formik.errors.password && 'red.400'}`}
-                  >
-                    {formik.errors.password}
-                  </Text>
-                </Stack>
-
-                <a className='text-sm font-medium text-purple-400 dark:text-purple-400 '>
-                  by signup you agree to our{' '}
-                  <Link href='/page/terms-of-use'>
-                    <span className='hover:underline text-purple-600 cursor-pointer	'>
-                      terms
-                    </span>
-                  </Link>{' '}
-                  and{' '}
-                  <Link href='/page/privacy-policy'>
-                    <span className='hover:underline text-purple-600 cursor-pointer	'>
-                      privacy policy
-                    </span>
-                  </Link>
-                </a>
-                <Button
-                  isLoading={authState.loading}
-                  type='submit'
-                  block
-                  colorScheme='purple'
-                  style={{ outline: 'none', width: '100%' }}
-                  className='mt-4'
-                >
-                  Signup
-                </Button>
-              </form>
-
-              <p className='mt-4'>
-                <Link href='/login'>
-                  <a className='text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline'>
-                    Already have an account? Login
-                  </a>
-                </Link>
-              </p>
+    <>
+      <NextSeo
+        title='Create Account | mts-technonatura-dashboard'
+        description='Create mts-technonatura social account'
+      />
+      <div className='flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900'>
+        <div className='flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800'>
+          <div className='flex flex-col overflow-y-auto md:flex-row'>
+            <div className='h-32 md:h-auto md:w-1/2'>
+              <img
+                aria-hidden='true'
+                className='object-cover w-full h-full dark:hidden'
+                src={ImageLight}
+                alt='Office'
+              />
+              <img
+                aria-hidden='true'
+                className='hidden object-cover w-full h-full dark:block'
+                src={ImageDark}
+                alt='Office'
+              />
             </div>
-          </main>
+            <main className='flex items-center justify-center p-6 sm:p-12 md:w-1/2'>
+              <div className='w-full'>
+                <h1 className='mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200'>
+                  Create account
+                </h1>
+                <form noValidate onSubmit={formik.handleSubmit}>
+                  <Stack mt={4}>
+                    <Text
+                      className='dark:text-cool-gray-300'
+                      color={`${formik.errors.username && 'red.400'}`}
+                    >
+                      username
+                    </Text>
+                    <Input
+                      isInvalid={Boolean(formik.errors.username)}
+                      type='text'
+                      id='username'
+                      name='username'
+                      errorBorderColor={`${
+                        formik.errors.username && 'red.400'
+                      }`}
+                      value={formik.values.username}
+                      onChange={formik.handleChange}
+                      placeholder='i.e. elonmusk'
+                      className=' dark:text-white'
+                    />
+                    <Text
+                      mt='8px'
+                      fontSize='13px'
+                      color={`${formik.errors.username && 'red.400'}`}
+                    >
+                      {formik.errors.username}
+                    </Text>
+                  </Stack>
+                  <Stack mt={4}>
+                    <Text
+                      className='dark:text-cool-gray-300'
+                      color={`${formik.errors.name && 'red.400'}`}
+                    >
+                      name
+                    </Text>
+                    <Input
+                      isInvalid={Boolean(formik.errors.name)}
+                      type='text'
+                      id='name'
+                      name='name'
+                      className=' dark:text-white'
+                      errorBorderColor={`${formik.errors.name && 'red.400'}`}
+                      value={formik.values.name}
+                      onChange={formik.handleChange}
+                      placeholder='i.e. Elon Must At Tesla'
+                    />
+                    <Text
+                      mt='8px'
+                      fontSize='13px'
+                      color={`${formik.errors.name && 'red.400'}`}
+                    >
+                      {formik.errors.name}
+                    </Text>
+                  </Stack>
+                  <Stack mt={4}>
+                    <Text
+                      className='dark:text-cool-gray-300'
+                      color={`${formik.errors.email && 'red.400'}`}
+                    >
+                      Email
+                    </Text>
+                    <Input
+                      isInvalid={Boolean(formik.errors.email)}
+                      type='text'
+                      id='email'
+                      className=' dark:text-white'
+                      name='email'
+                      errorBorderColor={`${formik.errors.email && 'red.400'}`}
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      placeholder='Email anda'
+                    />
+                    <Text
+                      mt='8px'
+                      fontSize='13px'
+                      color={`${formik.errors.email && 'red.400'}`}
+                    >
+                      {formik.errors.email}
+                    </Text>
+                  </Stack>
+
+                  <Stack mt={4}>
+                    <Text
+                      className='dark:text-cool-gray-300'
+                      color={`${formik.errors.password && 'red.400'}`}
+                    >
+                      password
+                    </Text>
+
+                    <InputGroup size='md'>
+                      <Input
+                        isInvalid={Boolean(formik.errors.password)}
+                        id='password'
+                        name='password'
+                        errorBorderColor={`${
+                          formik.errors.password && 'red.400'
+                        }`}
+                        className=' dark:text-white'
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        pr='4.5rem'
+                        type={show ? 'text' : 'password'}
+                        placeholder='Enter password'
+                      />
+                      <InputRightElement width='4.5rem'>
+                        <Button h='1.75rem' size='sm' onClick={handleClick}>
+                          {show ? 'Hide' : 'Show'}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                    <Text
+                      mt='8px'
+                      fontSize='13px'
+                      color={`${formik.errors.password && 'red.400'}`}
+                    >
+                      {formik.errors.password}
+                    </Text>
+                  </Stack>
+
+                  <a className='text-sm font-medium text-purple-400 dark:text-purple-400 '>
+                    by signup you agree to our{' '}
+                    <Link href='/page/terms-of-use'>
+                      <span className='hover:underline text-purple-600 cursor-pointer	'>
+                        terms
+                      </span>
+                    </Link>{' '}
+                    and{' '}
+                    <Link href='/page/privacy-policy'>
+                      <span className='hover:underline text-purple-600 cursor-pointer	'>
+                        privacy policy
+                      </span>
+                    </Link>
+                  </a>
+                  <Button
+                    isLoading={authState.loading}
+                    type='submit'
+                    block
+                    colorScheme='purple'
+                    style={{ outline: 'none', width: '100%' }}
+                    className='mt-4'
+                  >
+                    Signup
+                  </Button>
+                </form>
+
+                <p className='mt-4'>
+                  <Link href='/login'>
+                    <a className='text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline'>
+                      Already have an account? Login
+                    </a>
+                  </Link>
+                </p>
+              </div>
+            </main>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

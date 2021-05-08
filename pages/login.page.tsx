@@ -92,7 +92,7 @@ export default function LoginPage() {
       router.push('/app');
     }
 
-    if (authState.message == 'jwtSuccess') {
+    if (authState.user) {
       router.push('/app');
       return;
     } else if (authState.message == 'server error') {
@@ -156,7 +156,7 @@ export default function LoginPage() {
       <>
         <NextSeo
           title='Login | mts-technonatura-dashboard'
-          description='Recover your mts-technonatura social account password'
+          description='Login to your mts-technonatura social account'
         />
         <LoadingPage></LoadingPage>
       </>
@@ -167,7 +167,7 @@ export default function LoginPage() {
     <>
       <NextSeo
         title='Login | mts-technonatura-dashboard'
-        description='Recover your mts-technonatura social account password'
+        description='Login to your mts-technonatura social account'
       />
       <div className='flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900'>
         <div className='flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800'>
