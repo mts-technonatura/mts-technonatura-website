@@ -1,7 +1,7 @@
 {
-  "short_name": "Windmill",
-  "name": "Windmill Dashboard Nextjs",
-    "description": "Windmill Open Source Dashboard",
+  "short_name": "Mts TN Dashboard",
+  "name": "MTs Technonatura Dashboard",
+  "description": "Dashboard for mts-technonatura students",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,7 +9,7 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "/logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },

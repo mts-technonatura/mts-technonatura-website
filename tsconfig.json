@@ -22,6 +22,11 @@
       "@utils/*": ["utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "components/admin/unverifiedusers.jsx"
+  ],
   "exclude": ["node_modules"]
 }

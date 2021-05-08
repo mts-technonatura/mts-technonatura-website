@@ -2,6 +2,8 @@
 import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import { ChakraProvider } from '@chakra-ui/react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider, useTheme } from '@material-ui/core/styles';
 
 import { AppContext, AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
@@ -16,6 +18,8 @@ import { Windmill } from '@windmill/react-ui';
 import { CookiesProvider } from 'react-cookie';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const theme = useTheme();
+
   return (
     <>
       <Head>
@@ -52,18 +56,22 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <DefaultSeo />
       <CookiesProvider>
-        <ChakraProvider>
-          <SidebarProvider>
-            <Windmill usePreferences={true}>
-              <Provider store={store}>
-                <Navbar>
-                  <ProgressLoad />
-                  <Component {...pageProps} />
-                </Navbar>
-              </Provider>
-            </Windmill>
-          </SidebarProvider>
-        </ChakraProvider>
+        {/* <CssBaseline /> */}
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ChakraProvider>
+              <SidebarProvider>
+                <Windmill usePreferences={true}>
+                  <Navbar>
+                    <ProgressLoad />
+                    <Component {...pageProps} />
+                  </Navbar>
+                </Windmill>
+              </SidebarProvider>
+            </ChakraProvider>
+          </ThemeProvider>
+        </Provider>
       </CookiesProvider>
     </>
   );

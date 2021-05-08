@@ -7,9 +7,12 @@
  */
 
 import * as Icons from 'icons';
+import { SiArduino } from 'react-icons/si';
+import { IconType } from 'react-icons';
+
 export interface routeI {
   path: string;
-  Icon: typeof Icons.HomeIcon;
+  Icon: typeof Icons.HomeIcon | IconType;
   name: string;
   permission?: string | Array<string>;
 }
@@ -30,9 +33,9 @@ const routes: routesI[] = [
     permission: ['Developer', 'Owner'],
   },
   {
-    path: '/app/cards',
-    Icon: Icons.CardsIcon,
-    name: 'Cards',
+    path: '/app/arduinoapps',
+    Icon: SiArduino,
+    name: 'Arduino Apps',
   },
 ];
 

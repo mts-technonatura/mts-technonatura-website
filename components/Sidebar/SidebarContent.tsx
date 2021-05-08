@@ -7,14 +7,14 @@ import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import _ from 'underscore';
 import { checkRoles } from 'utils/checkRoles';
-import { Image, Tooltip } from '@chakra-ui/react';
+import { Image, Tooltip, Divider } from '@chakra-ui/react';
 
 function SidebarContent() {
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { asPath } = useRouter();
   return (
-    <div className='flex flex-col justify-between h-full py-4 text-gray-500 dark:text-gray-400'>
+    <div className='flex flex-col justify-between h-full  text-gray-500 dark:text-gray-400'>
       <div>
         <Link href='/app'>
           <a className='ml-4 font-bold text-gray-800 dark:text-gray-200'>
@@ -26,6 +26,8 @@ function SidebarContent() {
             />
           </a>
         </Link>
+
+        {/* <Divider mt={2} /> */}
 
         <ul className='mt-10'>
           {routes.map((route) =>
@@ -76,10 +78,13 @@ export function MenuItem({ route, asPath }: { route: routeI; asPath: string }) {
       bg='gray.300'
       color='black'
     >
-      <li className='relative px-6 py-3' key={route.name}>
+      <li
+        className='relative px-6 py-3 cursor-pointer dark:hover:text-gray-200 hover:text-gray-800'
+        key={route.name}
+      >
         <Link href={route.path}>
           <a
-            className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 ${
+            className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
               asPath == route.path ? 'dark:text-gray-100 text-gray-800' : ''
             }`}
           >
