@@ -53,3 +53,17 @@ export type DeletedUserResponseType = {
   message: string;
   status: statusMessage;
 };
+
+export interface arduinoAppI {
+  _id: string;
+  name: string;
+  sensors?: Array<string>;
+  desc: string;
+  own?: string;
+  token?: string;
+}
+
+export type APIResponse = {
+  message: string;
+  status: statusMessage;
+};

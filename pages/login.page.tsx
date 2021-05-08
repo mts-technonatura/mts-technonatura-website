@@ -16,13 +16,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
-import ms from 'ms';
-import _ from 'underscore';
 import { NextSeo } from 'next-seo';
 import ErrorPage from 'components/500';
 import * as AuthMethods from '@/redux/actions/index';
 import LoadingPage from 'components/loadingpage';
-
+import ms from 'ms';
+import _ from 'underscore';
 const validationSchema = yup.object({
   username: yup
     .string()
@@ -146,6 +145,7 @@ export default function LoginPage() {
     );
   }
 
+  // ketika redux masih dalam proses memverifikasi JWT token
   if (
     (!authState.fetched && authState.loading) ||
     (authState.fetched &&

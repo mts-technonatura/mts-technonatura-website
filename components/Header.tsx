@@ -30,8 +30,8 @@ function Header() {
 
   const { toggleSidebar } = useContext(SidebarContext);
 
-  function logout() {
-    removeCookie(tokenCookieKey);
+  async function logout() {
+    await removeCookie(tokenCookieKey);
     dispatch(AuthLogout());
   }
   // console.log(authState.user);
@@ -57,7 +57,7 @@ function Header() {
         </div>
         <ul className='flex items-center flex-shrink-0 space-x-6 dark:text-gray-300 text-gray-600'>
           {/* <!-- Theme toggler --> */}
-          {/* <li className='flex'>
+          <li className='flex'>
             <button
               className='rounded-md focus:outline-none focus:shadow-outline-purple'
               onClick={toggleMode}
@@ -69,7 +69,7 @@ function Header() {
                 <MoonIcon className='w-5 h-5' aria-hidden='true' />
               )}
             </button>
-          </li> */}
+          </li>
           {/* <!-- Notifications menu --> */}
           <li className='relative'>
             <button

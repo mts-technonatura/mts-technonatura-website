@@ -1,6 +1,7 @@
 import { SiArduino } from 'react-icons/si';
 import { IconType } from 'react-icons';
 import Link from 'next/link';
+import styled from '@emotion/styled';
 interface FeatureCardI {
   link?: string;
   title: string;
@@ -14,7 +15,7 @@ function FeatureCard({ link, Icon, title, desc, smallText }: FeatureCardI) {
     <>
       {link ? (
         <Link href={link}>
-          <a className='relative dark:ring-cool-gray-700 rounded-xl ring-1 ring-black ring-opacity-5 shadow-sm w-full pt-8 pb-6 px-6'>
+          <a className='relative dark:ring-cool-gray-700  rounded-xl ring-1 ring-black ring-opacity-5 shadow-sm w-full pt-8 pb-6 px-6'>
             <div className='h-auto max-w-full mx-auto mb-1 text-blue-500 text-6xl'>
               <Icon className='m-auto' />
             </div>
@@ -31,7 +32,7 @@ function FeatureCard({ link, Icon, title, desc, smallText }: FeatureCardI) {
           </a>
         </Link>
       ) : (
-        <a className='relative dark:ring-cool-gray-700 rounded-xl ring-1 ring-black ring-opacity-5 shadow-sm w-full pt-8 pb-6 px-6'>
+        <a className='relative dark:ring-cool-gray-700 rounded-xl ring-1 ring-black ring-opacity-5 shadow-sm w-full pt-8 pb-6 px-6 cursor-pointer'>
           <div className='h-auto max-w-full mx-auto mb-1 text-blue-500 text-6xl'>
             <Icon className='m-auto' />
           </div>
@@ -67,6 +68,7 @@ export default function AppIndexFeature() {
         </li>
         <li className='flex'>
           <FeatureCard
+            link='/app/arduinoapps'
             Icon={SiArduino}
             title='Arduino App'
             desc='Free database to store your arduino sensor data'
