@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
+import InfoCard from 'components/Cards/InfoCard';
 import Link from 'next/link';
+/* ======================= UI ======================= */
 import {
   Button,
   Alert,
@@ -21,20 +22,34 @@ import {
   Icon,
   IconProps,
   Divider,
+  Spacer,
   useDisclosure,
 } from '@chakra-ui/react';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+/* ======================= END UI ======================= */
+
+import styled from '@emotion/styled';
+import Card from '@material-ui/core/Card';
 import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { useRouter } from 'next/router';
 import LoadingPage from 'components/loadingpage';
 import CreateNewArduinoAppDrawer from '@/components/admin/arduinoapp/createNewArduinoApp';
 
-import { EuiCard, EuiIcon, EuiFlexGroup, EuiFlexItem } from '@elastic/eui';
 import { arduinoAppI } from 'ts';
 import axios from 'axios';
 import _ from 'underscore';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
+const ChapterCard = styled(Card)`
+  @media screen and (min-width: 345px) {
+    min-width: 300px;
+  }
+`;
 interface arduinoAppsResponse {
   apps: arduinoAppI[];
 }
@@ -82,7 +97,7 @@ function ArduinoApps() {
     <>
       {authState.user && arduinoApps?.apps && Array.isArray(arduinoApps?.apps) && (
         <>
-          {arduinoApps?.apps.length == 0 ? (
+          {authState.user.isAccountVerified && arduinoApps?.apps.length == 0 ? (
             <CallToActionWithIllustration
               title="You Don't Have Arduino App yet"
               Icon={<NoItemIcon mt={{ base: 12, sm: 16 }} />}
@@ -110,20 +125,41 @@ function ArduinoApps() {
               }
             />
           ) : (
-            <EuiFlexGroup gutterSize='l'>
-              {arduinoApps?.apps.map((app) => (
-                <Link href={`/app/arduinoapp/${app._id}`}>
-                  <EuiFlexItem>
-                    <EuiCard
-                      layout='horizontal'
-                      title={app.name}
-                      description={app.desc}
-                      href='#'
-                    />
-                  </EuiFlexItem>
-                </Link>
-              ))}
-            </EuiFlexGroup>
+            authState.user.isAccountVerified && (
+              <>
+                <Flex>
+                  <Box p='2' className='flex justify-center items-center'>
+                    <Heading size='lg' className='dark:text-cool-gray-300 mb-8'>
+                      Arduino Apps
+                    </Heading>
+                  </Box>
+                  <Spacer />
+                  <Box>
+                    <Button
+                      colorScheme='teal'
+                      bg='purple.600'
+                      onClick={onCreateNewDrawerOpen}
+                      _hover={{ bg: 'purple.700' }}
+                    >
+                      Create New App
+                    </Button>
+                  </Box>
+                </Flex>
+                <div className='grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
+                  {arduinoApps?.apps.map((app, id) => (
+                    <InfoCard
+                      title={
+                        <Link href={`/app/arduinoapps/${app._id}`}>
+                          {app.name}
+                        </Link>
+                      }
+                      type={1}
+                      value={app.desc}
+                    ></InfoCard>
+                  ))}
+                </div>
+              </>
+            )
           )}
 
           <CreateNewArduinoAppDrawer
@@ -135,29 +171,49 @@ function ArduinoApps() {
         </>
       )}
 
-      {!authState.user && (
+      {(!authState.user || !authState.user.isAccountVerified) && (
         <CallToActionWithIllustration
           Icon={<UnhappyGhost mt={{ base: 12, sm: 16 }} />}
           title="You Don't Have an Access To This Feature"
           desc='This Feature is only accessible for verified users'
           Buttons={
             <>
-              <Link href='/login'>
-                <Button
-                  rounded={'full'}
-                  px={6}
-                  colorScheme={'purple'}
-                  bg='purple.600'
-                  _hover={{ bg: 'purple.700' }}
-                >
-                  Login
-                </Button>
-              </Link>
-              <Link href='/create-account'>
-                <Button rounded={'full'} px={6}>
-                  Create an Account
-                </Button>
-              </Link>
+              {!authState.user ? (
+                <>
+                  <Link href='/login'>
+                    <Button
+                      rounded={'full'}
+                      px={6}
+                      colorScheme={'purple'}
+                      bg='purple.600'
+                      _hover={{ bg: 'purple.700' }}
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                  <Link href='/create-account'>
+                    <Button
+                      className='dark:bg-cool-gray-300'
+                      rounded={'full'}
+                      px={6}
+                    >
+                      Create an Account
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <Link href='https://t.me/aldhaneka'>
+                  <Button
+                    rounded={'full'}
+                    px={6}
+                    colorScheme={'purple'}
+                    bg='purple.600'
+                    _hover={{ bg: 'purple.700' }}
+                  >
+                    Request To Verify
+                  </Button>
+                </Link>
+              )}
             </>
           }
         />
@@ -191,7 +247,7 @@ function CallToActionWithIllustration({
             {Icon}
           </Flex>
           <Heading
-            className='text-cool-gray-300'
+            className='dark:text-cool-gray-300'
             fontWeight={600}
             fontSize={{ base: '3xl', sm: '4xl', md: '4xl' }}
           >

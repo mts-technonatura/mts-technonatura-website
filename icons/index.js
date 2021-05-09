@@ -27,7 +27,7 @@ import { ReactComponent as OutlinePersonIcon } from './outlinePerson.svg';
 import { ReactComponent as OutlineCogIcon } from './outlineCog.svg';
 import { ReactComponent as OutlineLogoutIcon } from './outlineLogout.svg';
 import { ReactComponent as NoItemIcon } from './noItem.svg';
-import { ReactComponent as UnhappyGhost } from './UnhappyGhost.svg';
+import { ReactComponent as UnhappyGhost } from './unhappyGhost.svg';
 
 export {
   ButtonsIcon,

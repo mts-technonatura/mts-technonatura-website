@@ -1,12 +1,10 @@
 // --jsx
 import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
-import '@elastic/eui/dist/eui_theme_light.css';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider, useTheme } from '@material-ui/core/styles';
-import { EuiErrorBoundary } from '@elastic/eui';
 import { AppContext, AppProps } from 'next/app';
 import { DefaultSeo } from 'next-seo';
 import Head from 'next/head';
@@ -57,26 +55,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       `}</style>
 
       <DefaultSeo />
-      <EuiErrorBoundary>
-        <CookiesProvider>
+      <CookiesProvider>
+        {/* <CssBaseline /> */}
+        <Provider store={store}>
+          {/* <ThemeProvider theme={theme}> */}
           {/* <CssBaseline /> */}
-          <Provider store={store}>
-            {/* <ThemeProvider theme={theme}> */}
-            {/* <CssBaseline /> */}
-            <ChakraProvider>
-              <SidebarProvider>
-                <Windmill usePreferences={true}>
-                  <Navbar>
-                    <ProgressLoad />
-                    <Component {...pageProps} />
-                  </Navbar>
-                </Windmill>
-              </SidebarProvider>
-            </ChakraProvider>
-            {/* </ThemeProvider> */}
-          </Provider>
-        </CookiesProvider>
-      </EuiErrorBoundary>
+          <ChakraProvider>
+            <SidebarProvider>
+              <Windmill usePreferences={true}>
+                <Navbar>
+                  <ProgressLoad />
+                  <Component {...pageProps} />
+                </Navbar>
+              </Windmill>
+            </SidebarProvider>
+          </ChakraProvider>
+          {/* </ThemeProvider> */}
+        </Provider>
+      </CookiesProvider>
     </>
   );
 }

@@ -85,7 +85,9 @@ export function MenuItem({ route, asPath }: { route: routeI; asPath: string }) {
         <Link href={route.path}>
           <a
             className={`inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 ${
-              asPath == route.path ? 'dark:text-gray-100 text-gray-800' : ''
+              asPath == route.path
+                ? 'dark:text-gray-100 text-gray-800'
+                : 'dark:text-gray-400 hover:dark:text-gray-200'
             }`}
           >
             {asPath == route.path && (

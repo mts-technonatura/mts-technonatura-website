@@ -3,6 +3,7 @@ import { SidebarContext } from 'context/SidebarContext';
 import { MoonIcon, SunIcon, BellIcon, MenuIcon } from 'icons';
 import { WindmillContext } from '@windmill/react-ui';
 import { BiLogOut, BiUser, BiCog } from 'react-icons/bi';
+import InfoCard from 'components/Cards/InfoCard';
 import {
   Button,
   ButtonGroup,
@@ -12,18 +13,18 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  Heading,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { AuthLogout } from '@/redux/actions';
-import { useCookies } from 'react-cookie';
+import Cookie from 'js-cookie';
 import Link from 'next/link';
 
 function Header() {
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const dispatch = useDispatch();
-  const [cookies, setCookie, removeCookie] = useCookies([tokenCookieKey]);
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { mode, toggleMode } = useContext(WindmillContext);
@@ -31,7 +32,7 @@ function Header() {
   const { toggleSidebar } = useContext(SidebarContext);
 
   async function logout() {
-    await removeCookie(tokenCookieKey);
+    Cookie.remove(tokenCookieKey);
     dispatch(AuthLogout());
   }
   // console.log(authState.user);
@@ -48,11 +49,9 @@ function Header() {
           <MenuIcon className='w-6 h-6' aria-hidden='true' />
         </button>
         {/* <!-- Search input --> */}
-        <div className='flex justify-center flex-1 lg:mr-32'>
-          <div className='relative w-full max-w-xl mr-6 focus-within:text-purple-500'>
-            <div className='absolute inset-y-0 flex items-center pl-2'>
-              {/* <SearchIcon className='w-4 h-4' aria-hidden='true' /> */}
-            </div>
+        <div className='justify-items-start flex-1 hidden md:flex'>
+          <div className='relative w-full max-w-xl text-cool-gray-800 dark:text-cool-gray-200 focus-within:text-purple-500'>
+            <Heading size='md'>mts-technonatura dashboard</Heading>
           </div>
         </div>
         <ul className='flex items-center flex-shrink-0 space-x-6 dark:text-gray-300 text-gray-600'>
