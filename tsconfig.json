@@ -19,7 +19,8 @@
       "@/ts/*": ["ts/*"],
       "@/pages/*": ["pages/*"],
       "@/redux/*": ["redux_file/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@/assets/*": ["assets/*"]
     }
   },
   "include": [

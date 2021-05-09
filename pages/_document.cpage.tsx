@@ -101,7 +101,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             href='https://fonts.googleapis.com/icon?family=Material+Icons'
           />
         </Head>
-        <body className='bg-gray-900'>
+        <body>
           <noscript
             dangerouslySetInnerHTML={{
               __html: `

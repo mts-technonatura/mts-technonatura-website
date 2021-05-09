@@ -1,67 +1,47 @@
-import Head from 'next/head';
+import React, { FC, useState, Fragment } from 'react';
 import Link from 'next/link';
-import styles from '../styles/Home.module.css';
+import { NextSeo } from 'next-seo';
+import Head from 'next/head';
+
+import AboutSection, { Team } from 'components/main/home/about';
+import Hero from 'components/main/home/hero';
+import EventsSection from 'components/main/home/eventsSection';
+import NavFoot from 'components/main/navfoot';
+import BlogSection from 'components/main/home/Blog';
+
+const title = 'Home | MTs TechnoNatura';
+const description =
+  'Website resmi Remaja Madrasah Tsanawiyah TechnoNatura Depok. Website buatan para programmer MTs.';
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <Fragment>
       <Head>
-        <title>Create Next App</title>
-        <link rel='icon' href='/favicon.ico' />
+        <link rel='preconnect' href='https://fonts.gstatic.com' />
+        <link rel='preconnect' href='https://fonts.googleapis.com' />
       </Head>
+      <NextSeo
+        title='MTs TechnoNatura Website'
+        description='Website remaja MTs TechnoNatura'
+        canonical={process.env.PUBLIC_URL}
+        openGraph={{
+          url: process.env.PUBLIC_URL,
+          title: 'MTs TechnoNatura Home Page',
+          description: 'Website buatan remaja MTs TechnoNatura',
+        }}
+      />
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to{' '}
-          <a href='https://nextjs.org'>Windmill Dashboard Nextjs Template!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages folder</code>
-        </p>
-
-        <div className={styles.grid}>
-          <Link href='/login'>
-            <a className={styles.card}>
-              <h3>Login Page &rarr;</h3>
-              <p>Login auth page</p>
-            </a>
-          </Link>
-          <Link href='/create-account'>
-            <a className={styles.card}>
-              <h3>Create Account Page &rarr;</h3>
-              <p>Create Account Auth Page</p>
-            </a>
-          </Link>
-
-          <a href='/app' className={styles.card}>
-            <h3>App Page &rarr;</h3>
-            <p>Discover the windmill dashboard</p>
-          </a>
-
-          <a
-            href='https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2FAldhanekaa%2Fwindmill-dashboard-nextjs'
-            className={styles.card}
-          >
-            <h3>Deploy to vercel&rarr;</h3>
-            <p>
-              Instantly deploy your Windmill Dashboard Next.js site to Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href='https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          Powered by{' '}
-          <img src='/vercel.svg' alt='Vercel Logo' className={styles.logo} />
-        </a>
-      </footer>
-    </div>
+      <style jsx global>{`
+        html {
+          font-family: 'Roboto', sans-serif;
+          scroll-behavior: smooth;
+        }
+      `}</style>
+      <Hero />
+      <AboutSection />
+      <Team />
+      <EventsSection />
+      <BlogSection />
+    </Fragment>
   );
 }

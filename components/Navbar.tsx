@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from 'react';
 import Link from 'next/link';
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
+import NavFoot from 'components/main/navfoot';
 import { SidebarContext } from 'context/SidebarContext';
 import { BellIcon } from '@chakra-ui/icons';
 import {
@@ -23,6 +24,7 @@ export default function NavbarComponent({
 }: {
   children: JSX.Element | JSX.Element[];
 }) {
+  const router = useRouter();
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const [cookies, setCookie] = useCookies();
@@ -96,5 +98,5 @@ export default function NavbarComponent({
       </>
     );
   }
-  return <>{children}</>;
+  return <NavFoot page={router.route}>{children}</NavFoot>;
 }
