@@ -103,7 +103,7 @@ function ArduinoApps() {
     process.env.NEXT_PUBLIC_DELETE_USER,
   );
 
-  if (!authState.fetched && !authState.loading) {
+  if (!authState.fetched && authState.loading) {
     return <LoadingPage />;
   } else if (!arduinoApps.fetched) {
     return <LoadingPage text='Fetching Apps' />;
