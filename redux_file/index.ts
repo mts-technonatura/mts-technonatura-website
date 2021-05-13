@@ -5,9 +5,7 @@ import thunk from 'redux-thunk';
 
 const Store = createStore(
   RootReducer,
-  process.env.NODE_ENV == 'development'
-    ? composeWithDevTools(applyMiddleware(thunk))
-    : applyMiddleware(thunk),
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 export type RootStore = ReturnType<typeof RootReducer>;
 

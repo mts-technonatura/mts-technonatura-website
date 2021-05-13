@@ -63,6 +63,7 @@ function ArduinoApps() {
 
   //   const [allData, setAllData] = useState<Readonly<AlldataI[]>>();
   const router = useRouter();
+  console.log(router);
   const authState = useSelector((state: RootStore) => state.auth);
   const [arduinoApps, setArduinoApps] = useState<arduinoAppsResponse>();
 
@@ -76,7 +77,6 @@ function ArduinoApps() {
         process.env.NEXT_PUBLIC_ARDUINO_APPS ||
           'http://localhost:3030/arduino/apps',
         { authToken: authState.token },
-        { withCredentials: true },
       );
       setArduinoApps(apps.data);
     } catch (err) {}
