@@ -51,7 +51,11 @@ const ChapterCard = styled(Card)`
   }
 `;
 interface arduinoAppsResponse {
-  apps: arduinoAppI[];
+  apps?: arduinoAppI[];
+}
+
+interface arduinoAppsI extends arduinoAppsResponse {
+  fetched: boolean;
 }
 
 function ArduinoApps() {
@@ -65,7 +69,9 @@ function ArduinoApps() {
   const router = useRouter();
   console.log(router);
   const authState = useSelector((state: RootStore) => state.auth);
-  const [arduinoApps, setArduinoApps] = useState<arduinoAppsResponse>();
+  const [arduinoApps, setArduinoApps] = useState<arduinoAppsI>({
+    fetched: false,
+  });
 
   useEffect(() => {
     fetchArduinoApps();
@@ -78,8 +84,16 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/apps',
         { authToken: authState.token },
       );
-      setArduinoApps(apps.data);
-    } catch (err) {}
+      setArduinoApps({
+        apps: apps.data.apps,
+        fetched: true,
+      });
+    } catch (err) {
+      setArduinoApps({
+        apps: [],
+        fetched: true,
+      });
+    }
   }
   const FetchAllDataAPI_ROUTE =
     process.env.NEXT_PUBLIC_ALL_DATA_API || 'http://localhost:3030/allData';
@@ -91,6 +105,8 @@ function ArduinoApps() {
 
   if (!authState.fetched && !authState.user) {
     return <LoadingPage />;
+  } else if (!arduinoApps.fetched) {
+    return <LoadingPage text='Fetching Apps' />;
   }
 
   return (
