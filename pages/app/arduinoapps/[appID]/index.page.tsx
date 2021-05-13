@@ -81,10 +81,15 @@ function ArduinoApps() {
   }, [authState.user]);
 
   useEffect(() => {
-    if (authState.user && authState.fetched && !arduinoApp.fetched) {
+    if (
+      router.query.appID &&
+      authState.user &&
+      authState.fetched &&
+      !arduinoApp.fetched
+    ) {
       fetchArduinoApp();
     }
-  }, [router.query.appID]);
+  });
 
   async function fetchArduinoApp() {
     try {
@@ -125,7 +130,7 @@ function ArduinoApps() {
     }
   }
 
-  if (!authState.fetched && !authState.user) {
+  if (authState.loading) {
     return <LoadingPage />;
   }
 
