@@ -12,6 +12,7 @@ import { IconType } from 'react-icons';
 
 export interface routeI {
   path: string;
+  onPage?: string | Array<string>;
   Icon: typeof Icons.HomeIcon | IconType;
   name: string;
   permission?: string | Array<string>;
@@ -34,9 +35,26 @@ const routes: routesI[] = [
   },
   {
     path: '/app/arduinoapps',
+    onPage: ['/app/arduinoapps', '/app/arduinoapps/[appID]'],
     Icon: SiArduino,
     name: 'Arduino Apps',
   },
 ];
+
+type checkOnPageT = (route: string, onPage: string | Array<string>) => boolean;
+
+export const checkOnPage: checkOnPageT = (route, onPage) => {
+  if (Array.isArray(onPage)) {
+    for (let i: number = 0; i < onPage.length; i++) {
+      if (onPage[i] == route) {
+        return true;
+      }
+    }
+  } else {
+    if (route == onPage) return true;
+  }
+
+  return false;
+};
 
 export default routes;

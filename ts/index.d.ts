@@ -63,6 +63,13 @@ export interface arduinoAppI {
   token?: string;
 }
 
+export interface sensorI {
+  _id: string;
+  name: string;
+  appID: string;
+  own: string;
+}
+
 export type APIResponse = {
   message: string;
   status: statusMessage;

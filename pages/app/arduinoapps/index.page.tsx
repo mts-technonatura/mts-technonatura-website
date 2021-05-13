@@ -4,32 +4,15 @@ import Link from 'next/link';
 /* ======================= UI ======================= */
 import {
   Button,
-  Alert,
-  AlertIcon,
   Flex,
   Stack,
-  SimpleGrid,
-  useColorModeValue,
-  Spinner,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
-  TabPanels,
   Container,
   Heading,
   Text,
-  Icon,
-  IconProps,
-  Divider,
   Spacer,
   useDisclosure,
 } from '@chakra-ui/react';
 import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 /* ======================= END UI ======================= */
 
 import styled from '@emotion/styled';
@@ -45,11 +28,6 @@ import axios from 'axios';
 import _ from 'underscore';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
-const ChapterCard = styled(Card)`
-  @media screen and (min-width: 345px) {
-    min-width: 300px;
-  }
-`;
 interface arduinoAppsResponse {
   apps?: arduinoAppI[];
 }
@@ -74,7 +52,7 @@ function ArduinoApps() {
   });
 
   useEffect(() => {
-    fetchArduinoApps();
+    if (authState.token && authState.user) fetchArduinoApps();
   }, [authState.token]);
 
   async function fetchArduinoApps() {
@@ -97,11 +75,6 @@ function ArduinoApps() {
   }
   const FetchAllDataAPI_ROUTE =
     process.env.NEXT_PUBLIC_ALL_DATA_API || 'http://localhost:3030/allData';
-  console.log(
-    process.env.NEXT_PUBLIC_ALL_DATA_API,
-    process.env.NEXT_PUBLIC_UNVERIFIED_USERS,
-    process.env.NEXT_PUBLIC_DELETE_USER,
-  );
 
   if (!authState.fetched && authState.loading) {
     return <LoadingPage />;
@@ -241,10 +214,10 @@ function ArduinoApps() {
 interface CallToActionWithIllustrationI {
   title: string;
   desc: string;
-  Buttons: JSX.Element | JSX.Element[];
+  Buttons?: JSX.Element | JSX.Element[];
   Icon: JSX.Element;
 }
-function CallToActionWithIllustration({
+export function CallToActionWithIllustration({
   Buttons,
   title,
   desc,

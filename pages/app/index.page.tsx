@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import CTA from 'components/CTA';
-import InfoCard from 'components/Cards/InfoCard';
-import ChartCard from 'components/Chart/ChartCard';
-import { Doughnut, Line } from 'react-chartjs-2';
-import ChartLegend from 'components/Chart/ChartLegend';
 import PageTitle from 'components/Typography/PageTitle';
-import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from '../../icons';
-import RoundIcon from 'components/RoundIcon';
-import { Button, Alert, AlertIcon } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import TimeText from 'utils/timeText';
 import LoadingPage from 'components/loadingpage';

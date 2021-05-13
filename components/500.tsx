@@ -17,18 +17,3 @@ export default function errorPage({
     </>
   );
 }
-
-// <>
-//     <h1>500</h1>
-//     <div className='ooo'>
-//       <h2>
-//         Couldn't Connect To Server |{' '}
-//         <a
-//           href='https://mts-technonatura.instatus.com/'
-//           className='text-gray-600 underline'
-//         >
-//           Status
-//         </a>
-//       </h2>
-//     </div>
-//   </>
