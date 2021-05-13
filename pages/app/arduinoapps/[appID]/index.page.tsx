@@ -12,10 +12,12 @@ import {
   Spacer,
   useDisclosure,
   Text,
+  Tooltip,
 } from '@chakra-ui/react';
 import { CallToActionWithIllustration } from '../index.page';
 import Box from '@material-ui/core/Box';
 import { IoIosTrash } from 'react-icons/io';
+import { FaRegEdit } from 'react-icons/fa';
 /* ======================= END UI ======================= */
 
 import { useSelector } from 'react-redux';
@@ -123,7 +125,7 @@ function ArduinoApps() {
     }
   }
 
-  if (!authState.fetched && authState.loading) {
+  if (!authState.fetched && !authState.user) {
     return <LoadingPage />;
   } else if (!arduinoApp.fetched && authState.user) {
     return <LoadingPage text='Fetching App' />;
@@ -174,15 +176,28 @@ function ArduinoApps() {
           >
             Create New Sensor
           </Button>
-          <Button
-            ml={4}
-            colorScheme='teal'
-            bg='red.600'
-            _hover={{ bg: 'red.800' }}
-            _active={{ bg: 'red.800' }}
-          >
-            <IoIosTrash size={20}>{arduinoApp}</IoIosTrash>
-          </Button>
+          <Tooltip label='Edit App' aria-label='A tooltip'>
+            <Button
+              ml={4}
+              colorScheme='teal'
+              bg='blue.500'
+              _hover={{ bg: 'blue.800' }}
+              _active={{ bg: 'blue.800' }}
+            >
+              <FaRegEdit size={20} />
+            </Button>
+          </Tooltip>
+          <Tooltip label='Delete App' aria-label='A tooltip'>
+            <Button
+              ml={4}
+              colorScheme='teal'
+              bg='red.600'
+              _hover={{ bg: 'red.800' }}
+              _active={{ bg: 'red.800' }}
+            >
+              <IoIosTrash size={20} />
+            </Button>
+          </Tooltip>
         </Box>
       </Flex>
     </>
