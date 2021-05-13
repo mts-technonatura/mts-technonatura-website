@@ -127,7 +127,9 @@ function ArduinoApps() {
 
   if (!authState.fetched && !authState.user) {
     return <LoadingPage />;
-  } else if (!arduinoApp.fetched && authState.user) {
+  }
+
+  if (!arduinoApp.fetched && authState.user) {
     return <LoadingPage text='Fetching App' />;
   }
 
