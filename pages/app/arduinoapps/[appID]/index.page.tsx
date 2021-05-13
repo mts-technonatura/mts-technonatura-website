@@ -11,6 +11,7 @@ import {
   Heading,
   Spacer,
   useDisclosure,
+  Text,
 } from '@chakra-ui/react';
 import { CallToActionWithIllustration } from '../index.page';
 import Box from '@material-ui/core/Box';
@@ -75,16 +76,39 @@ function ArduinoApps() {
     if (!authState.user && authState.fetched) {
       router.push('/app/arduinoapps');
     }
-    if (authState.user && !arduinoApp.fetched) {
+  }, [authState.user]);
+
+  useEffect(() => {
+    if (authState.user && authState.fetched && !arduinoApp.fetched) {
       fetchArduinoApp();
     }
-  }, [authState.user]);
+  }, [router.query.appID]);
 
   async function fetchArduinoApp() {
     try {
+      console.log(router.query.appID);
       const app = await axios.post<arduinoResponseI>(
         process.env.NEXT_PUBLIC_ARDUINO_APP ||
           'http://localhost:3030/arduino/app',
+        { arduinoAppId: router.query.appID, authToken: authState.token },
+      );
+
+      setArduinoApp({
+        app: app.data.app,
+        fetched: true,
+      });
+    } catch (err) {
+      setArduinoApp({
+        fetched: true,
+      });
+    }
+  }
+
+  async function fetchSensors() {
+    try {
+      const app = await axios.post<arduinoResponseI>(
+        process.env.NEXT_PUBLIC_ARDUINO_APP_SENSORS ||
+          'http://localhost:3030/arduino/sensors',
         { arduinoAppId: router.query.appID, authToken: authState.token },
       );
 
@@ -117,7 +141,7 @@ function ArduinoApps() {
 
   return (
     <>
-      <Breadcrumb mb={5}>
+      <Breadcrumb mb={5} className='dark:text-cool-gray-400'>
         <BreadcrumbItem>
           <BreadcrumbLink href='/app'>App</BreadcrumbLink>
         </BreadcrumbItem>
@@ -131,16 +155,21 @@ function ArduinoApps() {
         </BreadcrumbItem>
       </Breadcrumb>
       <Flex>
-        <Box p='2' className='flex justify-center items-center'>
-          <Heading size='lg' className='dark:text-cool-gray-300 mb-8'>
+        <Box p='2' className=' '>
+          <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
             {arduinoApp.app?.name} - Arduino App
           </Heading>
+
+          <Text className='dark:text-cool-gray-400' fontSize='xl'>
+            {arduinoApp.app?.desc}
+          </Text>
         </Box>
         <Spacer />
         <Box>
           <Button
             colorScheme='teal'
             bg='purple.600'
+            _active={{ bg: 'purple.700' }}
             _hover={{ bg: 'purple.700' }}
           >
             Create New Sensor
@@ -149,7 +178,8 @@ function ArduinoApps() {
             ml={4}
             colorScheme='teal'
             bg='red.600'
-            _hover={{ bg: 'purple.700' }}
+            _hover={{ bg: 'red.800' }}
+            _active={{ bg: 'red.800' }}
           >
             <IoIosTrash size={20}>{arduinoApp}</IoIosTrash>
           </Button>
