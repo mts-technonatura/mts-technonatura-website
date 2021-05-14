@@ -103,7 +103,7 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/sensor',
         {
           appId: router.query.appID,
-          sensorId: router.query.sensorId,
+          sensorId: router.query.sensorID,
           authToken: authState.token,
         },
       );
