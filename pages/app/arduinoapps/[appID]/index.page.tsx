@@ -11,6 +11,7 @@ import {
   Heading,
   Spacer,
   useDisclosure,
+  useToast,
   Text,
   Tooltip,
 } from '@chakra-ui/react';
@@ -25,7 +26,7 @@ import { RootStore } from '@/redux/index';
 import { useRouter } from 'next/router';
 import LoadingPage from 'components/loadingpage';
 
-import { sensorI } from 'ts';
+import { sensorI, normalResponseT } from 'ts';
 import axios from 'axios';
 import _ from 'underscore';
 import { NoItemIcon, UnhappyGhost } from 'icons';
@@ -52,6 +53,9 @@ interface arduinoI extends arduinoResponseI {
 }
 
 function ArduinoApps() {
+  const toast = useToast();
+
+  const [deletingApp, setDeletingApp] = useState<boolean>(false);
   const {
     isOpen: isCreateNewSensorDrawerOpen,
     onOpen: onCreateNewSensorDrawerOpen,
@@ -124,7 +128,41 @@ function ArduinoApps() {
     }
   }
 
-  async function deleteArduinoApp() {}
+  async function deleteArduinoApp() {
+    setDeletingApp(true);
+
+    try {
+      console.log(process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP);
+      const deletedApp = await axios.post<normalResponseT>(
+        process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP
+          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP}/${router.query.appID}`
+          : `http://localhost:3030/arduino/del/${router.query.appID}`,
+        { authToken: authState.token },
+      );
+      toast({
+        title: deletedApp.data.message,
+        position: 'bottom-right',
+        isClosable: false,
+        status: deletedApp.data.status,
+        duration: 2000,
+      });
+
+      if (deletedApp.data.status == 'success') {
+        router.push('/app/arduinoapps');
+      }
+    } catch (err) {
+      console.log('ERROR WHEN DELETING APP', err);
+      toast({
+        title: 'ERROR WHEN DELETING APP',
+        position: 'bottom-right',
+        isClosable: false,
+        status: 'error',
+        duration: 2000,
+      });
+    }
+
+    setDeletingApp(false);
+  }
 
   if (!arduinoApp.fetched && authState.user) {
     return <LoadingPage text='Fetching App' />;
@@ -206,6 +244,10 @@ function ArduinoApps() {
                 bg='red.600'
                 _hover={{ bg: 'red.800' }}
                 _active={{ bg: 'red.800' }}
+                isLoading={deletingApp}
+                onClick={() => {
+                  deleteArduinoApp();
+                }}
               >
                 <IoIosTrash size={20} />
               </Button>
