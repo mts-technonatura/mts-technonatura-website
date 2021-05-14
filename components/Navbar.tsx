@@ -37,7 +37,7 @@ export default function NavbarComponent({
   useEffect(() => {
     console.log("LOGIN BRE!")
     if (
-      !authState.fetched && !authState.loading && !authState.user
+      !authState.loading
     ) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
