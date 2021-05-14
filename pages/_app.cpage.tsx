@@ -58,19 +58,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       <CookiesProvider>
         {/* <CssBaseline /> */}
         <Provider store={store}>
-          {/* <ThemeProvider theme={theme}> */}
-          {/* <CssBaseline /> */}
-          <ChakraProvider>
-            <SidebarProvider>
-              <Windmill usePreferences={true}>
-                <Navbar>
-                  <ProgressLoad />
-                  <Component {...pageProps} />
-                </Navbar>
-              </Windmill>
-            </SidebarProvider>
-          </ChakraProvider>
-          {/* </ThemeProvider> */}
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ChakraProvider>
+              <SidebarProvider>
+                <Windmill usePreferences={true}>
+                  <Navbar>
+                    <ProgressLoad />
+                    <Component {...pageProps} />
+                  </Navbar>
+                </Windmill>
+              </SidebarProvider>
+            </ChakraProvider>
+          </ThemeProvider>
         </Provider>
       </CookiesProvider>
     </>

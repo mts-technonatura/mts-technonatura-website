@@ -16,7 +16,14 @@ import {
   Text,
   Tooltip,
   useClipboard,
+  ModalFooter,
   Divider,
+  ModalContent,
+  ModalCloseButton,
+  ModalOverlay,
+  ModalHeader,
+  ModalBody,
+  Modal,
 } from '@chakra-ui/react';
 import { CallToActionWithIllustration } from '../index.page';
 import Box from '@material-ui/core/Box';
@@ -56,6 +63,9 @@ interface arduinoI extends arduinoResponseI {
 }
 
 function ArduinoApps() {
+  const authState = useSelector((state: RootStore) => state.auth);
+
+  const router = useRouter();
   const toast = useToast();
 
   const [deletingApp, setDeletingApp] = useState<boolean>(false);
@@ -64,9 +74,12 @@ function ArduinoApps() {
     onOpen: onCreateNewSensorDrawerOpen,
     onClose: onCreateNewSensorDrawerClose,
   } = useDisclosure();
+  const {
+    isOpen: isModalDeleteOpen,
+    onOpen: onModalDeleteOpen,
+    onClose: onModalDeleteClose,
+  } = useDisclosure();
 
-  const router = useRouter();
-  const authState = useSelector((state: RootStore) => state.auth);
   const [sensors, setSensors] = useState<sensorsI>({
     fetched: false,
   });
@@ -101,6 +114,7 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/app',
         { arduinoAppId: router.query.appID, authToken: authState.token },
       );
+
       if (app.data.app?.token) {
         tokenValue = app.data.app?.token;
       }
@@ -135,6 +149,8 @@ function ArduinoApps() {
   }
 
   async function deleteArduinoApp() {
+    let audio;
+
     setDeletingApp(true);
 
     try {
@@ -144,6 +160,9 @@ function ArduinoApps() {
           ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP}/${router.query.appID}`
           : `http://localhost:3030/arduino/del/${router.query.appID}`,
         { authToken: authState.token },
+      );
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
       );
       toast({
         title: deletedApp.data.message,
@@ -157,6 +176,9 @@ function ArduinoApps() {
         router.push('/app/arduinoapps');
       }
     } catch (err) {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962764/sounds/04%20Secondary%20System%20Sounds/alert_error-02_h1zyjn.wav',
+      );
       console.log('ERROR WHEN DELETING APP', err);
       toast({
         title: 'ERROR WHEN DELETING APP',
@@ -168,6 +190,10 @@ function ArduinoApps() {
     }
 
     setDeletingApp(false);
+
+    if (audio) {
+      audio.play();
+    }
   }
 
   if (!arduinoApp.fetched && authState.user) {
@@ -187,6 +213,40 @@ function ArduinoApps() {
   if (arduinoApp.fetched && arduinoApp.app) {
     return (
       <>
+        {/* Modal Alert Delete */}
+        <Modal
+          onClose={() => {}}
+          isCentered
+          isOpen={isModalDeleteOpen}
+          motionPreset='slideInBottom'
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Delete Arduino App</ModalHeader>
+
+            <ModalBody>Are you sure you want to delete this app?</ModalBody>
+            <ModalFooter>
+              <Button
+                colorScheme='blue'
+                mr={3}
+                onClick={() => {
+                  const audio = new Audio(
+                    'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962759/sounds/04%20Secondary%20System%20Sounds/navigation-cancel_xpftbk.wav',
+                  );
+                  audio.play();
+                  onModalDeleteClose();
+                }}
+              >
+                Cancel
+              </Button>
+              <Button colorScheme='red' onClick={deleteArduinoApp}>
+                Delete
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+        {/* End of Modal Alert Delete */}
+
         {typeof router.query.appID == 'string' && (
           <CreateNewSensorDrawer
             token={authState.token}
@@ -252,7 +312,11 @@ function ArduinoApps() {
                 _active={{ bg: 'red.800' }}
                 isLoading={deletingApp}
                 onClick={() => {
-                  deleteArduinoApp();
+                  const audio = new Audio(
+                    'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962738/sounds/02%20Alerts%20and%20Notifications/notification_simple-01_t5n0nr.wav',
+                  );
+                  audio.play();
+                  onModalDeleteOpen();
                 }}
               >
                 <IoIosTrash size={20} />
@@ -261,6 +325,8 @@ function ArduinoApps() {
           </Box>
         </Flex>
         <Divider mt={5} />
+
+        {/* Arduino App Token */}
         <Text mt={3} className='dark:text-cool-gray-400' fontSize='md'>
           Arduino App Token
         </Text>
@@ -275,6 +341,7 @@ function ArduinoApps() {
             {hasCopied ? 'Copied' : 'Copy'}
           </Button>
         </Flex>
+        {/* End of Arduino App Token */}
 
         {!sensors.fetched ? (
           <LoadingPage text='Fetching sensors' />

@@ -127,7 +127,7 @@ const Navbar = (props: NavbarProps) => {
               </button>
             </div>
 
-            <ul className='hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6'>
+            <ul className='hidden absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 lg:mx-auto lg:flex lg:items-center lg:w-auto lg:space-x-6'>
               {pages.map((page, idx) => (
                 <Fragment>
                   <li>

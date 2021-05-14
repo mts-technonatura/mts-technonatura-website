@@ -54,12 +54,15 @@ function ArduinoApps() {
   }, [authState.token]);
 
   async function fetchArduinoApps() {
+    let audio;
+
     try {
       const apps = await axios.post<arduinoAppsResponse>(
         process.env.NEXT_PUBLIC_ARDUINO_APPS ||
           'http://localhost:3030/arduino/apps',
         { authToken: authState.token },
       );
+
       setArduinoApps({
         apps: apps.data.apps,
         fetched: true,
