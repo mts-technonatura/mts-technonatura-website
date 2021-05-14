@@ -35,10 +35,9 @@ export default function NavbarComponent({
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   let location = useRouter();
   useEffect(() => {
+    console.log("LOGIN BRE!")
     if (
-      !authState.fetched &&
-      authState.message !== 'account created' &&
-      authState.message !== 'login successfully'
+      !authState.fetched && !authState.loading && !authState.user
     ) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
