@@ -8,7 +8,7 @@ function InfoCard({
   type,
 }: {
   title: string | JSX.Element;
-  value: number | string;
+  value?: number | string;
   children?: JSX.Element | JSX.Element[];
   type?: 0 | 1;
 }) {

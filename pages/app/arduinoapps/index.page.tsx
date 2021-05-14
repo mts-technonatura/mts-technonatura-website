@@ -15,8 +15,6 @@ import {
 import Box from '@material-ui/core/Box';
 /* ======================= END UI ======================= */
 
-import styled from '@emotion/styled';
-import Card from '@material-ui/core/Card';
 import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { useRouter } from 'next/router';
@@ -73,13 +71,60 @@ function ArduinoApps() {
       });
     }
   }
-  const FetchAllDataAPI_ROUTE =
-    process.env.NEXT_PUBLIC_ALL_DATA_API || 'http://localhost:3030/allData';
-
   if (!authState.fetched && authState.loading) {
     return <LoadingPage />;
   } else if (!arduinoApps.fetched && authState.user) {
     return <LoadingPage text='Fetching Apps' />;
+  }
+
+  if (!authState.user || !authState.user.isAccountVerified) {
+    return (
+      <CallToActionWithIllustration
+        Icon={<UnhappyGhost mt={{ base: 12, sm: 16 }} />}
+        title="You Don't Have an Access To This Feature"
+        desc='This Feature is only accessible for verified users'
+        Buttons={
+          <>
+            {!authState.user ? (
+              <>
+                <Link href='/login'>
+                  <Button
+                    rounded={'full'}
+                    px={6}
+                    colorScheme={'purple'}
+                    bg='purple.600'
+                    _hover={{ bg: 'purple.700' }}
+                  >
+                    Login
+                  </Button>
+                </Link>
+                <Link href='/create-account'>
+                  <Button
+                    className='dark:bg-cool-gray-300'
+                    rounded={'full'}
+                    px={6}
+                  >
+                    Create an Account
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <Link href='https://t.me/aldhaneka'>
+                <Button
+                  rounded={'full'}
+                  px={6}
+                  colorScheme={'purple'}
+                  bg='purple.600'
+                  _hover={{ bg: 'purple.700' }}
+                >
+                  Request To Verify
+                </Button>
+              </Link>
+            )}
+          </>
+        }
+      />
+    );
   }
 
   return (
@@ -159,54 +204,6 @@ function ArduinoApps() {
           />
         </>
       )}
-
-      {(!authState.user || !authState.user.isAccountVerified) && (
-        <CallToActionWithIllustration
-          Icon={<UnhappyGhost mt={{ base: 12, sm: 16 }} />}
-          title="You Don't Have an Access To This Feature"
-          desc='This Feature is only accessible for verified users'
-          Buttons={
-            <>
-              {!authState.user ? (
-                <>
-                  <Link href='/login'>
-                    <Button
-                      rounded={'full'}
-                      px={6}
-                      colorScheme={'purple'}
-                      bg='purple.600'
-                      _hover={{ bg: 'purple.700' }}
-                    >
-                      Login
-                    </Button>
-                  </Link>
-                  <Link href='/create-account'>
-                    <Button
-                      className='dark:bg-cool-gray-300'
-                      rounded={'full'}
-                      px={6}
-                    >
-                      Create an Account
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <Link href='https://t.me/aldhaneka'>
-                  <Button
-                    rounded={'full'}
-                    px={6}
-                    colorScheme={'purple'}
-                    bg='purple.600'
-                    _hover={{ bg: 'purple.700' }}
-                  >
-                    Request To Verify
-                  </Button>
-                </Link>
-              )}
-            </>
-          }
-        />
-      )}
     </>
   );
 }
@@ -215,7 +212,7 @@ interface CallToActionWithIllustrationI {
   title: string;
   desc: string;
   Buttons?: JSX.Element | JSX.Element[];
-  Icon: JSX.Element;
+  Icon?: JSX.Element;
 }
 export function CallToActionWithIllustration({
   Buttons,
