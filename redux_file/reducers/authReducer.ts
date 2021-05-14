@@ -36,6 +36,7 @@ const authReducer = (
         loading: false,
         errors: action.errors,
         fetched: true,
+        message: action.message,
       });
     case Auth_LOADING:
       return Object.assign({}, state, {

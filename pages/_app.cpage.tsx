@@ -6,7 +6,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider, useTheme } from '@material-ui/core/styles';
 import { AppContext, AppProps } from 'next/app';
-import { DefaultSeo } from 'next-seo';
 import Head from 'next/head';
 import ProgressLoad from 'components/ProgressLoad';
 import React, { useEffect } from 'react';
@@ -16,6 +15,7 @@ import store from '../redux_file/';
 import Navbar from 'components/Navbar';
 import { Windmill } from '@windmill/react-ui';
 import { CookiesProvider } from 'react-cookie';
+import { NextSeo } from 'next-seo';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useTheme();
@@ -45,7 +45,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.1/css/all.css'
         />
       </Head>
-
       <style jsx global>{`
         html {
           font-family: 'Roboto', sans-serif;
@@ -53,8 +52,16 @@ function MyApp({ Component, pageProps }: AppProps) {
           scroll-behavior: smooth;
         }
       `}</style>
-
-      <DefaultSeo />
+      <NextSeo
+        title='MTs TechnoNatura Website'
+        description='Official MTs TechnoNatura Indonesia Website'
+        canonical={process.env.PUBLIC_URL}
+        openGraph={{
+          url: process.env.PUBLIC_URL,
+          title: 'MTs TechnoNatura Home Page',
+          description: 'MTs TechnoNatura Indonesia Website',
+        }}
+      />
       <CookiesProvider>
         {/* <CssBaseline /> */}
         <Provider store={store}>

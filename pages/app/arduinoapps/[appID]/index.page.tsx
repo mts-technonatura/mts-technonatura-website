@@ -154,7 +154,6 @@ function ArduinoApps() {
     setDeletingApp(true);
 
     try {
-      console.log(process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP);
       const deletedApp = await axios.post<normalResponseT>(
         process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP
           ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP}/${router.query.appID}`
@@ -164,6 +163,7 @@ function ArduinoApps() {
       audio = new Audio(
         'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
       );
+      audio.play();
       toast({
         title: deletedApp.data.message,
         position: 'bottom-right',
@@ -179,6 +179,7 @@ function ArduinoApps() {
       audio = new Audio(
         'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962764/sounds/04%20Secondary%20System%20Sounds/alert_error-02_h1zyjn.wav',
       );
+      audio.play();
       console.log('ERROR WHEN DELETING APP', err);
       toast({
         title: 'ERROR WHEN DELETING APP',
@@ -190,10 +191,6 @@ function ArduinoApps() {
     }
 
     setDeletingApp(false);
-
-    if (audio) {
-      audio.play();
-    }
   }
 
   if (!arduinoApp.fetched && authState.user) {
@@ -230,16 +227,26 @@ function ArduinoApps() {
                 colorScheme='blue'
                 mr={3}
                 onClick={() => {
-                  const audio = new Audio(
-                    'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962759/sounds/04%20Secondary%20System%20Sounds/navigation-cancel_xpftbk.wav',
-                  );
-                  audio.play();
-                  onModalDeleteClose();
+                  if (!deletingApp) {
+                    const audio = new Audio(
+                      'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962759/sounds/04%20Secondary%20System%20Sounds/navigation-cancel_xpftbk.wav',
+                    );
+                    audio.play();
+                    onModalDeleteClose();
+                  }
                 }}
               >
                 Cancel
               </Button>
-              <Button colorScheme='red' onClick={deleteArduinoApp}>
+              <Button
+                colorScheme='red'
+                isLoading={deletingApp}
+                onClick={() => {
+                  if (!deletingApp) {
+                    deleteArduinoApp();
+                  }
+                }}
+              >
                 Delete
               </Button>
             </ModalFooter>
@@ -303,6 +310,8 @@ function ArduinoApps() {
                 <FaRegEdit size={20} />
               </Button>
             </Tooltip>
+
+            {/* DELETE APP BUTTON */}
             <Tooltip label='Delete App' aria-label='A tooltip'>
               <Button
                 ml={4}
@@ -322,6 +331,7 @@ function ArduinoApps() {
                 <IoIosTrash size={20} />
               </Button>
             </Tooltip>
+            {/* END OF DELETE APP BUTTON */}
           </Box>
         </Flex>
         <Divider mt={5} />

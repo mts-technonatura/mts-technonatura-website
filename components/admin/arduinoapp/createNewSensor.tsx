@@ -85,7 +85,6 @@ export default function CreateNewArduinoAppDrawer({
       audio = new Audio(
         'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962764/sounds/04%20Secondary%20System%20Sounds/alert_error-02_h1zyjn.wav',
       );
-      audio.volume = 2;
     }
 
     if (createNewSensor.data.errors) {

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
 import PageTitle from 'components/Typography/PageTitle';
-import { useSelector } from 'react-redux';
-import { RootStore } from '@/redux/index';
-import TimeText from 'utils/timeText';
 import LoadingPage from 'components/loadingpage';
 import AppIndexTop from 'components/appIndex/top';
 import AppIndexFeature from 'components/appIndex/features';
+
+import { NextSeo } from 'next-seo';
+
+/* REACT - REDUXJS */
+import { useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
+import TimeText from 'utils/timeText';
+/* REACT - REDUXJS */
 
 function Dashboard() {
   const authState = useSelector((state: RootStore) => state.auth);
@@ -17,6 +22,16 @@ function Dashboard() {
 
   return (
     <>
+      <NextSeo
+        title='MTs TechnoNatura Dashboard'
+        description='MTs TechnoNatura Indonesia Students Dashboard'
+        canonical={process.env.PUBLIC_URL}
+        openGraph={{
+          url: process.env.PUBLIC_URL,
+          title: 'MTs TechnoNatura Students Dashboard',
+          description: 'MTs TechnoNatura Indonesia Students Dashboard',
+        }}
+      />
       <PageTitle>
         {authState.user
           ? `${TimeText()} ${authState.user.name}`

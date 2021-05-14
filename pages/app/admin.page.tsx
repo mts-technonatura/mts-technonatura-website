@@ -101,7 +101,7 @@ function Dashboard() {
     if (authState.fetched && !authState.user) {
       router.push('/app');
     }
-  }, [authState.user]);
+  }, [authState.message]);
 
   useEffect(() => {
     fetchAllData();

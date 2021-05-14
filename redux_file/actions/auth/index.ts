@@ -15,7 +15,7 @@ import {
 } from '../types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
 import axios from 'axios';
-import { ssr, JWTTokenResponse } from '@/ts/index';
+import { ssr } from '@/ts/index';
 
 interface signIn {
   username: string;
@@ -30,6 +30,7 @@ interface signupI extends signIn {
 export const AuthLogin = (Auth: signIn) => async (
   dispatch: Dispatch<AuthDispatchTypes>,
 ) => {
+  let audio;
   try {
     dispatch({
       type: Auth_LOADING,
@@ -45,13 +46,17 @@ export const AuthLogin = (Auth: signIn) => async (
       Auth,
     );
 
-    // console.log(res.data);
     if (res.data.errors) {
       dispatch({
         type: Auth_FAIL,
         errors: res.data.errors,
       });
     } else {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
+      );
+      audio.play();
+
       dispatch<AuthSuccess>({
         type: Auth_LOGIN_SUCCESS,
         token: res.data.token,
@@ -59,8 +64,14 @@ export const AuthLogin = (Auth: signIn) => async (
       });
     }
   } catch (e) {
+    // if login fail
+    audio = new Audio(
+      'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962739/sounds/02%20Alerts%20and%20Notifications/alert_high-intensity_kag2c3.wav',
+    );
+    audio.play();
     dispatch({
       type: Auth_FAIL,
+      message: 'server error',
     });
   }
 };
@@ -149,6 +160,7 @@ export const AuthRemoveErrors = () => async (
 export const AuthSignup = (inputs: signupI) => async (
   dispatch: Dispatch<AuthDispatchTypes>,
 ) => {
+  let audio;
   try {
     dispatch({
       type: Auth_LOADING,
@@ -168,13 +180,16 @@ export const AuthSignup = (inputs: signupI) => async (
       },
     );
 
-    // console.log(res.data);
     if (res.data.errors) {
       dispatch({
         type: Auth_FAIL,
         errors: res.data.errors,
       });
     } else {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
+      );
+      audio.play();
       dispatch({
         type: Auth_SIGNUP_SUCCESS,
         token: res.data.token,
@@ -182,6 +197,10 @@ export const AuthSignup = (inputs: signupI) => async (
       });
     }
   } catch (e) {
+    audio = new Audio(
+      'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962739/sounds/02%20Alerts%20and%20Notifications/alert_high-intensity_kag2c3.wav',
+    );
+    audio.play();
     dispatch({
       type: Auth_FAIL,
     });

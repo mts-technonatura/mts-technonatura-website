@@ -81,13 +81,17 @@ export default function CreateNewArduinoAppDrawer({
     );
 
     if (createArduinoApp.data.status == 'success') {
-      router.push(`/app/arduinoapp/${createArduinoApp.data.arduinoAppID}`);
+      router.push(`/app/arduinoapps/${createArduinoApp.data.arduinoAppID}`);
       audio = new Audio(
-        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962729/sounds/01%20Hero%20Sounds/hero_simple-celebration-01_vxw7af.wav',
       );
     } else if (createArduinoApp.data.status == 'error') {
       audio = new Audio(
-        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962764/sounds/04%20Secondary%20System%20Sounds/alert_error-02_h1zyjn.wav',
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962762/sounds/04%20Secondary%20System%20Sounds/alert_error-03_qmoczq.wav',
+      );
+    } else {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962755/sounds/03%20Primary%20System%20Sounds/navigation_forward-selection_emqw4n.wav',
       );
     }
     if (createArduinoApp.data.errors) {

@@ -8,7 +8,7 @@ interface NavFootI {
 }
 
 export default function NavFoot({ children, page }: NavFootI): JSX.Element {
-  if (page == '/login' || page == '/signup') {
+  if (page == '/login' || page == '/create-account') {
     return <>{children}</>;
   }
   return (

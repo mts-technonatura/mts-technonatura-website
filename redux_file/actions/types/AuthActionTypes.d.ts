@@ -23,6 +23,7 @@ export interface AuthLoading {
 export interface AuthFail {
   type: typeof Auth_FAIL;
   errors?: any;
+  message?: string;
 }
 
 // when API server returns an error as we check the JWT token

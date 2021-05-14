@@ -22,6 +22,7 @@ import * as AuthMethods from '@/redux/actions/index';
 import LoadingPage from 'components/loadingpage';
 import ms from 'ms';
 import _ from 'underscore';
+
 const validationSchema = yup.object({
   username: yup
     .string()
@@ -35,7 +36,7 @@ const validationSchema = yup.object({
     .required('Password is required'),
 });
 
-// props: Readonly<ssr>
+// page
 export default function LoginPage() {
   // const { message, user } = props;
   const tokenCookieKey =
@@ -43,7 +44,7 @@ export default function LoginPage() {
   const toast = useToast();
   const dispatch = useDispatch();
   const authState = useSelector((state: RootStore) => state.auth);
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = React.useState(false); // show password
   const handleClick = () => setShow(!show);
   const [cookies, setCookie] = useCookies([tokenCookieKey]);
   const router = useRouter();
@@ -59,6 +60,7 @@ export default function LoginPage() {
     },
   });
 
+  // when get input errors
   useEffect(() => {
     if (!_.isEmpty(authState.errors)) {
       formik.setErrors(authState.errors);
@@ -66,6 +68,7 @@ export default function LoginPage() {
   }, [authState.errors]);
 
   useEffect(() => {
+    let audio;
     if (
       _.isString(authState.token) &&
       _.isEmpty(authState.errors) &&
@@ -95,6 +98,10 @@ export default function LoginPage() {
       router.push('/app');
       return;
     } else if (authState.message == 'server error') {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962739/sounds/02%20Alerts%20and%20Notifications/alert_high-intensity_kag2c3.wav',
+      );
+      audio.play();
       toast({
         title: "Couldn't connect to server",
         position: 'bottom-right',

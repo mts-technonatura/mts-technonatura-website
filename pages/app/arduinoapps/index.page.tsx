@@ -43,7 +43,6 @@ function ArduinoApps() {
 
   //   const [allData, setAllData] = useState<Readonly<AlldataI[]>>();
   const router = useRouter();
-  console.log(router);
   const authState = useSelector((state: RootStore) => state.auth);
   const [arduinoApps, setArduinoApps] = useState<arduinoAppsI>({
     fetched: false,

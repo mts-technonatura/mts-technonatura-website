@@ -22,12 +22,12 @@ export default function Home() {
       </Head>
       <NextSeo
         title='MTs TechnoNatura Website'
-        description='Website remaja MTs TechnoNatura'
+        description='Official MTs TechnoNatura Indonesia Website'
         canonical={process.env.PUBLIC_URL}
         openGraph={{
           url: process.env.PUBLIC_URL,
           title: 'MTs TechnoNatura Home Page',
-          description: 'Website buatan remaja MTs TechnoNatura',
+          description: 'MTs TechnoNatura Indonesia Website',
         }}
       />
 
