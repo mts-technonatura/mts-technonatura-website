@@ -32,7 +32,10 @@ const validationSchema = yup.object({
     .string()
     .trim()
     .min(4, 'Minimum name length is 4 characters')
-    .matches(RegExp(/^[a-zA-Z0-9]+$/), 'Only Letters and Numbers are allowed')
+    .matches(
+      RegExp(/^[A-Za-z0-9_-]*$/),
+      'Only letters, numbers, underscores, and dashes are allowed',
+    )
     .required('Name field is required'),
   desc: yup
     .string()

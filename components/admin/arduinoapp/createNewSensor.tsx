@@ -34,7 +34,10 @@ const validationSchema = yup.object({
     .string()
     .trim()
     .min(4, 'Minimum name length is 4 characters')
-    .matches(RegExp(/^[a-zA-Z0-9]+$/), 'Only Letters and Numbers are allowed')
+    .matches(
+      RegExp(/^[A-Za-z0-9_-]*$/),
+      'Only letters, numbers, underscores, and dashes are allowed',
+    )
     .required('Name field is required'),
 });
 
@@ -65,6 +68,7 @@ export default function CreateNewArduinoAppDrawer({
 
   // function ketika tombol create ditekan
   async function onSubmit(values: Object) {
+    let audio;
     setCreating(true);
     const createNewSensor = await axios.post<createSensorResponseI>(
       process.env.NEXT_PUBLIC_CREATE_SENSOR ||
@@ -73,12 +77,26 @@ export default function CreateNewArduinoAppDrawer({
     );
 
     if (createNewSensor.data.status == 'success') {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
+      );
       router.push(`${asPath}/${createNewSensor.data.sensorId}`);
+    } else {
+      audio = new Audio(
+        'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962764/sounds/04%20Secondary%20System%20Sounds/alert_error-02_h1zyjn.wav',
+      );
     }
 
     if (createNewSensor.data.errors) {
       formik.setErrors(createNewSensor.data.errors);
     }
+
+    console.log(audio);
+
+    if (audio) {
+      audio.play();
+    }
+
     toast({
       title: createNewSensor.data.message,
       status: createNewSensor.data.status,

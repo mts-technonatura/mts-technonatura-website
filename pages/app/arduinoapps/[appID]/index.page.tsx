@@ -12,8 +12,11 @@ import {
   Spacer,
   useDisclosure,
   useToast,
+  Input,
   Text,
   Tooltip,
+  useClipboard,
+  Divider,
 } from '@chakra-ui/react';
 import { CallToActionWithIllustration } from '../index.page';
 import Box from '@material-ui/core/Box';
@@ -71,6 +74,8 @@ function ArduinoApps() {
     fetched: false,
   });
 
+  let { hasCopied, onCopy, value: tokenValue } = useClipboard('');
+
   useEffect(() => {
     if (!authState.user && authState.fetched) {
       router.push('/app/arduinoapps');
@@ -91,13 +96,14 @@ function ArduinoApps() {
 
   async function fetchArduinoApp() {
     try {
-      console.log(router.query.appID);
       const app = await axios.post<arduinoResponseI>(
         process.env.NEXT_PUBLIC_ARDUINO_APP ||
           'http://localhost:3030/arduino/app',
         { arduinoAppId: router.query.appID, authToken: authState.token },
       );
-
+      if (app.data.app?.token) {
+        tokenValue = app.data.app?.token;
+      }
       setArduinoApp({
         app: app.data.app,
         fetched: true,
@@ -254,6 +260,22 @@ function ArduinoApps() {
             </Tooltip>
           </Box>
         </Flex>
+        <Divider mt={5} />
+        <Text mt={3} className='dark:text-cool-gray-400' fontSize='md'>
+          Arduino App Token
+        </Text>
+        <Flex mb={2} mt={2}>
+          <Input
+            className='dark:text-gray-400'
+            value={arduinoApp.app.token}
+            isReadOnly
+            placeholder='Welcome'
+          />
+          <Button onClick={onCopy} ml={2}>
+            {hasCopied ? 'Copied' : 'Copy'}
+          </Button>
+        </Flex>
+
         {!sensors.fetched ? (
           <LoadingPage text='Fetching sensors' />
         ) : Array.isArray(sensors.sensors) ? (
