@@ -267,11 +267,15 @@ function ArduinoApps() {
 
         <Breadcrumb mb={5} className='dark:text-cool-gray-400'>
           <BreadcrumbItem>
-            <BreadcrumbLink href='/app'>App</BreadcrumbLink>
+            <BreadcrumbLink>
+              <Link href='/app'>App</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
-            <BreadcrumbLink href='/app/arduinoapps'>ArduinoApps</BreadcrumbLink>
+            <BreadcrumbLink>
+              <Link href='/app/arduinoapps'>ArduinoApps</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
 
           <BreadcrumbItem isCurrentPage>
