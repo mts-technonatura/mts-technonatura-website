@@ -126,7 +126,7 @@ function ArduinoApps() {
     try {
       const deletedApp = await axios.post<normalResponseT>(
         process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR
-          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP}/sensor/${router.query.sensorId}`
+          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR}/${router.query.sensorId}`
           : `http://localhost:3030/arduino/del/sensor/${router.query.sensorId}`,
         { authToken: authState.token },
       );
