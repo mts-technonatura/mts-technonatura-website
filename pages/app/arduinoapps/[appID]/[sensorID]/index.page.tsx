@@ -90,8 +90,8 @@ function ArduinoApps() {
   }, [authState.user]);
 
   useEffect(() => {
-    console.log("asdjuiasjdiujasiudjasiuj",router.query.sensorId, authState.user , !sensor.fetched)
-    if (router.query.sensorId && authState.user && !sensor.fetched) {
+    console.log("asdjuiasjdiujasiudjasiuj",router.query.sensorID, authState.user , !sensor.fetched)
+    if (router.query.sensorID && authState.user && !sensor.fetched) {
       fetchSensor();
     }
   });
