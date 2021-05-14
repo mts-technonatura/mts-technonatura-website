@@ -107,7 +107,7 @@ function ArduinoApps() {
           authToken: authState.token,
         },
       );
-
+console.log(app)
       setSensor({
         sensor: app.data.sensor,
         fetched: true,
