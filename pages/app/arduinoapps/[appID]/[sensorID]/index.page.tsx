@@ -246,7 +246,7 @@ console.log(app)
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink>{router.query.sensorId}</BreadcrumbLink>
+            <BreadcrumbLink>{router.query.sensorID}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex>
