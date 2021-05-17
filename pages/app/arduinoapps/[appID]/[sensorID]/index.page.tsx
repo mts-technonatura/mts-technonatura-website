@@ -303,7 +303,11 @@ function ArduinoApps() {
           ) : (
             <div className='mt-10 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
               {sensor.sensor.data.map((sensor, id) => (
-                <InfoCard title={String(sensor.data)} type={1}></InfoCard>
+                <InfoCard
+                  value={String(new Date(sensor.date))}
+                  title={String(sensor.data)}
+                  type={1}
+                ></InfoCard>
               ))}
             </div>
           )
