@@ -90,7 +90,8 @@ function ArduinoApps() {
   }, [authState.user]);
 
   useEffect(() => {
-    if (router.query.sensorId && authState.user && !sensor.fetched) {
+    console.log("asdjuiasjdiujasiudjasiuj",router.query.sensorID, authState.user , !sensor.fetched)
+    if (router.query.sensorID && authState.user && !sensor.fetched) {
       fetchSensor();
     }
   });
@@ -102,11 +103,11 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/sensor',
         {
           appId: router.query.appID,
-          sensorId: router.query.sensorId,
+          sensorId: router.query.sensorID,
           authToken: authState.token,
         },
       );
-
+console.log(app)
       setSensor({
         sensor: app.data.sensor,
         fetched: true,
@@ -126,8 +127,8 @@ function ArduinoApps() {
     try {
       const deletedApp = await axios.post<normalResponseT>(
         process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR
-          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_APP}/sensor/${router.query.sensorId}`
-          : `http://localhost:3030/arduino/del/sensor/${router.query.sensorId}`,
+          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR}/${router.query.sensorID}`
+          : `http://localhost:3030/arduino/del/sensor/${router.query.sensorID}`,
         { authToken: authState.token },
       );
       audio = new Audio(
@@ -245,7 +246,7 @@ function ArduinoApps() {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink>{router.query.sensorId}</BreadcrumbLink>
+            <BreadcrumbLink>{router.query.sensorID}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex>
