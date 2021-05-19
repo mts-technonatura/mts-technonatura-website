@@ -33,16 +33,15 @@ export default function NavbarComponent({
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
-  let location = useRouter();
   useEffect(() => {
-    console.log('LOGIN BRE!');
+    console.log(router);
     if (authState.loading) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
   useEffect(() => {
     closeSidebar();
-  }, [location.asPath]);
+  }, [router.asPath]);
 
   const { asPath } = useRouter();
   if (asPath.includes('/app')) {
@@ -88,7 +87,7 @@ export default function NavbarComponent({
                 </Link>
               </Stack>
             )}
-            <Header />
+            <Header pathname={router.pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
           </div>
         </div>

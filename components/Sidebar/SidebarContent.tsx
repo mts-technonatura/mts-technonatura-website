@@ -43,13 +43,17 @@ function SidebarContent() {
                 {authState.user ? (
                   route.permission ? (
                     checkRoles(authState.user.roles, route.permission) && (
-                      <MenuItem asPath={router} route={route} />
+                      <MenuItem
+                        key={route.name}
+                        asPath={router}
+                        route={route}
+                      />
                     )
                   ) : (
-                    <MenuItem asPath={router} route={route} />
+                    <MenuItem key={route.name} asPath={router} route={route} />
                   )
                 ) : !route.permission ? (
-                  <MenuItem asPath={router} route={route} />
+                  <MenuItem key={route.name} asPath={router} route={route} />
                 ) : (
                   ''
                 )}

@@ -69,13 +69,8 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/discord',
-        destination: '/',
-        permanent: true,
-      },
-      {
         source: '/yt',
-        destination: '/',
+        destination: process.env.yt,
         permanent: true,
       },
       {
@@ -86,6 +81,11 @@ const nextConfig = {
       {
         source: '/github',
         destination: 'https://github.com/mts-technonatura',
+        permanent: true,
+      },
+      {
+        source: '/discord',
+        destination: process.env.discord,
         permanent: true,
       },
     ];

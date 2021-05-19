@@ -14,7 +14,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
-import { useCookies } from 'react-cookie';
+import { useCookie } from 'next-universal-cookie';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import ErrorPage from 'components/500';
@@ -46,7 +46,7 @@ export default function LoginPage() {
   const authState = useSelector((state: RootStore) => state.auth);
   const [show, setShow] = React.useState(false); // show password
   const handleClick = () => setShow(!show);
-  const [cookies, setCookie] = useCookies([tokenCookieKey]);
+  const [cookies, setCookie] = useCookie([tokenCookieKey]);
   const router = useRouter();
 
   const formik = useFormik({
@@ -64,23 +64,25 @@ export default function LoginPage() {
   useEffect(() => {
     if (!_.isEmpty(authState.errors)) {
       formik.setErrors(authState.errors);
+    } else {
+      formik.setErrors({});
     }
   }, [authState.errors]);
 
   useEffect(() => {
+    // console.log('eh', authState.token, authState.errors, authState.message);
     let audio;
     if (
       _.isString(authState.token) &&
       _.isEmpty(authState.errors) &&
       authState.message == 'login successfully'
     ) {
-      if (router)
-        toast({
-          title: `Login successfully`,
-          position: 'top-right',
-          isClosable: true,
-          status: 'success',
-        });
+      toast({
+        title: `Login successfully`,
+        position: 'top-right',
+        isClosable: true,
+        status: 'success',
+      });
 
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
@@ -91,6 +93,7 @@ export default function LoginPage() {
         path: '/',
         maxAge: ms('1y'),
       });
+      // console.log(cookies);
       router.push('/app');
     }
 

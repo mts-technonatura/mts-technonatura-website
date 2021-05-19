@@ -54,13 +54,17 @@ function SidebarSubmenu({
                 {user ? (
                   route.permission ? (
                     checkRoles(user.roles, route.permission) && (
-                      <MenuItem asPath={asPath} route={route} />
+                      <MenuItem
+                        key={route.name}
+                        asPath={asPath}
+                        route={route}
+                      />
                     )
                   ) : (
-                    <MenuItem asPath={asPath} route={route} />
+                    <MenuItem key={route.name} asPath={asPath} route={route} />
                   )
                 ) : !route.permission ? (
-                  <MenuItem asPath={asPath} route={route} />
+                  <MenuItem key={route.name} asPath={asPath} route={route} />
                 ) : (
                   ''
                 )}

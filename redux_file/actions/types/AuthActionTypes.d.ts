@@ -10,6 +10,7 @@ export const AUTH_REMOVE_ERRORS = 'AUTH_REMOVE_ERRORS';
 export const Auth_JWT_SUCCESS = 'Auth_JWT_SUCCESS';
 export const Auth_LOGIN_SUCCESS = 'Auth_LOGIN_SUCCESS';
 export const Auth_SIGNUP_SUCCESS = 'Auth_SIGNUP_SUCCESS';
+export const Auth_SET_TOKEN = 'Auth_SET_TOKEN';
 
 export type SocialMedia = {
   name: string;
@@ -37,6 +38,10 @@ export interface AuthSuccess {
   token?: string;
   user?: UserType;
 }
+export interface AuthSetToken {
+  type: typeof Auth_SET_TOKEN;
+  token: string;
+}
 
 export type AuthDispatchTypes =
   | AuthLoading
@@ -47,4 +52,5 @@ export type AuthDispatchTypes =
   | AUTH_REMOVE_ERRORS
   | Auth_SIGNUP_SUCCESS
   | Auth_LOGIN_SUCCESS
-  | Auth_JWT_SUCCESS;
+  | Auth_JWT_SUCCESS
+  | AuthSetToken;

@@ -14,11 +14,12 @@ import { Provider } from 'react-redux';
 import store from '../redux_file/';
 import Navbar from 'components/Navbar';
 import { Windmill } from '@windmill/react-ui';
-import { CookiesProvider } from 'react-cookie';
+import { NextCookieProvider } from 'next-universal-cookie';
 import { NextSeo } from 'next-seo';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useTheme();
+  console.log(pageProps, Component.contextTypes);
 
   return (
     <>
@@ -62,7 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           description: 'MTs TechnoNatura Indonesia Website',
         }}
       />
-      <CookiesProvider>
+      <NextCookieProvider cookie={pageProps.cookie}>
         {/* <CssBaseline /> */}
         <Provider store={store}>
           <ThemeProvider theme={theme}>
@@ -79,7 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </ChakraProvider>
           </ThemeProvider>
         </Provider>
-      </CookiesProvider>
+      </NextCookieProvider>
     </>
   );
 }

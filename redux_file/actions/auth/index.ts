@@ -12,6 +12,7 @@ import {
   AUTH_REMOVE_ERRORS,
   Auth_SIGNUP_SUCCESS,
   Auth_LOGIN_SUCCESS,
+  Auth_SET_TOKEN,
 } from '../types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
 import axios from 'axios';
@@ -74,6 +75,15 @@ export const AuthLogin = (Auth: signIn) => async (
       message: 'server error',
     });
   }
+};
+
+export const SetToken = (token: string) => async (
+  dispatch: Dispatch<AuthDispatchTypes>,
+) => {
+  dispatch({
+    type: Auth_SET_TOKEN,
+    token: token,
+  });
 };
 
 export const SavedUserToRedux = (Auth: UserType, token: string) => (

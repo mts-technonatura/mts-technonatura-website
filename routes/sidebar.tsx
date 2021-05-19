@@ -9,6 +9,7 @@
 import * as Icons from 'icons';
 import { SiArduino } from 'react-icons/si';
 import { IconType } from 'react-icons';
+import { FiSettings } from 'react-icons/fi';
 
 export interface routeI {
   path: string;
@@ -38,6 +39,12 @@ const routes: routesI[] = [
     onPage: ['/app/arduinoapps', '/app/arduinoapps/[appID]'],
     Icon: SiArduino,
     name: 'Arduino Apps',
+  },
+  {
+    path: '/app/settings',
+    onPage: ['/app/settings'],
+    Icon: FiSettings,
+    name: 'Settings',
   },
 ];
 

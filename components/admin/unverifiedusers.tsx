@@ -79,7 +79,7 @@ export default function DataTable({
         'http://localhost:3030/auth/acceptuser',
       { userID: userID, authToken },
     );
-    console.log(deletedUser);
+    // console.log(deletedUser);
     toast({
       title: (await deletedUser).data.message,
       status: (await deletedUser).data.status,

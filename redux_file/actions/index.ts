@@ -5,4 +5,5 @@ export {
   AuthVerifyJWT,
   AuthLogout,
   AuthRemoveErrors,
+  SetToken,
 } from './auth';

@@ -90,7 +90,6 @@ function ArduinoApps() {
   }, [authState.user]);
 
   useEffect(() => {
-    console.log("asdjuiasjdiujasiudjasiuj",router.query.sensorID, authState.user , !sensor.fetched)
     if (router.query.sensorID && authState.user && !sensor.fetched) {
       fetchSensor();
     }
@@ -107,7 +106,7 @@ function ArduinoApps() {
           authToken: authState.token,
         },
       );
-console.log(app)
+      console.log(app);
       setSensor({
         sensor: app.data.sensor,
         fetched: true,

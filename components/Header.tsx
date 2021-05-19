@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
+
 import { SidebarContext } from 'context/SidebarContext';
-import { MoonIcon, SunIcon, BellIcon, MenuIcon } from 'icons';
+
 import { WindmillContext } from '@windmill/react-ui';
-import { BiLogOut, BiUser, BiCog } from 'react-icons/bi';
-import InfoCard from 'components/Cards/InfoCard';
 import {
   Button,
   ButtonGroup,
@@ -15,13 +14,23 @@ import {
   MenuDivider,
   Heading,
 } from '@chakra-ui/react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { AuthLogout } from '@/redux/actions';
+
 import Cookie from 'js-cookie';
+
 import Link from 'next/link';
 
-function Header() {
+import { MoonIcon, SunIcon, BellIcon, MenuIcon } from 'icons';
+import { BiLogOut, BiUser, BiCog } from 'react-icons/bi';
+
+interface HeaderI {
+  pathname: string;
+}
+
+function Header({ pathname }: HeaderI) {
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const dispatch = useDispatch();
@@ -105,13 +114,15 @@ function Header() {
                     >
                       Profile
                     </MenuItem>
-                    <MenuItem
-                      className='dark:hover:bg-gray-600'
-                      icon={<BiCog size='20px' />}
-                      command='⌘N'
-                    >
-                      Account Settings
-                    </MenuItem>
+                    <Link href={`/app/settings`}>
+                      <MenuItem
+                        className='dark:hover:bg-gray-600'
+                        icon={<BiCog size='20px' />}
+                        command='⌘N'
+                      >
+                        Account Settings
+                      </MenuItem>
+                    </Link>
                     <MenuDivider />
                     <MenuItem
                       className='dark:hover:bg-gray-600'
