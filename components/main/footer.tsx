@@ -84,7 +84,7 @@ export default function FooterHome(): JSX.Element {
             </svg>
           </a>
 
-          <Link href='https://github.com/madrasah-techonatura/mts-technonatura'>
+          <Link href='https://github.com/mts-technonatura/mts-technonatura-website'>
             <a className='text-gray-400 hover:text-gray-500'>
               <span className='sr-only'>GitHub</span>
               <svg
