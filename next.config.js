@@ -69,8 +69,23 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/about',
+        source: '/discord',
         destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/yt',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/discuss',
+        destination: 'https://forum.mts-technonatura.vercel.app',
+        permanent: true,
+      },
+      {
+        source: '/github',
+        destination: 'https://github.com/mts-technonatura',
         permanent: true,
       },
     ];

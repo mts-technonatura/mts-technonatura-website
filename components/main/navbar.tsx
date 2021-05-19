@@ -54,7 +54,7 @@ const pages: pagesType = [
 const Navbar = (props: NavbarProps) => {
   // console.log("page", page);
 
-  console.log(props.page);
+  // console.log(props.page);
   const [drawer, setDrawer] = useState<boolean>(false);
   const classes = useStyles();
 
