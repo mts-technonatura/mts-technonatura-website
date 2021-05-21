@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import PageTitle from 'components/Typography/PageTitle';
 import LoadingPage from 'components/loadingpage';
-import AppIndexTop from 'components/appIndex/top';
-import AppIndexFeature from 'components/appIndex/features';
+import AppIndexTop from '@/components/dashboardIndex/top';
+import AppIndexFeature from '@/components/dashboardIndex/features';
 
 import { NextSeo } from 'next-seo';
 

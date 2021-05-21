@@ -24,26 +24,27 @@ export interface routesI extends routeI {
 
 const routes: routesI[] = [
   {
-    path: '/app', // the url
+    path: '/dashboard', // the url
     Icon: Icons.HomeIcon, // the component being exported from icons/index.js
     name: 'Home', // name that appear in Sidebar
   },
   {
-    path: '/app/admin',
+    path: '/dashboard/admin',
     Icon: Icons.FormsIcon,
     name: 'Admin Dashboard',
     permission: ['Developer', 'Owner'],
   },
   {
-    path: '/app/arduinoapps',
-    onPage: ['/app/arduinoapps', '/app/arduinoapps/[appID]'],
+    path: '/dashboard/arduinoapps',
+    onPage: ['/dashboard/arduinoapps', '/dashboard/arduinoapps/[appID]'],
     Icon: SiArduino,
     name: 'Arduino Apps',
   },
   {
-    path: '/app/settings',
-    onPage: ['/app/settings'],
+    path: '/dashboard/settings',
+    onPage: ['/dashboard/settings'],
     Icon: FiSettings,
+    permission: ['member'],
     name: 'Settings',
   },
 ];

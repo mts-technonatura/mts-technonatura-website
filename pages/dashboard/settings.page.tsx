@@ -34,11 +34,40 @@ import {
 import PersonalInformationSettings from 'components/settings/personalInformation';
 import ProfileSettings from 'components/settings/profileSettings';
 import SensitiveSettings from 'components/settings/dangerSettings';
-import React from 'react';
+import LoadingPage from 'components/loadingpage';
+
+import React, { useEffect } from 'react';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+
+import { useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
 
 // const SettingsContext = React.createContext('light');
 
 export default function Settings() {
+  const authState = useSelector((state: RootStore) => state.auth);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (
+      (authState.fetched && !authState.user) ||
+      (authState.user && !authState.user.isAccountVerified)
+    ) {
+      router.push('/dashboard');
+    }
+  }, [authState.user]);
+
+  if (authState.loading) {
+    <>
+      <NextSeo
+        title='Settings | mts-technonatura-dashboard'
+        description='Your mts-technonatura account setings'
+      />
+      <LoadingPage></LoadingPage>
+    </>;
+  }
+
   return (
     <div>
       <Box p={useBreakpointValue({ base: '10px', lg: '20px', xl: '100px' })}>

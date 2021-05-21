@@ -81,7 +81,9 @@ export default function CreateNewArduinoAppDrawer({
     );
 
     if (createArduinoApp.data.status == 'success') {
-      router.push(`/app/arduinoapps/${createArduinoApp.data.arduinoAppID}`);
+      router.push(
+        `/dashboard/arduinoapps/${createArduinoApp.data.arduinoAppID}`,
+      );
       audio = new Audio(
         'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962729/sounds/01%20Hero%20Sounds/hero_simple-celebration-01_vxw7af.wav',
       );

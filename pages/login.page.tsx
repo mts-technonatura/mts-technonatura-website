@@ -14,8 +14,10 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
+
 import { useCookie } from 'next-universal-cookie';
 import { useRouter } from 'next/router';
+
 import { NextSeo } from 'next-seo';
 import ErrorPage from 'components/500';
 import * as AuthMethods from '@/redux/actions/index';
@@ -94,11 +96,11 @@ export default function LoginPage() {
         maxAge: ms('1y'),
       });
       // console.log(cookies);
-      router.push('/app');
+      router.push('/dashboard');
     }
 
     if (authState.user) {
-      router.push('/app');
+      router.push('/dashboard');
       return;
     } else if (authState.message == 'server error') {
       audio = new Audio(

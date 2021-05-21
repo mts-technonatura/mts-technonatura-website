@@ -44,7 +44,7 @@ export default function NavbarComponent({
   }, [router.asPath]);
 
   const { asPath } = useRouter();
-  if (asPath.includes('/app')) {
+  if (asPath.includes('/dashboard')) {
     return (
       <>
         <div

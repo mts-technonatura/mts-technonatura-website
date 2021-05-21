@@ -90,7 +90,7 @@ function ArduinoApps() {
   }, [authState.user]);
 
   useEffect(() => {
-    if (router.query.sensorID && authState.user && !sensor.fetched) {
+    if (router.query.sensorId && authState.user && !sensor.fetched) {
       fetchSensor();
     }
   });
@@ -102,11 +102,11 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/sensor',
         {
           appId: router.query.appID,
-          sensorId: router.query.sensorID,
+          sensorId: router.query.sensorId,
           authToken: authState.token,
         },
       );
-      console.log(app);
+      // console.log(app, router.query);
       setSensor({
         sensor: app.data.sensor,
         fetched: true,
@@ -126,8 +126,8 @@ function ArduinoApps() {
     try {
       const deletedApp = await axios.post<normalResponseT>(
         process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR
-          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR}/${router.query.sensorID}`
-          : `http://localhost:3030/arduino/del/sensor/${router.query.sensorID}`,
+          ? `${process.env.NEXT_PUBLIC_DELETE_ARDUINO_SENSOR}/${router.query.sensorId}`
+          : `http://localhost:3030/arduino/del/sensor/${router.query.sensorId}`,
         { authToken: authState.token },
       );
       audio = new Audio(
@@ -143,14 +143,14 @@ function ArduinoApps() {
       });
 
       if (deletedApp.data.status == 'success') {
-        router.push(`/app/arduinoapps/${router.query.appID}`);
+        router.push(`/dashboard/arduinoapps/${router.query.appID}`);
       }
     } catch (err) {
       audio = new Audio(
         'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962764/sounds/04%20Secondary%20System%20Sounds/alert_error-02_h1zyjn.wav',
       );
       audio.play();
-      console.log('ERROR WHEN DELETING SENSOR', err);
+      // console.log('ERROR WHEN DELETING SENSOR', err);
       toast({
         title: 'ERROR WHEN DELETING APP',
         position: 'bottom-right',

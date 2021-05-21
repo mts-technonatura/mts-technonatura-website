@@ -185,7 +185,7 @@ function ArduinoApps() {
                   {arduinoApps?.apps.map((app, id) => (
                     <InfoCard
                       title={
-                        <Link href={`/app/arduinoapps/${app._id}`}>
+                        <Link href={`/dashboard/arduinoapps/${app._id}`}>
                           {app.name}
                         </Link>
                       }

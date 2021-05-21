@@ -76,7 +76,7 @@ function CreateAccountPage({ message, user }: ssr) {
     // console.log(authState);
     if (authState.message == 'jwtSuccess') {
       // dispatch(AuthMethods.SavedUserToRedux(user, cookies[tokenCookieKey]));
-      router.push('/app');
+      router.push('/dashboard');
       return;
     } else if (authState.message == 'server error') {
       toast({
@@ -126,7 +126,7 @@ function CreateAccountPage({ message, user }: ssr) {
       if (_.isBoolean(Boolean(router.query.auth)) && router.query.next) {
         router.push(`/auth/?next=${router.query.next}`);
       } else {
-        router.push('/app');
+        router.push('/dashboard');
       }
     }
   }, [authState.token]);

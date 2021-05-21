@@ -68,7 +68,7 @@ export default function AppIndexFeature() {
         </li>
         <li className='flex'>
           <FeatureCard
-            link='/app/arduinoapps'
+            link='/dashboard/arduinoapps'
             Icon={SiArduino}
             title='Arduino App'
             desc='Free database to store your arduino sensor data'
