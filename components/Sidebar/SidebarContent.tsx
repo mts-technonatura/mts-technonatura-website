@@ -30,35 +30,81 @@ function SidebarContent() {
         {/* <Divider mt={2} /> */}
 
         <ul className='mt-10'>
-          {routes.map((route) =>
-            route.routes ? (
-              <SidebarSubmenu
-                asPath={asPath}
-                user={authState.user}
-                route={route}
-                key={route.name}
-              />
-            ) : (
-              <>
-                {authState.user ? (
-                  route.permission ? (
-                    checkRoles(authState.user.roles, route.permission) && (
+          {routes.map(
+            (route) =>
+              route.type == 'up' &&
+              (route.routes ? (
+                <SidebarSubmenu
+                  asPath={asPath}
+                  user={authState.user}
+                  route={route}
+                  key={route.name}
+                />
+              ) : (
+                <>
+                  {authState.user ? (
+                    route.permission ? (
+                      checkRoles(authState.user.roles, route.permission) && (
+                        <MenuItem
+                          key={route.name}
+                          asPath={router}
+                          route={route}
+                        />
+                      )
+                    ) : (
                       <MenuItem
                         key={route.name}
                         asPath={router}
                         route={route}
                       />
                     )
-                  ) : (
+                  ) : !route.permission ? (
                     <MenuItem key={route.name} asPath={router} route={route} />
-                  )
-                ) : !route.permission ? (
-                  <MenuItem key={route.name} asPath={router} route={route} />
-                ) : (
-                  ''
-                )}
-              </>
-            ),
+                  ) : (
+                    ''
+                  )}
+                </>
+              )),
+          )}
+        </ul>
+      </div>
+
+      <div>
+        <ul className='mt-10'>
+          {routes.map(
+            (route) =>
+              route.type == 'down' && (
+                <>
+                  {authState.user ? (
+                    route.permission ? (
+                      checkRoles(authState.user.roles, route.permission) && (
+                        <MenuItem
+                          key={route.name}
+                          asPath={router}
+                          route={route}
+                          down
+                        />
+                      )
+                    ) : (
+                      <MenuItem
+                        key={route.name}
+                        asPath={router}
+                        route={route}
+                        down
+                      />
+                    )
+                  ) : !route.permission ? (
+                    <MenuItem
+                      key={route.name}
+                      down
+                      asPath={router}
+                      route={route}
+                    />
+                  ) : (
+                    ''
+                  )}
+                </>
+              ),
           )}
         </ul>
       </div>
@@ -73,7 +119,15 @@ function SidebarContent() {
   );
 }
 
-export function MenuItem({ route, asPath }: { route: routeI; asPath: string }) {
+export function MenuItem({
+  route,
+  asPath,
+  down,
+}: {
+  route: routeI;
+  asPath: string;
+  down?: boolean;
+}) {
   return (
     <Tooltip
       hasArrow
@@ -95,21 +149,22 @@ export function MenuItem({ route, asPath }: { route: routeI; asPath: string }) {
                 : 'dark:text-gray-400 hover:dark:text-gray-200'
             }`}
           >
-            {route.onPage
-              ? checkOnPage(asPath, route.onPage) && (
-                  <span
-                    className='absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg'
-                    aria-hidden='true'
-                  ></span>
-                )
-              : asPath == route.path && (
-                  <span
-                    className='absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg'
-                    aria-hidden='true'
-                  ></span>
-                )}
+            {!down &&
+              (route.onPage
+                ? checkOnPage(asPath, route.onPage) && (
+                    <span
+                      className='absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg'
+                      aria-hidden='true'
+                    ></span>
+                  )
+                : asPath == route.path && (
+                    <span
+                      className='absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg'
+                      aria-hidden='true'
+                    ></span>
+                  ))}
 
-            <route.Icon className='w-5 h-5' aria-hidden='true' />
+            <route.Icon className='w-5 h-5 ' aria-hidden='true' />
             <span className='ml-4 xl:hidden'>{route.name}</span>
           </a>
         </Link>

@@ -10,6 +10,7 @@ import * as Icons from 'icons';
 import { SiArduino } from 'react-icons/si';
 import { IconType } from 'react-icons';
 import { FiSettings } from 'react-icons/fi';
+import { FaBlog } from 'react-icons/fa';
 
 export interface routeI {
   path: string;
@@ -17,6 +18,7 @@ export interface routeI {
   Icon: typeof Icons.HomeIcon | IconType;
   name: string;
   permission?: string | Array<string>;
+  type: 'up' | 'down';
 }
 export interface routesI extends routeI {
   routes?: routeI[];
@@ -27,18 +29,28 @@ const routes: routesI[] = [
     path: '/dashboard', // the url
     Icon: Icons.HomeIcon, // the component being exported from icons/index.js
     name: 'Home', // name that appear in Sidebar
+    type: 'up',
   },
   {
     path: '/dashboard/admin',
     Icon: Icons.FormsIcon,
     name: 'Admin Dashboard',
     permission: ['Developer', 'Owner'],
+    type: 'up',
   },
   {
     path: '/dashboard/arduinoapps',
     onPage: ['/dashboard/arduinoapps', '/dashboard/arduinoapps/[appID]'],
     Icon: SiArduino,
     name: 'Arduino Apps',
+    type: 'up',
+  },
+  {
+    path: '/dashboard/blog',
+    onPage: ['/dashboard/blog', '/dashboard/blog/[blogID]'],
+    Icon: FaBlog,
+    name: 'Manage Blog',
+    type: 'up',
   },
   {
     path: '/dashboard/settings',
@@ -46,6 +58,7 @@ const routes: routesI[] = [
     Icon: FiSettings,
     permission: ['member'],
     name: 'Settings',
+    type: 'down',
   },
 ];
 

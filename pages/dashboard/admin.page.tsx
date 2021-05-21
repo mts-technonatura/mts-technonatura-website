@@ -99,7 +99,7 @@ function Dashboard() {
   );
   useEffect(() => {
     if (authState.fetched && !authState.user) {
-      router.push('/app');
+      router.push('/dashboard');
     }
   }, [authState.message]);
 

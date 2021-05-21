@@ -50,49 +50,68 @@ export default function Settings() {
   const router = useRouter();
 
   useEffect(() => {
+    // console.log('hey');
     if (
       (authState.fetched && !authState.user) ||
       (authState.user && !authState.user.isAccountVerified)
     ) {
       router.push('/dashboard');
     }
-  }, [authState.user]);
+  }, [authState.message]);
 
-  if (authState.loading) {
+  if (
+    authState.loading ||
+    (authState.fetched && !authState.user) ||
+    (authState.user && !authState.user.isAccountVerified)
+  ) {
+    return (
+      <>
+        <NextSeo
+          title='Settings | mts-technonatura-dashboard'
+          description='Your mts-technonatura account setings'
+        />
+        <LoadingPage></LoadingPage>
+      </>
+    );
+  }
+
+  return (
     <>
       <NextSeo
         title='Settings | mts-technonatura-dashboard'
         description='Your mts-technonatura account setings'
       />
-      <LoadingPage></LoadingPage>
-    </>;
-  }
-
-  return (
-    <div>
-      <Box p={useBreakpointValue({ base: '10px', lg: '20px', xl: '100px' })}>
-        <ProfileSettings />
-        <Box visibility={{ base: 'hidden', sm: 'visible' }} aria-hidden='true'>
-          <Box py={5}>
-            <Box
-              borderTop='solid 1px'
-              className='border-gray-200 dark:border-gray-500'
-            ></Box>
+      <div>
+        <Box>
+          <ProfileSettings />
+          <Box
+            visibility={{ base: 'hidden', sm: 'visible' }}
+            aria-hidden='true'
+          >
+            <Box py={5}>
+              <Box
+                borderTop='solid 1px'
+                className='border-gray-200 dark:border-gray-500'
+              ></Box>
+            </Box>
           </Box>
-        </Box>
 
-        <PersonalInformationSettings />
-        <Box visibility={{ base: 'hidden', sm: 'visible' }} aria-hidden='true'>
-          <Box py={5}>
-            <Box
-              borderTop='solid 1px'
-              borderTopColor={useColorModeValue('gray.200', 'whiteAlpha.200')}
-            ></Box>
+          <PersonalInformationSettings />
+          <Box
+            visibility={{ base: 'hidden', sm: 'visible' }}
+            aria-hidden='true'
+          >
+            <Box py={5}>
+              <Box
+                borderTop='solid 1px'
+                borderTopColor={useColorModeValue('gray.200', 'whiteAlpha.200')}
+              ></Box>
+            </Box>
           </Box>
-        </Box>
 
-        <SensitiveSettings />
-      </Box>
-    </div>
+          <SensitiveSettings />
+        </Box>
+      </div>
+    </>
   );
 }
