@@ -25,7 +25,7 @@ import {
   ModalBody,
   Modal,
 } from '@chakra-ui/react';
-import { CallToActionWithIllustration } from '../index.page';
+import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
 import Box from '@material-ui/core/Box';
 import { IoIosTrash } from 'react-icons/io';
 import { FaRegEdit } from 'react-icons/fa';
@@ -268,13 +268,13 @@ function ArduinoApps() {
         <Breadcrumb mb={5} className='dark:text-cool-gray-400'>
           <BreadcrumbItem>
             <BreadcrumbLink>
-              <Link href='/app'>App</Link>
+              <Link href='/dashboard'>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
 
           <BreadcrumbItem>
             <BreadcrumbLink>
-              <Link href='/app/arduinoapps'>ArduinoApps</Link>
+              <Link href='/dashboard/arduinoapps'>ArduinoApps</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
 

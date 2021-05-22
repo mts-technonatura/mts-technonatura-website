@@ -11,6 +11,7 @@ import { SiArduino } from 'react-icons/si';
 import { IconType } from 'react-icons';
 import { FiSettings } from 'react-icons/fi';
 import { FaBlog } from 'react-icons/fa';
+import { AiOutlineCloudServer } from 'react-icons/ai';
 
 export interface routeI {
   path: string;
@@ -39,17 +40,24 @@ const routes: routesI[] = [
     type: 'up',
   },
   {
-    path: '/dashboard/arduinoapps',
-    onPage: ['/dashboard/arduinoapps', '/dashboard/arduinoapps/[appID]'],
-    Icon: SiArduino,
-    name: 'Arduino Apps',
-    type: 'up',
-  },
-  {
     path: '/dashboard/blog',
     onPage: ['/dashboard/blog', '/dashboard/blog/[blogID]'],
     Icon: FaBlog,
     name: 'Manage Blog',
+    type: 'up',
+  },
+  {
+    path: '/dashboard/api',
+    onPage: ['/dashboard/api', '/dashboard/api/[apiappID]'],
+    Icon: AiOutlineCloudServer,
+    name: 'Manage API Apps',
+    type: 'up',
+  },
+  {
+    path: '/dashboard/arduinoapps',
+    onPage: ['/dashboard/arduinoapps', '/dashboard/arduinoapps/[appID]'],
+    Icon: SiArduino,
+    name: 'Arduino Apps',
     type: 'up',
   },
   {
