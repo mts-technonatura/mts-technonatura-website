@@ -64,6 +64,7 @@ function RadioCard(props: any) {
         borderWidth='1px'
         borderRadius='md'
         boxShadow='md'
+        className='border-cool-gray-300 hover:border-cool-gray-400 focus:border-cool-gray-500 dark:border-gray-500 dark:hover:border-gray-400 dark:focus:border-gray-300 text-cool-gray-500 dark:text-gray-300'
         _checked={{
           bg: 'teal.600',
           color: 'white',
@@ -72,7 +73,6 @@ function RadioCard(props: any) {
         _focus={{
           boxShadow: 'outline',
         }}
-        className='border-cool-gray-300 hover:border-cool-gray-400 focus:border-cool-gray-500 dark:border-gray-500 dark:hover:border-gray-400 dark:focus:border-gray-300 text-cool-gray-500 dark:text-gray-300'
         px={5}
         py={3}
       >
@@ -146,7 +146,7 @@ export default function Settings() {
         ) : (
           authState.user && (
             <Box>
-              <ProfileSettings />
+              {/* <ProfileSettings />
               <Box
                 visibility={{ base: 'hidden', sm: 'visible' }}
                 aria-hidden='true'
@@ -157,9 +157,9 @@ export default function Settings() {
                     className='border-gray-200 dark:border-gray-500'
                   ></Box>
                 </Box>
-              </Box>
+              </Box> */}
 
-              <PersonalInformationSettings />
+              {/* <PersonalInformationSettings /> */}
               <Box
                 visibility={{ base: 'hidden', sm: 'visible' }}
                 aria-hidden='true'
