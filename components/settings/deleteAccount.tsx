@@ -13,6 +13,7 @@ import {
   Stack,
   Select,
   Input,
+  useToast,
   InputRightElement,
   Textarea,
   FormHelperText,
@@ -33,8 +34,20 @@ import {
 } from '@chakra-ui/react';
 import React, { useState, ChangeEventHandler } from 'react';
 import { IoWarning } from 'react-icons/io5';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import axios from 'axios';
+import { statusMessage } from 'ts/index';
+
+/* REACT - REDUXJS */
+import { useDispatch, useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
+import { Auth_INIT } from '@/redux/actions/types/AuthActionTypes.d';
+/* REACT - REDUXJS */
+
+import { useCookie } from 'next-universal-cookie';
 
 const validationSchema = yup.object({
   currentPasswordDeleteAccount: yup
@@ -45,7 +58,19 @@ const validationSchema = yup.object({
 });
 
 export default function deleteAccount() {
+  const tokenCookieKey =
+    process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
+
+  const [cookies, setCookie, removeCookie] = useCookie([tokenCookieKey]);
+
+  const authState = useSelector((state: RootStore) => state.auth);
+  const dispatch = useDispatch();
+
   const [deleteAccount, setDeleteAccount] = useState<boolean>();
+  const [deleteingAccount, setDeleteingAccount] = useState<boolean>(false);
+
+  const toast = useToast();
+
   const formik = useFormik({
     initialValues: {
       currentPasswordDeleteAccount: '',
@@ -53,6 +78,72 @@ export default function deleteAccount() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
+      let audio;
+
+      // loading to show that we are sending to api
+      setDeleteingAccount(true);
+
+      const deleteAccount = await axios.post<{
+        errors?: any;
+        message?: string;
+        status?: statusMessage;
+      }>(
+        process.env.NEXT_PUBLIC_DELETE_ACCOUNT ||
+          'http://localhost:3030/auth/deleteAccount',
+        {
+          authToken: authState.token,
+          ...values,
+        },
+      );
+
+      if (deleteAccount.data.status && deleteAccount.data.message) {
+        if (deleteAccount.data.status == 'success') {
+          setDeleteAccount(false);
+
+          // remove the JWT cookie
+          removeCookie(tokenCookieKey);
+          dispatch({
+            type: Auth_INIT,
+          });
+
+          formik.setValues({
+            currentPasswordDeleteAccount: '',
+          });
+          formik.setErrors({
+            currentPasswordDeleteAccount: '',
+          });
+
+          audio = new Audio(
+            'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962730/sounds/01%20Hero%20Sounds/hero_simple-celebration-03_ai1ky3.wav',
+          );
+          audio.play();
+        } else {
+          // if deleting account failed
+          audio = new Audio(
+            'https://res.cloudinary.com/dsg8ufk2s/video/upload/v1620962739/sounds/02%20Alerts%20and%20Notifications/alert_high-intensity_kag2c3.wav',
+          );
+        }
+        toast({
+          title: deleteAccount.data.message,
+          position: 'top-right',
+          isClosable: true,
+          status: deleteAccount.data.status,
+        });
+        setDeleteingAccount(false);
+      }
+
+      // if there is input erros
+      if (deleteAccount.data.errors.password) {
+        setDeleteingAccount(false);
+        formik.setErrors({
+          currentPasswordDeleteAccount: deleteAccount.data.errors.password,
+        });
+      }
+
+      if (audio) audio.play();
+
+      setDeleteingAccount(false);
+      // console.log(changingPassword);
     },
   });
   return (

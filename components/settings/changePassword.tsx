@@ -32,22 +32,25 @@ import {
   useToast,
   FormLabel,
 } from '@chakra-ui/react';
-import React, { useState, ChangeEventHandler } from 'react';
-import { IoWarning } from 'react-icons/io5';
 import LoadingPage from 'components/loadingpage';
-import axios from 'axios';
-import { statusMessage } from 'ts/index';
-import ms from 'ms';
+
+import React, { useState, ChangeEventHandler } from 'react';
 import { useCookie } from 'next-universal-cookie';
-import * as AuthMethods from '@/redux/actions/index';
 
 /* REACT - REDUXJS */
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
+import * as AuthMethods from '@/redux/actions/index';
+
 /* REACT - REDUXJS */
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+
+import axios from 'axios';
+import ms from 'ms';
+
+import { statusMessage } from 'ts/index';
 
 const validationSchema = yup.object({
   newPassword: yup
@@ -116,6 +119,7 @@ export default function changePassword() {
               maxAge: ms('1y'),
             });
 
+            // set
             formik.setValues({ currentPassword: '', newPassword: '' });
             formik.setErrors({
               currentPassword: '',

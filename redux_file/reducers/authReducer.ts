@@ -9,6 +9,7 @@ import {
   Auth_JWT_SUCCESS,
   Auth_LOGIN_SUCCESS,
   Auth_SIGNUP_SUCCESS,
+  Auth_INIT,
   Auth_SET_TOKEN,
 } from '../actions/types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
@@ -32,6 +33,12 @@ const authReducer = (
   action: AuthDispatchTypes,
 ): AuthState => {
   switch (action.type) {
+    case Auth_INIT:
+      return Object.assign({}, state, {
+        loading: false,
+        fetched: true,
+        user: undefined,
+      });
     case Auth_FAIL:
       return Object.assign({}, state, {
         loading: false,
