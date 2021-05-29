@@ -5,6 +5,7 @@ import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
 import NavFoot from 'components/main/navfoot';
 import { SidebarContext } from 'context/SidebarContext';
+
 import { BellIcon } from '@chakra-ui/icons';
 import {
   HStack,
@@ -34,7 +35,7 @@ export default function NavbarComponent({
 
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
   useEffect(() => {
-    console.log(router);
+    // console.log(router);
     if (authState.loading) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }

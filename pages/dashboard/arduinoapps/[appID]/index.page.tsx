@@ -26,20 +26,23 @@ import {
   Modal,
 } from '@chakra-ui/react';
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
+import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
+import LoadingPage from 'components/loadingpage';
+
 import Box from '@material-ui/core/Box';
 import { IoIosTrash } from 'react-icons/io';
 import { FaRegEdit } from 'react-icons/fa';
 /* ======================= END UI ======================= */
-import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
+
 import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { useRouter } from 'next/router';
-import LoadingPage from 'components/loadingpage';
 
 import { sensorI, normalResponseT } from 'ts';
+import { NoItemIcon, UnhappyGhost } from 'icons';
+
 import axios from 'axios';
 import _ from 'underscore';
-import { NoItemIcon, UnhappyGhost } from 'icons';
 
 interface sensorsResponseI {
   sensors?: sensorI[];
@@ -173,7 +176,7 @@ function ArduinoApps() {
       });
 
       if (deletedApp.data.status == 'success') {
-        router.push('/app/arduinoapps');
+        router.push('/dashboard/arduinoapps');
       }
     } catch (err) {
       audio = new Audio(

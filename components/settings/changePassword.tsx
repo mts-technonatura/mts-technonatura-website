@@ -34,8 +34,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useState, ChangeEventHandler } from 'react';
 import { IoWarning } from 'react-icons/io5';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 import LoadingPage from 'components/loadingpage';
 import axios from 'axios';
 import { statusMessage } from 'ts/index';
@@ -47,6 +45,9 @@ import * as AuthMethods from '@/redux/actions/index';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 /* REACT - REDUXJS */
+
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 const validationSchema = yup.object({
   newPassword: yup
@@ -82,6 +83,7 @@ export default function changePassword() {
     onSubmit: async (values) => {
       let audio;
 
+      // loading to show that we are sending to api
       setChangingPassword(true);
 
       const changePassword = await axios.post<{
@@ -97,17 +99,17 @@ export default function changePassword() {
           ...values,
         },
       );
-      // console.log('changePassword', changePassword);
+
       if (changePassword.data.status && changePassword.data.message) {
         if (changePassword.data.status == 'success') {
           setChangePassword(false);
           if (changePassword.data.token) {
             // set new token to redux
             dispatch(AuthMethods.SetToken(changePassword.data.token));
-            // console.log(authState.token);
 
             // remove the JWT cookie
             removeCookie(tokenCookieKey);
+
             // set new token to JWT cookie
             setCookie(tokenCookieKey, changePassword.data.token, {
               path: '/',

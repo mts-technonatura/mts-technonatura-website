@@ -12,10 +12,14 @@ import React, { useEffect } from 'react';
 import { SidebarProvider } from 'context/SidebarContext';
 import { Provider } from 'react-redux';
 import store from '../redux_file/';
+
 import Navbar from 'components/Navbar';
+
 import { Windmill } from '@windmill/react-ui';
 import { NextCookieProvider } from 'next-universal-cookie';
 import { NextSeo } from 'next-seo';
+
+import ChakraUICustomTheme from '../theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useTheme();
@@ -68,7 +72,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Provider store={store}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <ChakraProvider>
+            <ChakraProvider theme={ChakraUICustomTheme}>
               <SidebarProvider>
                 <Windmill usePreferences={true}>
                   <Navbar>

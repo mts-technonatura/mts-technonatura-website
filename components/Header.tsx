@@ -39,7 +39,6 @@ function Header({ pathname }: HeaderI) {
   const { mode, toggleMode } = useContext(WindmillContext);
 
   const { toggleSidebar } = useContext(SidebarContext);
-
   async function logout() {
     Cookie.remove(tokenCookieKey);
     dispatch(AuthLogout());

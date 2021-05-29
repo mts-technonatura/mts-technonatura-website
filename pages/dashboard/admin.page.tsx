@@ -20,16 +20,21 @@ import {
   TabPanels,
   Divider,
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
-import { RootStore } from '@/redux/index';
-import TimeText from 'utils/timeText';
-import { useRouter } from 'next/router';
-import { GoUnverified, GoVerified } from 'react-icons/go';
-import { RiPagesLine, RiSensorFill, RiToolsFill } from 'react-icons/ri';
+
 import UnverifiedUsers from 'components/admin/unverifiedusers';
 import LoadingPage from 'components/loadingpage';
+
 import { SiArduino } from 'react-icons/si';
 import { IconType } from 'react-icons';
+import { GoUnverified, GoVerified } from 'react-icons/go';
+import { RiPagesLine, RiSensorFill, RiToolsFill } from 'react-icons/ri';
+
+import TimeText from 'utils/timeText';
+
+import { useSelector } from 'react-redux';
+import { RootStore } from '@/redux/index';
+
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import _ from 'underscore';
 

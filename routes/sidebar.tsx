@@ -64,7 +64,6 @@ const routes: routesI[] = [
     path: '/dashboard/settings',
     onPage: ['/dashboard/settings'],
     Icon: FiSettings,
-    permission: ['member'],
     name: 'Settings',
     type: 'down',
   },
