@@ -66,19 +66,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NextCookieProvider cookie={pageProps.cookie}>
         {/* <CssBaseline /> */}
         <Provider store={store}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <ChakraProvider>
-              <SidebarProvider>
-                <Windmill usePreferences={true}>
-                  <Navbar>
-                    <ProgressLoad />
-                    <Component {...pageProps} />
-                  </Navbar>
-                </Windmill>
-              </SidebarProvider>
-            </ChakraProvider>
-          </ThemeProvider>
+          {/* <ThemeProvider theme={theme}> */}
+          {/* <CssBaseline /> */}
+          <ChakraProvider>
+            <SidebarProvider>
+              <Windmill usePreferences={true}>
+                <Navbar>
+                  <ProgressLoad />
+                  <Component {...pageProps} />
+                </Navbar>
+              </Windmill>
+            </SidebarProvider>
+          </ChakraProvider>
+          {/* </ThemeProvider> */}
         </Provider>
       </NextCookieProvider>
     </>
