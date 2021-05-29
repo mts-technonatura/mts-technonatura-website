@@ -14,6 +14,7 @@ import React, {
 function usePrevious(theme) {
   const ref = useRef();
   useEffect(() => {
+    console.log('us');
     ref.current = theme;
   });
   return ref.current;
@@ -61,13 +62,12 @@ export const ThemeProvider = ({ children }) => {
     else setTheme('light');
   }
 
-  const value = useMemo(
-    () => ({
+  const value = useMemo(() => {
+    return {
       theme,
       toggleTheme,
-    }),
-    [theme],
-  );
+    };
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

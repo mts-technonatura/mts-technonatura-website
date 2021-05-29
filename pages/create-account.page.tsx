@@ -10,20 +10,25 @@ import {
 
 import ErrorPage from 'components/500';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { ssr } from '@/ts/index';
+
 import { RootStore } from '@/redux/index';
 import { AuthSignup } from '@/redux/actions/index';
 import * as AuthMethods from '@/redux/actions/index';
-import { NextSeo } from 'next-seo';
-import { ssr } from '@/ts/index';
-import _ from 'underscore';
-import { useCookies } from 'react-cookie';
-import ms from 'ms';
+import { useDispatch, useSelector } from 'react-redux';
+
 import React, { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+
 import Link from 'next/link';
+import { NextSeo } from 'next-seo';
+import { useRouter } from 'next/router';
+
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useRouter } from 'next/router';
+
+import ms from 'ms';
+import _ from 'underscore';
 
 const ImageLight = '/assets/img/create-account-office.jpeg';
 const ImageDark = '/assets/img/create-account-office-dark.jpeg';

@@ -12,10 +12,14 @@ import React, { useEffect } from 'react';
 import { SidebarProvider } from 'context/SidebarContext';
 import { Provider } from 'react-redux';
 import store from '../redux_file/';
+
 import Navbar from 'components/Navbar';
+
 import { Windmill } from '@windmill/react-ui';
 import { NextCookieProvider } from 'next-universal-cookie';
 import { NextSeo } from 'next-seo';
+
+import ChakraUICustomTheme from '../theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useTheme();
@@ -66,19 +70,19 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NextCookieProvider cookie={pageProps.cookie}>
         {/* <CssBaseline /> */}
         <Provider store={store}>
-          {/* <ThemeProvider theme={theme}> */}
-          {/* <CssBaseline /> */}
-          <ChakraProvider>
-            <SidebarProvider>
-              <Windmill usePreferences={true}>
-                <Navbar>
-                  <ProgressLoad />
-                  <Component {...pageProps} />
-                </Navbar>
-              </Windmill>
-            </SidebarProvider>
-          </ChakraProvider>
-          {/* </ThemeProvider> */}
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <ChakraProvider theme={ChakraUICustomTheme}>
+              <SidebarProvider>
+                <Windmill usePreferences={true}>
+                  <Navbar>
+                    <ProgressLoad />
+                    <Component {...pageProps} />
+                  </Navbar>
+                </Windmill>
+              </SidebarProvider>
+            </ChakraProvider>
+          </ThemeProvider>
         </Provider>
       </NextCookieProvider>
     </>

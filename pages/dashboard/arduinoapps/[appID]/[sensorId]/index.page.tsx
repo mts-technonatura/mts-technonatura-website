@@ -11,24 +11,31 @@ import {
   Spacer,
   useDisclosure,
   useToast,
-  Input,
-  Text,
   Tooltip,
-  useClipboard,
-  ModalFooter,
   Divider,
   ModalContent,
-  ModalCloseButton,
   ModalOverlay,
+  ModalFooter,
   ModalHeader,
   ModalBody,
   Modal,
 } from '@chakra-ui/react';
-import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
+
+// material UI
 import Box from '@material-ui/core/Box';
+// end material UI
+
+// costum components
+import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
+// end custom components
+
+//#icons
 import { IoIosTrash } from 'react-icons/io';
 import { FaRegEdit } from 'react-icons/fa';
+//#endicons
+
 /* ======================= END UI ======================= */
+
 import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
 import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
@@ -245,7 +252,7 @@ function ArduinoApps() {
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem isCurrentPage>
-            <BreadcrumbLink>{router.query.sensorID}</BreadcrumbLink>
+            <BreadcrumbLink>{router.query.sensorId}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
         <Flex>

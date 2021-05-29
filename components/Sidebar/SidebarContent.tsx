@@ -165,7 +165,7 @@ export function MenuItem({
                   ))}
 
             <route.Icon className='w-5 h-5 ' aria-hidden='true' />
-            <span className='ml-4 xl:hidden'>{route.name}</span>
+            <span className='ml-4 lg:hidden'>{route.name}</span>
           </a>
         </Link>
       </li>
