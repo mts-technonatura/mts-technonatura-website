@@ -8,6 +8,8 @@ import {
   InputGroup,
 } from '@chakra-ui/react';
 
+import LoadingPage from 'components/loadingpage';
+
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useFormik } from 'formik';
@@ -21,7 +23,7 @@ import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import ErrorPage from 'components/500';
 import * as AuthMethods from '@/redux/actions/index';
-import LoadingPage from 'components/loadingpage';
+
 import ms from 'ms';
 import _ from 'underscore';
 

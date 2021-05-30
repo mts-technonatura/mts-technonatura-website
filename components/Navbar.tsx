@@ -14,11 +14,30 @@ import {
   Text,
   useColorModeValue,
   Button,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Box,
+  CloseButton,
+  Link as ChakraLink,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
 import { useCookies } from 'react-cookie';
+
+import ms from 'ms';
+
+import styled from '@emotion/styled';
+
+const CookieBanner = styled(Alert)`
+  width: 100%;
+
+  @media screen and (min-width: 800px) {
+    width: 40%;
+  }
+`;
 
 export default function NavbarComponent({
   children,
@@ -28,7 +47,7 @@ export default function NavbarComponent({
   const router = useRouter();
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies(['cookieConsentBanner']);
   const dispatch = useDispatch();
 
   const authState = useSelector((state: RootStore) => state.auth);
@@ -41,8 +60,17 @@ export default function NavbarComponent({
     }
   }, []);
   useEffect(() => {
+    console.log(cookies['cookieConsentBanner']);
     closeSidebar();
   }, [router.asPath]);
+
+  function closeCookieBanner() {
+    // console.log(tokenCookieKey);
+    setCookie('cookieConsentBanner', true, {
+      path: '/',
+      maxAge: ms('10y'),
+    });
+  }
 
   const { asPath } = useRouter();
   if (asPath.includes('/dashboard')) {
@@ -53,6 +81,48 @@ export default function NavbarComponent({
             isSidebarOpen && 'overflow-hidden'
           }`}
         >
+          {'cookieConsentBanner' in cookies ? (
+            ''
+          ) : (
+            <CookieBanner
+              status='warning'
+              bottom='0'
+              zIndex={9999}
+              right='0'
+              position='fixed'
+            >
+              <Box display='flex' alignItems='start'>
+                <AlertIcon mt={1} />
+                <Box flex='1'>
+                  <AlertTitle>Cookies Consent 🍪</AlertTitle>
+                  <AlertDescription display='block'>
+                    This website use cookies for offer you a better experience,
+                    you can read more in{' '}
+                    <ChakraLink
+                      style={{ textDecoration: 'underline' }}
+                      href='/page/cookies-policy'
+                    >
+                      Cookie Policy
+                    </ChakraLink>
+                    . You can disable some cookies in{' '}
+                    <ChakraLink
+                      style={{ textDecoration: 'underline' }}
+                      href='/settings/cookies'
+                    >
+                      cookies settings
+                    </ChakraLink>
+                  </AlertDescription>
+                </Box>
+
+                <CloseButton
+                  onClick={closeCookieBanner}
+                  position='absolute'
+                  right='8px'
+                  top='8px'
+                />
+              </Box>
+            </CookieBanner>
+          )}
           <Sidebar />
           <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-20'>
             {authState.user && !authState.user.isAccountVerified && (
@@ -95,5 +165,49 @@ export default function NavbarComponent({
       </>
     );
   }
-  return <NavFoot page={router.route}>{children}</NavFoot>;
+  return (
+    <>
+      {!cookies['cookieConsentBanner'] && (
+        <CookieBanner
+          status='warning'
+          position='fixed'
+          bottom='0'
+          zIndex={9999}
+          display='flex'
+          alignItems='start'
+          right='0'
+        >
+          <AlertIcon mt={1} />
+          <Box flex='1'>
+            <AlertTitle>Cookies Consent 🍪</AlertTitle>
+            <AlertDescription display='block'>
+              This website use cookies for offer you a better experience, you
+              can read more in{' '}
+              <ChakraLink
+                style={{ textDecoration: 'underline' }}
+                href='/page/cookies-policy'
+              >
+                Cookie Policy
+              </ChakraLink>
+              . You can disable some cookies in{' '}
+              <ChakraLink
+                style={{ textDecoration: 'underline' }}
+                href='/settings/cookies'
+              >
+                cookies settings
+              </ChakraLink>
+            </AlertDescription>
+          </Box>
+
+          <CloseButton
+            onClick={closeCookieBanner}
+            position='absolute'
+            right='8px'
+            top='8px'
+          />
+        </CookieBanner>
+      )}
+      <NavFoot page={router.route}>{children}</NavFoot>
+    </>
+  );
 }
