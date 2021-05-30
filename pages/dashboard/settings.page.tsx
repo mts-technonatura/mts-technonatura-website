@@ -25,6 +25,11 @@ import {
   InputLeftAddon,
   InputGroup,
   Checkbox,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
   GridItem,
   VisuallyHidden,
   Icon,
@@ -38,6 +43,7 @@ import PersonalInformationSettings from 'components/settings/personalInformation
 import ProfileSettings from 'components/settings/profileSettings';
 import SensitiveSettings from 'components/settings/dangerSettings';
 import LoadingPage from 'components/loadingpage';
+import CookieSettings from '@/components/settings/CookieSettings';
 
 import { WindmillContext } from '@windmill/react-ui';
 
@@ -139,14 +145,19 @@ export default function Settings() {
       />
       <div>
         <SiteAppearance />
-        {authState.loading ? (
-          <>
-            <LoadingPage></LoadingPage>
-          </>
-        ) : (
-          authState.user && (
-            <Box>
-              {/* <ProfileSettings />
+        <Tabs>
+          <TabList>
+            {authState.user && (
+              <Tab className='text-cool-gray-400 '>Account Settings</Tab>
+            )}
+            <Tab className='text-cool-gray-400 '>Cookies Settings</Tab>
+          </TabList>
+
+          <TabPanels>
+            {authState.user && (
+              <TabPanel>
+                <Box>
+                  {/* <ProfileSettings />
               <Box
                 visibility={{ base: 'hidden', sm: 'visible' }}
                 aria-hidden='true'
@@ -159,26 +170,31 @@ export default function Settings() {
                 </Box>
               </Box> */}
 
-              {/* <PersonalInformationSettings /> */}
-              <Box
-                visibility={{ base: 'hidden', sm: 'visible' }}
-                aria-hidden='true'
-              >
-                <Box py={5}>
+                  {/* <PersonalInformationSettings /> */}
                   <Box
-                    borderTop='solid 1px'
-                    borderTopColor={useColorModeValue(
-                      'gray.200',
-                      'whiteAlpha.200',
-                    )}
-                  ></Box>
-                </Box>
-              </Box>
+                    visibility={{ base: 'hidden', sm: 'visible' }}
+                    aria-hidden='true'
+                  >
+                    <Box py={5}>
+                      <Box
+                        borderTop='solid 1px'
+                        borderTopColor={useColorModeValue(
+                          'gray.200',
+                          'whiteAlpha.200',
+                        )}
+                      ></Box>
+                    </Box>
+                  </Box>
 
-              <SensitiveSettings />
-            </Box>
-          )
-        )}
+                  <SensitiveSettings />
+                </Box>
+              </TabPanel>
+            )}
+            <TabPanel>
+              <CookieSettings />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </div>
     </>
   );

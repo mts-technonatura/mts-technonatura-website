@@ -289,20 +289,6 @@ export async function getStaticProps({
   return { props: postData };
 }
 
-const CodeBlock = ({
-  language,
-  value,
-}: {
-  language: string;
-  value: string;
-}) => {
-  return (
-    <SyntaxHighlighter style={style} language={language}>
-      {value}
-    </SyntaxHighlighter>
-  );
-};
-
 // const MarkdownImage = ({ alt, src }) => (
 //   <Image
 //     alt={alt}
