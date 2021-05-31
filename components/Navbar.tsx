@@ -21,6 +21,9 @@ import {
   Box,
   CloseButton,
   Link as ChakraLink,
+  chakra,
+  Container,
+  VisuallyHidden,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootStore } from '@/redux/index';
@@ -124,7 +127,7 @@ export default function NavbarComponent({
             </CookieBanner>
           )}
           <Sidebar />
-          <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-20'>
+          <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-5'>
             {authState.user && !authState.user.isAccountVerified && (
               <Stack
                 direction={{ base: 'column', sm: 'row' }}
@@ -160,6 +163,19 @@ export default function NavbarComponent({
             )}
             <Header pathname={router.pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
+            <Box pt={100}>
+              <Container
+                as={Stack}
+                maxW={'6xl'}
+                direction={{ base: 'column', md: 'row' }}
+                justify={{ base: 'center' }}
+                align={{ base: 'center', md: 'center' }}
+              >
+                <Text className='text-gray-400 dark:text-cool-gray-500'>
+                  © 2021 Aldhanekaa. All rights reserved
+                </Text>
+              </Container>
+            </Box>
           </div>
         </div>
       </>
