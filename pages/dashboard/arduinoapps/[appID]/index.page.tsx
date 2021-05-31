@@ -21,6 +21,7 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalOverlay,
+  useBreakpointValue,
   ModalHeader,
   ModalBody,
   Modal,
@@ -38,7 +39,7 @@ import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
 import { useRouter } from 'next/router';
 
-import { sensorI, normalResponseT } from 'ts';
+import { sensorI, normalResponseT, arduinoAppI } from 'ts';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
 import axios from 'axios';
@@ -53,12 +54,7 @@ interface sensorsI extends sensorsResponseI {
 }
 
 interface arduinoResponseI {
-  app?: {
-    name: string;
-    desc: string;
-    own?: string;
-    token?: string;
-  };
+  app?: arduinoAppI;
 }
 
 interface arduinoI extends arduinoResponseI {
@@ -119,7 +115,7 @@ function ArduinoApps() {
       );
 
       if (app.data.app?.token) {
-        tokenValue = app.data.app?.token;
+        tokenValue = app.data.app?.token.token;
       }
       setArduinoApp({
         app: app.data.app,
@@ -345,12 +341,13 @@ function ArduinoApps() {
 
         {/* Arduino App Token */}
         <Text mt={3} className='dark:text-cool-gray-400' fontSize='md'>
-          Arduino App Token
+          Arduino App Token - Created on{' '}
+          {new Date(arduinoApp.app.token.tokenCreated).toString()}
         </Text>
         <Flex mb={2} mt={2}>
           <Input
             className='dark:text-gray-400'
-            value={arduinoApp.app.token}
+            value={arduinoApp.app.token.token}
             isReadOnly
             placeholder='Welcome'
           />
@@ -358,6 +355,10 @@ function ArduinoApps() {
             {hasCopied ? 'Copied' : 'Copy'}
           </Button>
         </Flex>
+        <Text mt={3} className='dark:text-cool-gray-400' fontSize='sm'>
+          Token expired at:
+          {new Date(arduinoApp.app.token.tokenCreated + 31536000000).toString()}
+        </Text>
         {/* End of Arduino App Token */}
 
         {!sensors.fetched ? (

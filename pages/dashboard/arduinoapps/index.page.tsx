@@ -62,6 +62,7 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/apps',
         { authToken: authState.token },
       );
+      // console.log(apps);
 
       setArduinoApps({
         apps: apps.data.apps,
