@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
 import Link from 'next/link';
-import Sidebar from 'components/Sidebar';
-import Header from 'components/Header';
-import NavFoot from 'components/main/navfoot';
-import { SidebarContext } from 'context/SidebarContext';
+
+import React, { useContext, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useCookies } from 'react-cookie';
 
 import { BellIcon } from '@chakra-ui/icons';
 import {
@@ -14,12 +13,36 @@ import {
   Text,
   useColorModeValue,
   Button,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Box,
+  CloseButton,
+  Link as ChakraLink,
+  Container,
+  chakra,
 } from '@chakra-ui/react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
+
+import Sidebar from 'components/Sidebar';
+import Header from 'components/Header';
+import NavFoot from 'components/main/navfoot';
+import { SidebarContext } from 'context/SidebarContext';
 
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
+
+import ms from 'ms';
+
+import styled from '@emotion/styled';
+
+const CookieBanner = styled(Alert)`
+  width: 100%;
+
+  @media screen and (min-width: 800px) {
+    width: 40%;
+  }
+`;
 
 export default function NavbarComponent({
   children,
@@ -29,7 +52,7 @@ export default function NavbarComponent({
   const router = useRouter();
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies(['cookieConsentBanner']);
   const dispatch = useDispatch();
 
   const authState = useSelector((state: RootStore) => state.auth);
@@ -42,8 +65,17 @@ export default function NavbarComponent({
     }
   }, []);
   useEffect(() => {
+    console.log(cookies['cookieConsentBanner']);
     closeSidebar();
   }, [router.asPath]);
+
+  function closeCookieBanner() {
+    // console.log(tokenCookieKey);
+    setCookie('cookieConsentBanner', true, {
+      path: '/',
+      maxAge: ms('10y'),
+    });
+  }
 
   const { asPath } = useRouter();
   if (asPath.includes('/dashboard')) {
@@ -54,8 +86,50 @@ export default function NavbarComponent({
             isSidebarOpen && 'overflow-hidden'
           }`}
         >
+          {'cookieConsentBanner' in cookies ? (
+            ''
+          ) : (
+            <CookieBanner
+              status='warning'
+              bottom='0'
+              zIndex={9999}
+              right='0'
+              position='fixed'
+            >
+              <Box display='flex' alignItems='start'>
+                <AlertIcon mt={1} />
+                <Box flex='1'>
+                  <AlertTitle>Cookies Consent 🍪</AlertTitle>
+                  <AlertDescription display='block'>
+                    This website use cookies for offer you a better experience,
+                    you can read more in{' '}
+                    <ChakraLink
+                      style={{ textDecoration: 'underline' }}
+                      href='/page/cookies-policy'
+                    >
+                      Cookie Policy
+                    </ChakraLink>
+                    . You can disable some cookies in{' '}
+                    <ChakraLink
+                      style={{ textDecoration: 'underline' }}
+                      href='/settings/cookies'
+                    >
+                      cookies settings
+                    </ChakraLink>
+                  </AlertDescription>
+                </Box>
+
+                <CloseButton
+                  onClick={closeCookieBanner}
+                  position='absolute'
+                  right='8px'
+                  top='8px'
+                />
+              </Box>
+            </CookieBanner>
+          )}
           <Sidebar />
-          <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-20'>
+          <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-5'>
             {authState.user && !authState.user.isAccountVerified && (
               <Stack
                 direction={{ base: 'column', sm: 'row' }}
@@ -91,10 +165,74 @@ export default function NavbarComponent({
             )}
             <Header pathname={router.pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
+            <Box pt={100}>
+              <Container
+                as={Stack}
+                maxW={'6xl'}
+                direction={{ base: 'column', md: 'row' }}
+                justify={{ base: 'center' }}
+                align={{ base: 'center', md: 'center' }}
+              >
+                <Text className='text-gray-400 dark:text-cool-gray-500'>
+                  © 2021 MTs TechnoNatura Contributors, all rights reserved.
+                  Made with 💖 by{' '}
+                  <chakra.a
+                    href='https://aldhanekaa.github.io'
+                    style={{ textDecoration: 'underline' }}
+                  >
+                    Aldhan
+                  </chakra.a>
+                </Text>
+              </Container>
+            </Box>
           </div>
         </div>
       </>
     );
   }
-  return <NavFoot page={router.route}>{children}</NavFoot>;
+  return (
+    <>
+      {!cookies['cookieConsentBanner'] && (
+        <CookieBanner
+          status='warning'
+          position='fixed'
+          bottom='0'
+          zIndex={9999}
+          display='flex'
+          alignItems='start'
+          right='0'
+        >
+          <AlertIcon mt={1} />
+          <Box flex='1'>
+            <AlertTitle>Cookies Consent 🍪</AlertTitle>
+            <AlertDescription display='block'>
+              This website use cookies for offer you a better experience, you
+              can read more in{' '}
+              <ChakraLink
+                style={{ textDecoration: 'underline' }}
+                href='/page/cookies-policy'
+              >
+                Cookie Policy
+              </ChakraLink>
+              . You can disable some cookies in{' '}
+              <ChakraLink
+                style={{ textDecoration: 'underline' }}
+                href='/settings/cookies'
+              >
+                cookies settings
+              </ChakraLink>
+            </AlertDescription>
+          </Box>
+
+          <CloseButton
+            onClick={closeCookieBanner}
+            position='absolute'
+            right='8px'
+            top='8px'
+          />
+        </CookieBanner>
+      )}
+      <NavFoot page={router.route}>{children}</NavFoot>
+    </>
+  );
 }

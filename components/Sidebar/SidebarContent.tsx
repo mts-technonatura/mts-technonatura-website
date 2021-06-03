@@ -16,7 +16,7 @@ function SidebarContent() {
   return (
     <div className='flex flex-col justify-between h-full  text-gray-500 dark:text-gray-400'>
       <div>
-        <Link href='/app'>
+        <Link href='/dashboard'>
           <a className='ml-4 font-bold text-gray-800 dark:text-gray-200'>
             <Image
               className='ml-2'

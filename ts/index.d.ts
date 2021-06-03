@@ -64,7 +64,10 @@ export interface arduinoAppI {
   sensors?: Array<string>;
   desc: string;
   own?: string;
-  token?: string;
+  token: {
+    token: string;
+    tokenCreated: number;
+  };
 }
 
 export interface sensorI {

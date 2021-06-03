@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { chakra } from '@chakra-ui/react';
 
 export default function FooterHome(): JSX.Element {
   return (
@@ -118,7 +119,14 @@ export default function FooterHome(): JSX.Element {
           </a>
         </div>
         <p className='mt-8 text-base leading-6 text-center text-gray-400'>
-          © 2021 MTs TechnoNatura. All rights reserved.
+          © 2021 MTs TechnoNatura Contributors, all rights reserved. Made with
+          💖 by{' '}
+          <chakra.a
+            href='https://aldhanekaa.github.io'
+            style={{ textDecoration: 'underline' }}
+          >
+            Aldhan
+          </chakra.a>
         </p>
       </div>
     </section>

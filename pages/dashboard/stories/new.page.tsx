@@ -1,13 +1,32 @@
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 import styled from '@emotion/styled';
 
 /* ======================= UI ======================= */
 import {
   Button,
   Flex,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Heading,
+  useDisclosure,
+  useToast,
+  Input,
+  Text,
+  Tooltip,
+  useClipboard,
+  ModalFooter,
+  Divider,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  ModalBody,
+  Modal,
   Tabs,
   TabList,
   Tab,
@@ -15,12 +34,15 @@ import {
   TabPanels,
   useBreakpointValue,
 } from '@chakra-ui/react';
+import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
 
+import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
 
 import Box from '@material-ui/core/Box';
-
+import { IoIosTrash } from 'react-icons/io';
+import { FaRegEdit } from 'react-icons/fa';
 /* ======================= END UI ======================= */
 import { RootStore } from '@/redux/index';
 import { NoItemIcon, UnhappyGhost } from 'icons';
@@ -38,13 +60,32 @@ const BoxWrapper = styled(Box)`
 `;
 
 export default function ManageBlog() {
+  const router = useRouter();
   const authState = useSelector((state: RootStore) => state.auth);
+
+  useEffect(() => {
+    if (authState.user && !authState.user.isAccountVerified) {
+      router.push('/dashboard/stories');
+    }
+  }, [authState.user]);
 
   if (authState.loading) {
     return <LoadingPage />;
   }
 
-  if (authState.user && !authState.user.isAccountVerified) {
+  if (authState.user && authState.user.isAccountVerified) {
+    return (
+      <BoxWrapper>
+        <Flex flexWrap='wrap' justifyContent='space-between'>
+          <Box p='2' className=' '>
+            <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
+              Draft in {authState.user.username}
+            </Heading>
+          </Box>
+        </Flex>
+      </BoxWrapper>
+    );
+  } else {
     return (
       <CallToActionWithIllustration
         Icon={<UnhappyGhost mt={{ base: 12, sm: 16 }} />}
@@ -93,42 +134,5 @@ export default function ManageBlog() {
       />
     );
   }
-
-  return (
-    <BoxWrapper>
-      <Flex flexWrap='wrap' justifyContent='space-between'>
-        <Box p='2' className=' '>
-          <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
-            Your Stories
-          </Heading>
-        </Box>
-        <Box>
-          <Link href='/dashboard/stories/new'>
-            <Button ml={4} colorScheme='purple'>
-              New Stories
-            </Button>
-          </Link>
-        </Box>
-      </Flex>
-      <Tabs mt={5}>
-        <TabList className='border-cool-gray-300'>
-          <Tab className='text-cool-gray-400 '>Drafts (2)</Tab>
-          <Tab className='text-cool-gray-400 '>Published (5)</Tab>
-          <Tab className='text-cool-gray-400 '>Response (10)</Tab>
-        </TabList>
-
-        <TabPanels className='dark:text-cool-gray-400'>
-          <TabPanel>
-            <p>Drafts Panel!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>Published Panel!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>Response Panel!</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </BoxWrapper>
-  );
+  return <LoadingPage />;
 }

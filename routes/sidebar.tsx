@@ -41,7 +41,11 @@ const routes: routesI[] = [
   },
   {
     path: '/dashboard/stories',
-    onPage: ['/dashboard/stories', '/dashboard/stories/[blogID]'],
+    onPage: [
+      '/dashboard/stories',
+      '/dashboard/stories/new',
+      '/dashboard/stories/[postId]/edit',
+    ],
     Icon: FaBlog,
     name: 'Manage Stories',
     type: 'up',

@@ -8,7 +8,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Heading,
-  Spacer,
   useDisclosure,
   useToast,
   Tooltip,
@@ -255,13 +254,12 @@ function ArduinoApps() {
             <BreadcrumbLink>{router.query.sensorId}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Flex>
+        <Flex flexWrap='wrap' justifyContent='space-between'>
           <Box p='2' className=' '>
             <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
               {sensor.sensor?.name} - Sensor
             </Heading>
           </Box>
-          <Spacer />
           <Box>
             <Button
               ml={4}
@@ -309,7 +307,7 @@ function ArduinoApps() {
             />
           ) : (
             <div className='mt-10 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
-              {sensor.sensor.data.map((sensor, id) => (
+              {sensor.sensor.data.reverse().map((sensor, id) => (
                 <InfoCard
                   value={String(new Date(sensor.date))}
                   title={String(sensor.data)}
