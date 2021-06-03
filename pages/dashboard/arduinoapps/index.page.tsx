@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import InfoCard from 'components/Cards/InfoCard';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+
+import axios from 'axios';
+import _ from 'underscore';
+
 /* ======================= UI ======================= */
 import {
   Button,
@@ -13,18 +18,15 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import Box from '@material-ui/core/Box';
-/* ======================= END UI ======================= */
 
-import { useSelector } from 'react-redux';
-import { RootStore } from '@/redux/index';
-import { useRouter } from 'next/router';
 import LoadingPage from 'components/loadingpage';
 import CreateNewArduinoAppDrawer from '@/components/admin/arduinoapp/createNewArduinoApp';
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
-
+import InfoCard from 'components/Cards/InfoCard';
+/* ======================= END UI ======================= */
+import { RootStore } from '@/redux/index';
 import { arduinoAppI } from 'ts';
-import axios from 'axios';
-import _ from 'underscore';
+
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
 interface arduinoAppsResponse {
@@ -75,9 +77,12 @@ function ArduinoApps() {
       });
     }
   }
+
+  // if the website checking the jwt token
   if (!authState.fetched && authState.loading) {
     return <LoadingPage />;
   } else if (!arduinoApps.fetched && authState.user) {
+    // when fetching user's arduino apps
     return <LoadingPage text='Fetching Apps' />;
   }
 
