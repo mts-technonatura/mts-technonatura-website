@@ -44,9 +44,49 @@ export default function ManageBlog() {
     return <LoadingPage />;
   }
 
-  if (authState.user && !authState.user.isAccountVerified) {
+  if (authState.user && authState.user.isAccountVerified) {
     return (
-      <CallToActionWithIllustration
+      
+    <BoxWrapper>
+      <Flex flexWrap='wrap' justifyContent='space-between'>
+        <Box p='2' className=' '>
+          <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
+            Your Stories
+          </Heading>
+        </Box>
+        <Box>
+          <Link href='/dashboard/stories/new'>
+            <Button ml={4} colorScheme='purple'>
+              New Stories
+            </Button>
+          </Link>
+        </Box>
+      </Flex>
+      <Tabs mt={5}>
+        <TabList className='border-cool-gray-300'>
+          <Tab className='text-cool-gray-400 '>Drafts (2)</Tab>
+          <Tab className='text-cool-gray-400 '>Published (5)</Tab>
+          <Tab className='text-cool-gray-400 '>Response (10)</Tab>
+        </TabList>
+
+        <TabPanels className='dark:text-cool-gray-400'>
+          <TabPanel>
+            <p>Drafts Panel!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>Published Panel!</p>
+          </TabPanel>
+          <TabPanel>
+            <p>Response Panel!</p>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </BoxWrapper>
+    );
+  }
+
+  return (
+    <CallToActionWithIllustration
         Icon={<UnhappyGhost mt={{ base: 12, sm: 16 }} />}
         title="You Don't Have an Access To This Feature"
         desc='This Feature is only accessible for verified users'
@@ -91,44 +131,5 @@ export default function ManageBlog() {
           </>
         }
       />
-    );
-  }
-
-  return (
-    <BoxWrapper>
-      <Flex flexWrap='wrap' justifyContent='space-between'>
-        <Box p='2' className=' '>
-          <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
-            Your Stories
-          </Heading>
-        </Box>
-        <Box>
-          <Link href='/dashboard/stories/new'>
-            <Button ml={4} colorScheme='purple'>
-              New Stories
-            </Button>
-          </Link>
-        </Box>
-      </Flex>
-      <Tabs mt={5}>
-        <TabList className='border-cool-gray-300'>
-          <Tab className='text-cool-gray-400 '>Drafts (2)</Tab>
-          <Tab className='text-cool-gray-400 '>Published (5)</Tab>
-          <Tab className='text-cool-gray-400 '>Response (10)</Tab>
-        </TabList>
-
-        <TabPanels className='dark:text-cool-gray-400'>
-          <TabPanel>
-            <p>Drafts Panel!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>Published Panel!</p>
-          </TabPanel>
-          <TabPanel>
-            <p>Response Panel!</p>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </BoxWrapper>
   );
 }
