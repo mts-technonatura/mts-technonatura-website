@@ -16,9 +16,10 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useCookies } from 'react-cookie';
+
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
-import { useCookies } from 'react-cookie';
 
 export default function NavbarComponent({
   children,

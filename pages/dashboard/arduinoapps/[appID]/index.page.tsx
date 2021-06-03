@@ -57,7 +57,10 @@ interface arduinoResponseI {
     name: string;
     desc: string;
     own?: string;
-    token?: string;
+    token?: {
+      token: string;
+      tokenCreated: number;
+    };
   };
 }
 
@@ -117,9 +120,8 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/app',
         { arduinoAppId: router.query.appID, authToken: authState.token },
       );
-
       if (app.data.app?.token) {
-        tokenValue = app.data.app?.token;
+        tokenValue = app.data.app?.token.token;
       }
       setArduinoApp({
         app: app.data.app,
@@ -350,7 +352,7 @@ function ArduinoApps() {
         <Flex mb={2} mt={2}>
           <Input
             className='dark:text-gray-400'
-            value={arduinoApp.app.token}
+            value={arduinoApp.app.token?.token}
             isReadOnly
             placeholder='Welcome'
           />
