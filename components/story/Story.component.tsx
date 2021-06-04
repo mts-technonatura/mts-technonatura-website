@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import ReactMarkdown from 'react-markdown';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -37,7 +37,6 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
-import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
 
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
@@ -52,13 +51,23 @@ import { NoItemIcon, UnhappyGhost } from 'icons';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
+const StoryRenderer = dynamic(() => import('@/components/story/renderer'), {
+  loading: () => <p>Loading Markdown Renderer</p>,
+});
+const EditStroyRenderer = dynamic(
+  () => import('@/components/story/editStory'),
+  {
+    loading: () => <p>Loading Story Editor</p>,
+  },
+);
 const validationSchema = yup.object({
   title: yup
     .string()
     .trim()
     .matches(RegExp(/^[a-zA-Z0-9]+$/), 'Only Letters and Numbers are allowed')
-    .min(4, 'Minimum title length is 4 characters')
-    .required('username is required'),
+    .min(10, 'Minimum title should be 10 letters long')
+    .max(40, 'Story title should be of maxinum 40 letters length')
+    .required('Story title is required'),
 
   content: yup
     .string()
@@ -81,6 +90,7 @@ const BoxWrapper = styled(Box)`
 `;
 
 export default function ManageBlog() {
+  const [preview, setPreview] = useState<boolean>();
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -93,138 +103,80 @@ export default function ManageBlog() {
   const router = useRouter();
 
   return (
-    <BoxWrapper>
-      <Flex flexWrap='wrap' justifyContent='space-between'>
-        <Box p='2' className=' '>
-          <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
-            Creating Story
-          </Heading>
-          <Text className='dark:text-cool-gray-400 mb-4' fontSize='md'>
-            We are using Markdown Syntax on the story content
-          </Text>
-        </Box>
-        <Box p='2' className=' '>
-          <Button mr={2}>Save Draft</Button>
+    <form noValidate onSubmit={formik.handleSubmit}>
+      <BoxWrapper>
+        <Flex flexWrap='wrap' justifyContent='space-between'>
+          <Box p='2' className=' '>
+            <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
+              Creating Story
+            </Heading>
+            <Text className='dark:text-cool-gray-400 mb-4' fontSize='md'>
+              We are using Markdown Syntax on the story content
+            </Text>
+          </Box>
+          <Box p='2' className=' '>
+            <Button mr={2}>Save To Draft</Button>
 
-          <Button colorScheme='twitter'>Publish</Button>
-        </Box>
-      </Flex>
-      <Tabs mt={5}>
-        <TabList
-          className='dark:bg-gray-800 bg-gray-200 border-cool-gray-300'
-          style={{ position: 'sticky', top: '80px', zIndex: 999 }}
-        >
-          <Tab className='text-cool-gray-400 '>Edit</Tab>
-          <Tab className='text-cool-gray-400 '>Preview</Tab>
-        </TabList>
+            <Button colorScheme='twitter' type='submit'>
+              Publish
+            </Button>
+          </Box>
+        </Flex>
+        <Tabs mt={5}>
+          <TabList
+            className='dark:bg-gray-800 bg-gray-200 border-cool-gray-300'
+            style={{ position: 'sticky', top: '80px', zIndex: 999 }}
+          >
+            <Tab
+              className='text-cool-gray-400 '
+              onClick={() => {
+                if (preview) {
+                  setPreview(false);
+                }
+              }}
+            >
+              Edit
+            </Tab>
+            <Tab
+              className='text-cool-gray-400 '
+              onClick={() => {
+                if (!preview) {
+                  setPreview(true);
+                }
+              }}
+            >
+              Preview
+            </Tab>
+          </TabList>
 
-        <TabPanels className='dark:text-cool-gray-400'>
-          <TabPanel>
-            <Box mt={5} p='2' className=' '>
-              <Heading size='md' className='dark:text-cool-gray-200 mb-3'>
-                Story Title
-              </Heading>
-
-              <Input
-                py={10}
-                pl={5}
-                fontSize={30}
-                fontWeight={900}
-                style={{ border: 'none' }}
-                size='md'
-                className='dark:bg-gray-800 bg-gray-200 border-cool-gray-300 hover:border-cool-gray-400 focus:border-cool-gray-500 dark:border-gray-500 dark:hover:border-gray-400 dark:focus:border-gray-300 text-cool-gray-500 dark:text-gray-300'
-                placeholder='Story Title Here...'
-                id='title'
-                name='title'
-                value={formik.values.title}
-                onChange={formik.handleChange}
+          <TabPanels className='dark:text-cool-gray-400'>
+            <TabPanel>
+              <EditStroyRenderer
+                errors={formik.errors}
+                values={formik.values}
+                handleChange={formik.handleChange}
               />
-            </Box>
-            <Box mt={5} p='2' className=' '>
-              <Heading size='md' className='dark:text-cool-gray-200 mb-3'>
-                Story Content
-              </Heading>
-              <Text className='dark:text-cool-gray-400 mb-4' fontSize='sm'>
-                Content for your story.
-              </Text>
-              <Textarea
-                pt={5}
-                pl={5}
-                fontSize={20}
-                fontWeight={600}
-                style={{ border: 'none' }}
-                className='dark:bg-gray-800 bg-gray-200'
-                placeholder='Here is a sample placeholder'
-                resize='vertical'
-                id='content'
-                name='content'
-                value={formik.values.content}
-                onChange={formik.handleChange}
-              />
-            </Box>
-          </TabPanel>
-          <TabPanel>
-            <Box mt={5} p={2}>
-              <Heading>{formik.values.title}</Heading>
-              <ReactMarkdown
-                components={{
-                  h1: ({ node, children }) => (
-                    <Text
-                      color='black'
-                      fontWeight={700}
-                      lineHeight={1.2}
-                      mb={5}
-                      mt={5}
-                      fontSize={useBreakpointValue({ base: '1xl', md: '4xl' })}
-                    >
-                      {children}
-                    </Text>
-                  ),
-                  h2: ({ node, children }) => (
-                    <Text
-                      color='black'
-                      fontWeight={700}
-                      lineHeight={1.2}
-                      mt={5}
-                      mb={5}
-                      fontSize={useBreakpointValue({ base: '1xl', md: '3xl' })}
-                    >
-                      {children}
-                    </Text>
-                  ),
-                  h3: ({ node, children }) => (
-                    <Text
-                      color='black'
-                      fontWeight={700}
-                      lineHeight={1.2}
-                      mt={4}
-                      mb={4}
-                      fontSize={useBreakpointValue({ base: '1xl', md: '2xl' })}
-                    >
-                      {children}
-                    </Text>
-                  ),
-                  p: ({ node, children }) => (
-                    <Text
-                      color='blackAlpha.700'
-                      fontWeight={400}
-                      lineHeight={1.2}
-                      mt={2}
-                      mb={2}
-                      fontSize={useBreakpointValue({ base: '1xl', md: '1xl' })}
-                    >
-                      {children}
-                    </Text>
-                  ),
-                }}
-                className='mb-4 prose lg:prose-lg dark:prose-dark'
-                skipHtml={false}
-                children={formik.values.content}
-              />
-            </Box>
-          </TabPanel>
-        </TabPanels>
-      </Tabs>
-    </BoxWrapper>
+            </TabPanel>
+            <TabPanel>
+              <Box mt={5} p={2}>
+                {formik.values.title ? (
+                  <Heading fontSize='5xl' mb={5}>
+                    {formik.values.title}
+                  </Heading>
+                ) : (
+                  <div>Title is empty</div>
+                )}
+                <hr />
+                {formik.values.content ? (
+                  <StoryRenderer value={formik.values.content} />
+                ) : (
+                  <div>Content is empty</div>
+                )}
+              </Box>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </BoxWrapper>
+    </form>
   );
 }
