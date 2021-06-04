@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookies } from 'react-cookie';
+import { useCookie } from 'next-universal-cookie';
 
 import { BellIcon } from '@chakra-ui/icons';
 import {
@@ -52,7 +52,7 @@ export default function NavbarComponent({
   const router = useRouter();
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies(['cookieConsentBanner']);
+  const [cookies, setCookie] = useCookie(['cookieConsentBanner']);
   const dispatch = useDispatch();
 
   const authState = useSelector((state: RootStore) => state.auth);

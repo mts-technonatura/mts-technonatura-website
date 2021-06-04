@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import NProgress from 'nprogress';
 import Router from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
 

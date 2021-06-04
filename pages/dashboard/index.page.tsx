@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import PageTitle from 'components/Typography/PageTitle';
 import LoadingPage from 'components/loadingpage';
@@ -17,7 +17,21 @@ function Dashboard() {
   const authState = useSelector((state: RootStore) => state.auth);
 
   if (!authState.fetched && authState.loading && !authState.message) {
-    return <LoadingPage />;
+    return (
+      <>
+        <NextSeo
+          title='MTs TechnoNatura Dashboard'
+          description='MTs TechnoNatura Indonesia Students Dashboard'
+          canonical={process.env.PUBLIC_URL}
+          openGraph={{
+            url: process.env.PUBLIC_URL,
+            title: 'MTs TechnoNatura Students Dashboard',
+            description: 'MTs TechnoNatura Indonesia Students Dashboard',
+          }}
+        />
+        <LoadingPage />
+      </>
+    );
   }
 
   return (

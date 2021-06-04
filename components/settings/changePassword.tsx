@@ -32,7 +32,6 @@ import {
   useToast,
   FormLabel,
 } from '@chakra-ui/react';
-import LoadingPage from 'components/loadingpage';
 
 import React, { useState, ChangeEventHandler } from 'react';
 import { useCookie } from 'next-universal-cookie';
@@ -51,6 +50,8 @@ import axios from 'axios';
 import ms from 'ms';
 
 import { statusMessage } from 'ts/index';
+
+import LoadingPage from 'components/loadingpage';
 
 const validationSchema = yup.object({
   newPassword: yup

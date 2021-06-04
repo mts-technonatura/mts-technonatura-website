@@ -8,6 +8,11 @@ import styled from '@emotion/styled';
 
 /* ======================= UI ======================= */
 import {
+  Tabs,
+  TabList,
+  Tab,
+  TabPanel,
+  TabPanels,
   Button,
   Flex,
   Breadcrumb,
@@ -27,11 +32,6 @@ import {
   ModalHeader,
   ModalBody,
   Modal,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
-  TabPanels,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
@@ -39,6 +39,7 @@ import CallToActionWithIllustration from '@/components/CallToActionWithIllustrat
 
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
+import Story from 'components/story/Story.component';
 
 import Box from '@material-ui/core/Box';
 import { IoIosTrash } from 'react-icons/io';
@@ -74,17 +75,7 @@ export default function ManageBlog() {
   }
 
   if (authState.user && authState.user.isAccountVerified) {
-    return (
-      <BoxWrapper>
-        <Flex flexWrap='wrap' justifyContent='space-between'>
-          <Box p='2' className=' '>
-            <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
-              Draft in {authState.user.username}
-            </Heading>
-          </Box>
-        </Flex>
-      </BoxWrapper>
-    );
+    return <Story />;
   } else {
     return (
       <CallToActionWithIllustration
