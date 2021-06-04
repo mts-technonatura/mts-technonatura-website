@@ -168,10 +168,11 @@ function ArduinoApps() {
             <Spacer />
             <Box>
               <Button
-                colorScheme='teal'
-                bg='purple.600'
+                bg='blue.400'
+                color='gray.50'
                 onClick={onCreateNewDrawerOpen}
-                _hover={{ bg: 'purple.700' }}
+                _hover={{ bg: 'blue.500' }}
+                _active={{ bg: 'blue.600' }}
               >
                 Create New App
               </Button>

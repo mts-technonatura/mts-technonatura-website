@@ -1,26 +1,8 @@
 import React, { FC, useEffect, useState, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuIcon from '@material-ui/icons/Menu';
-import HomeIcon from '@material-ui/icons/Home';
-import LoginIcon from '@material-ui/icons/ExitToApp';
 
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: 'auto',
-  },
-});
+import { HiMenuAlt3 } from 'react-icons/hi';
 
 interface NavbarProps {
   page: string;
@@ -56,51 +38,13 @@ const Navbar = (props: NavbarProps) => {
 
   // console.log(props.page);
   const [drawer, setDrawer] = useState<boolean>(false);
-  const classes = useStyles();
 
   const Router = useRouter();
-  useEffect(() => {
-    console.log(Router);
-  }, []);
 
   function toggleDrawer() {
     setDrawer(!drawer);
   }
 
-  const DrawerList = () => (
-    <div
-      className={clsx(classes.list, {
-        [classes.fullList]: false,
-      })}
-      role='presentation'
-    >
-      <List>
-        {[{ text: 'Home', Icon: <HomeIcon />, link: '/' }].map(
-          (text, index) => (
-            <Link key={index} href={text.link}>
-              <ListItem button key={text.text}>
-                <ListItemIcon>{text.Icon}</ListItemIcon>
-                <ListItemText primary={text.text} />
-              </ListItem>
-            </Link>
-          ),
-        )}
-      </List>
-      <Divider />
-      <List>
-        {[{ text: 'Login', Icon: <LoginIcon />, link: '/login' }].map(
-          (menu, index) => (
-            <Link href={menu.link}>
-              <ListItem button key={menu.text}>
-                <ListItemIcon>{menu.Icon}</ListItemIcon>
-                <ListItemText primary={menu.text} />
-              </ListItem>
-            </Link>
-          ),
-        )}
-      </List>
-    </div>
-  );
   return (
     <>
       <section>
@@ -117,11 +61,8 @@ const Navbar = (props: NavbarProps) => {
               </a>
             </Link>
             <div className='lg:hidden'>
-              <button
-                onClick={toggleDrawer}
-                className='navbar-burger flex items-center text-green-600 p-3'
-              >
-                <MenuIcon />
+              <button className='navbar-burger flex items-center text-green-600 p-3'>
+                <HiMenuAlt3 />
 
                 <title>MTs TechnoNatura menu</title>
               </button>
@@ -172,9 +113,6 @@ const Navbar = (props: NavbarProps) => {
           </div>
         </nav>
       </section>
-      <Drawer anchor='left' open={drawer} onClose={toggleDrawer}>
-        <DrawerList />
-      </Drawer>
     </>
   );
 };
