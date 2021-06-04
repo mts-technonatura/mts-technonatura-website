@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -39,7 +40,6 @@ import CallToActionWithIllustration from '@/components/CallToActionWithIllustrat
 
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
-import Story from 'components/story/Story.component';
 
 import Box from '@material-ui/core/Box';
 import { IoIosTrash } from 'react-icons/io';
@@ -47,6 +47,10 @@ import { FaRegEdit } from 'react-icons/fa';
 /* ======================= END UI ======================= */
 import { RootStore } from '@/redux/index';
 import { NoItemIcon, UnhappyGhost } from 'icons';
+
+const Story = dynamic(() => import('components/story/Story.component'), {
+  loading: () => <p>Loading Story Editor...</p>,
+});
 
 const BoxWrapper = styled(Box)`
   padding: 0px 15px;

@@ -128,6 +128,7 @@ export default function NavbarComponent({
               </Box>
             </CookieBanner>
           )}
+
           <Sidebar />
           <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-5'>
             {authState.user && !authState.user.isAccountVerified && (
@@ -163,6 +164,7 @@ export default function NavbarComponent({
                 </Link>
               </Stack>
             )}
+
             <Header pathname={router.pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
             <Box pt={100}>
