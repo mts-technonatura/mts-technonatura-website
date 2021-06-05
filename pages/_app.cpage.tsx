@@ -2,40 +2,54 @@
 import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 
-import { ChakraProvider } from '@chakra-ui/react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider, useTheme } from '@material-ui/core/styles';
+import { Windmill } from '@windmill/react-ui';
+
 import { AppContext, AppProps } from 'next/app';
 import Head from 'next/head';
-import ProgressLoad from 'components/ProgressLoad';
-import React, { useEffect } from 'react';
-import { SidebarProvider } from 'context/SidebarContext';
-import { Provider } from 'react-redux';
-import store from '../redux_file/';
-
-import Navbar from 'components/Navbar';
-
-import { Windmill } from '@windmill/react-ui';
+import { useRouter } from 'next/router';
 import { NextCookieProvider } from 'next-universal-cookie';
 import { NextSeo } from 'next-seo';
 
+import React, { useEffect } from 'react';
+import { Provider } from 'react-redux';
+
+import { ChakraProvider } from '@chakra-ui/react';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider, useTheme } from '@material-ui/core/styles';
+
+import ProgressLoad from 'components/ProgressLoad';
+import { SidebarProvider } from 'context/SidebarContext';
+import Navbar from 'components/Navbar';
+
+import store from '../redux_file/';
+
 import ChakraUICustomTheme from '../theme';
+
+import * as gtag from 'utils/gtag';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const theme = useTheme();
-  console.log(pageProps, Component.contextTypes);
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: URL) => {
+      gtag.pageview(url);
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <>
       <Head>
         <meta name='viewport' content='width=device-width,initial-scale=1' />
-        {/* <meta
-          name='google-site-verification'
-          content={
-            gtag.GOOGLE_VERIF || '-yo'
-          }
-        /> */}
 
+        <meta
+          name='google-site-verification'
+          content='xRNstet5q-SVVhkd1O7UKYcdANWA4jD1PbFQ17RHP0k'
+        />
         <meta name='yandex-verification' content='356dad746d43cc34' />
 
         <meta name='theme-color' content='#f0efeb' />
@@ -43,7 +57,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link rel='icon' type='image/x-icon' href='/favicon.ico' />
         <link rel='icon' type='image/png' href='/favicon.png'></link>
 
-        <title>Nextjs Windmill Dashboard</title>
+        <title>MTs Technonatura Website</title>
         <meta name='description' content='Windmill Dashboard for nextjs' />
         <link
           rel='stylesheet'
