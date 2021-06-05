@@ -102,15 +102,16 @@ export default function StoryRenderer({ value }) {
           const app = className && className.replace('language-', '');
 
           if (
+            app && (
             app == 'embed' ||
-            (app && [
+             [
               'spotify',
               'youtube',
               'twitch',
               'giphy',
               'codesandbox',
               'codepen',
-            ])
+            ].includes(app))
           ) {
             return (
               <AspectRatio mt={10} mb={10} maxW='100%' ratio={1}>
