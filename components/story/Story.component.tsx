@@ -64,7 +64,6 @@ const validationSchema = yup.object({
   title: yup
     .string()
     .trim()
-    .matches(RegExp(/^[a-zA-Z0-9]+$/), 'Only Letters and Numbers are allowed')
     .min(10, 'Minimum title should be 10 letters long')
     .max(40, 'Story title should be of maxinum 40 letters length')
     .required('Story title is required'),

@@ -8,17 +8,19 @@ import { useRouter } from 'next/router';
 import gfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import remarkFootnotes from 'remark-footnotes';
+import remarkBreaks from 'remark-breaks';
+// import remarkEmbedder from '@remark-embedder/core'
 
 import rehypeKatex from 'rehype-katex';
+import rehypeRaw from 'rehype-raw';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 /* Use `…/dist/cjs/…` if you’re not in ESM! */
 import { duotoneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
-import styled from '@emotion/styled';
-
 /* ======================= UI ======================= */
 import {
+  AspectRatio,
   chakra,
   Tabs,
   TabList,
@@ -46,20 +48,45 @@ import {
   Modal,
   Textarea,
   useBreakpointValue,
+  Image,
 } from '@chakra-ui/react';
 
-interface StoryRendererI {
-  value: string;
-}
-
-export default function StoryRenderer({ value }: StoryRendererI) {
+export default function StoryRenderer({ value }) {
   return (
     <ReactMarkdown
       linkTarget='_blank'
       disallowedElements={['table']}
       rehypePlugins={[rehypeKatex]}
-      remarkPlugins={[gfm, remarkMath, remarkFootnotes]}
+      remarkPlugins={[gfm, remarkMath, remarkFootnotes, remarkBreaks]}
+      rawSourcePos
       components={{
+        div({ node, inline, className, children, ...props }) {
+          return (
+            <div mt={5} mb={5}>
+              {children}
+            </div>
+          );
+        },
+        section({ node, inline, className, children, ...props }) {
+          return (
+            <div mt={5} mb={5}>
+              {children}
+            </div>
+          );
+        },
+        img({ node, inline, className, children, ...props }) {
+          return (
+            <Image
+              className='text-blue-500'
+              style={{ textDecoration: 'underline' }}
+              {...props}
+              mt={5}
+              mb={5}
+            >
+              {children}
+            </Image>
+          );
+        },
         a({ node, inline, className, children, ...props }) {
           return (
             <chakra.a
@@ -72,6 +99,26 @@ export default function StoryRenderer({ value }: StoryRendererI) {
           );
         },
         code({ node, inline, className, children, ...props }) {
+          const app = className && className.replace('language-', '');
+
+          if (
+            app == 'embed' ||
+            (app && [
+              'spotify',
+              'youtube',
+              'twitch',
+              'giphy',
+              'codesandbox',
+              'codepen',
+            ])
+          ) {
+            return (
+              <AspectRatio mt={10} mb={10} maxW='100%' ratio={1}>
+                <iframe title='naruto' src={children} allowFullScreen />
+              </AspectRatio>
+            );
+          }
+          // https://www.youtube.com/embed/QhBnZ6NPOY0
           const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
             <SyntaxHighlighter
@@ -82,7 +129,9 @@ export default function StoryRenderer({ value }: StoryRendererI) {
               {...props}
             />
           ) : (
-            <code className={className} {...props} />
+            <code className={className} {...props}>
+              {children}
+            </code>
           );
         },
         h1: ({ node, children }) => (
