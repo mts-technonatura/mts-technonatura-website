@@ -5,6 +5,8 @@ import CreatableSelect from 'react-select/creatable';
 import { useToast } from '@chakra-ui/react';
 
 export default function CreatableMulti() {
+  const toast = useToast();
+
   const [state, setState] = useState<{
     tags: Array<{ label: string; value: string }>;
   }>({ tags: [] });
@@ -18,6 +20,12 @@ export default function CreatableMulti() {
     } else {
       if (newValue.length == 0) setState({ tags: [] });
       else {
+        toast({
+          title: 'Only letters, numbers, underscores, and dashes are allowed',
+          status: 'warning',
+          duration: 9000,
+          isClosable: true,
+        });
       }
     }
 
