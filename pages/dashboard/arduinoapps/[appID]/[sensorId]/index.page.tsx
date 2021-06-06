@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import InfoCard from 'components/Cards/InfoCard';
+import { useSelector } from 'react-redux';
+
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import axios from 'axios';
+import _ from 'underscore';
 /* ======================= UI ======================= */
 import {
   Button,
@@ -26,6 +32,10 @@ import Box from '@material-ui/core/Box';
 
 // costum components
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
+import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
+
+import InfoCard from 'components/Cards/InfoCard';
+import LoadingPage from 'components/loadingpage';
 // end custom components
 
 //#icons
@@ -35,15 +45,8 @@ import { FaRegEdit } from 'react-icons/fa';
 
 /* ======================= END UI ======================= */
 
-import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
-import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
-import { useRouter } from 'next/router';
-import LoadingPage from 'components/loadingpage';
-import Link from 'next/link';
 import { sensorI, normalResponseT } from 'ts';
-import axios from 'axios';
-import _ from 'underscore';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
 interface sensorsResponseI {
