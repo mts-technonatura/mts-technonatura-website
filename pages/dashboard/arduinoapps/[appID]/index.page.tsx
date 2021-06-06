@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import axios from 'axios';
+import _ from 'underscore';
+
 /* ======================= UI ======================= */
 import {
   Button,
@@ -26,39 +29,29 @@ import {
   ModalBody,
   Modal,
 } from '@chakra-ui/react';
+import Box from '@material-ui/core/Box';
+
+import { IoIosTrash } from 'react-icons/io';
+import { FaRegEdit } from 'react-icons/fa';
+
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
 import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
-
-import Box from '@material-ui/core/Box';
-import { IoIosTrash } from 'react-icons/io';
-import { FaRegEdit } from 'react-icons/fa';
 /* ======================= END UI ======================= */
 
 import { RootStore } from '@/redux/index';
 
-import { sensorI, normalResponseT, arduinoAppI } from 'ts';
+import {
+  sensorI,
+  normalResponseT,
+  arduinoAppI,
+  arduinoResponseI,
+  sensorsStateI,
+  sensorsResponseI,
+  arduinoAppStateI,
+} from 'ts';
 import { NoItemIcon, UnhappyGhost } from 'icons';
-
-import axios from 'axios';
-import _ from 'underscore';
-
-interface sensorsResponseI {
-  sensors?: sensorI[];
-}
-
-interface sensorsI extends sensorsResponseI {
-  fetched: boolean;
-}
-
-interface arduinoResponseI {
-  app?: arduinoAppI;
-}
-
-interface arduinoI extends arduinoResponseI {
-  fetched: boolean;
-}
 
 function ArduinoApps() {
   const authState = useSelector((state: RootStore) => state.auth);
@@ -78,10 +71,10 @@ function ArduinoApps() {
     onClose: onModalDeleteClose,
   } = useDisclosure();
 
-  const [sensors, setSensors] = useState<sensorsI>({
+  const [sensors, setSensors] = useState<sensorsStateI>({
     fetched: false,
   });
-  const [arduinoApp, setArduinoApp] = useState<arduinoI>({
+  const [arduinoApp, setArduinoApp] = useState<arduinoAppStateI>({
     fetched: false,
   });
 
