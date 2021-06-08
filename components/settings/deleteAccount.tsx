@@ -15,7 +15,6 @@ import {
   FormLabel,
 } from '@chakra-ui/react';
 import React, { useState, ChangeEventHandler } from 'react';
-import { IoWarning } from 'react-icons/io5';
 
 import { useFormik } from 'formik';
 import * as yup from 'yup';

@@ -1,13 +1,18 @@
 import React from 'react';
-import { Router, useRouter } from 'next/router';
-import routes, { routeI, checkOnPage } from '../../routes/sidebar';
-import Link from 'next/link';
-import SidebarSubmenu from './SidebarSubmenu';
 import { useSelector } from 'react-redux';
-import { RootStore } from '@/redux/index';
+
+import { Router, useRouter } from 'next/router';
+import Link from 'next/link';
+
 import _ from 'underscore';
-import { checkRoles } from 'utils/checkRoles';
+
 import { Image, Tooltip, Divider } from '@chakra-ui/react';
+
+import routes, { routeI, checkOnPage } from '../../routes/sidebar';
+import SidebarSubmenu from './SidebarSubmenu';
+import { checkRoles } from 'utils/checkRoles';
+
+import { RootStore } from '@/redux/index';
 
 function SidebarContent() {
   const authState = useSelector((state: RootStore) => state.auth);
@@ -153,13 +158,13 @@ export function MenuItem({
               (route.onPage
                 ? checkOnPage(asPath, route.onPage) && (
                     <span
-                      className='absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg'
+                      className='absolute inset-y-0 left-0 w-1 bg-blue-500 rounded-tr-lg rounded-br-lg'
                       aria-hidden='true'
                     ></span>
                   )
                 : asPath == route.path && (
                     <span
-                      className='absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg'
+                      className='absolute inset-y-0 left-0 w-1 bg-blue-500 rounded-tr-lg rounded-br-lg'
                       aria-hidden='true'
                     ></span>
                   ))}

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { DropdownIcon } from 'icons';
 import { Transition } from '@windmill/react-ui';
+import _ from 'underscore';
+
 import { routesI } from 'routes/sidebar';
 import { MenuItem } from './SidebarContent';
-import _ from 'underscore';
 import { UserType } from 'ts/index';
 import { checkRoles } from 'utils/checkRoles';
 

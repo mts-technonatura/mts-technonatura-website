@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
+
 import Link from 'next/link';
 
 import axios from 'axios';
 import _ from 'underscore';
 
 /* ======================= UI ======================= */
-import {
-  Button,
-  Flex,
-  Stack,
-  Container,
-  Heading,
-  Text,
-  Spacer,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Button, Flex, Heading, Spacer, useDisclosure } from '@chakra-ui/react';
 import Box from '@material-ui/core/Box';
 
 import LoadingPage from 'components/loadingpage';
@@ -26,7 +17,6 @@ import InfoCard from 'components/Cards/InfoCard';
 /* ======================= END UI ======================= */
 import { RootStore } from '@/redux/index';
 import { arduinoAppI } from 'ts';
-
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
 interface arduinoAppsResponse {
@@ -44,8 +34,6 @@ function ArduinoApps() {
     onClose: onCreateNewDrawerClose,
   } = useDisclosure();
 
-  //   const [allData, setAllData] = useState<Readonly<AlldataI[]>>();
-  const router = useRouter();
   const authState = useSelector((state: RootStore) => state.auth);
   const [arduinoApps, setArduinoApps] = useState<arduinoAppsI>({
     fetched: false,
@@ -136,74 +124,73 @@ function ArduinoApps() {
     );
   }
 
+  if (
+    authState.user.isAccountVerified &&
+    Array.isArray(arduinoApps?.apps) &&
+    arduinoApps?.apps.length == 0
+  ) {
+    return (
+      <CallToActionWithIllustration
+        title="You Don't Have Arduino App yet"
+        Icon={<NoItemIcon mt={{ base: 12, sm: 16 }} />}
+        desc="You don't have any arduino app yet, create a new one!"
+        Buttons={
+          <>
+            <Button
+              rounded={'full'}
+              px={6}
+              colorScheme={'purple'}
+              bg='purple.600'
+              _hover={{ bg: 'purple.700' }}
+            >
+              Get started
+            </Button>
+
+            <Button onClick={onCreateNewDrawerOpen} rounded={'full'} px={6}>
+              Create New
+            </Button>
+          </>
+        }
+      />
+    );
+  }
+
   return (
     <>
       {authState.user && arduinoApps?.apps && Array.isArray(arduinoApps?.apps) && (
         <>
-          {authState.user.isAccountVerified && arduinoApps?.apps.length == 0 ? (
-            <CallToActionWithIllustration
-              title="You Don't Have Arduino App yet"
-              Icon={<NoItemIcon mt={{ base: 12, sm: 16 }} />}
-              desc="You don't have any arduino app yet, create a new one!"
-              Buttons={
-                <>
-                  <Button
-                    rounded={'full'}
-                    px={6}
-                    colorScheme={'purple'}
-                    bg='purple.600'
-                    _hover={{ bg: 'purple.700' }}
-                  >
-                    Get started
-                  </Button>
-
-                  <Button
-                    onClick={onCreateNewDrawerOpen}
-                    rounded={'full'}
-                    px={6}
-                  >
-                    Create New
-                  </Button>
-                </>
-              }
-            />
-          ) : (
-            authState.user.isAccountVerified && (
-              <>
-                <Flex>
-                  <Box p='2' className='flex justify-center items-center'>
-                    <Heading size='lg' className='dark:text-cool-gray-300 mb-8'>
-                      Arduino Apps
-                    </Heading>
-                  </Box>
-                  <Spacer />
-                  <Box>
-                    <Button
-                      colorScheme='teal'
-                      bg='purple.600'
-                      onClick={onCreateNewDrawerOpen}
-                      _hover={{ bg: 'purple.700' }}
-                    >
-                      Create New App
-                    </Button>
-                  </Box>
-                </Flex>
-                <div className='grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
-                  {arduinoApps?.apps.map((app, id) => (
-                    <InfoCard
-                      title={
-                        <Link href={`/dashboard/arduinoapps/${app._id}`}>
-                          {app.name}
-                        </Link>
-                      }
-                      type={1}
-                      value={app.desc}
-                    ></InfoCard>
-                  ))}
-                </div>
-              </>
-            )
-          )}
+          <Flex>
+            <Box p='2' className='flex justify-center items-center'>
+              <Heading size='lg' className='dark:text-cool-gray-300 mb-8'>
+                Arduino Apps
+              </Heading>
+            </Box>
+            <Spacer />
+            <Box>
+              <Button
+                bg='blue.400'
+                color='gray.50'
+                onClick={onCreateNewDrawerOpen}
+                _hover={{ bg: 'blue.500' }}
+                _active={{ bg: 'blue.600' }}
+              >
+                Create New App
+              </Button>
+            </Box>
+          </Flex>
+          <div className='grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
+            {arduinoApps?.apps.map((app, id) => (
+              <InfoCard
+                title={
+                  <Link href={`/dashboard/arduinoapps/${app._id}`}>
+                    {app.name}
+                  </Link>
+                }
+                type={1}
+                value={app.desc}
+              ></InfoCard>
+            ))}
+          </div>
 
           <CreateNewArduinoAppDrawer
             token={authState.token}

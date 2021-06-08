@@ -40,10 +40,14 @@ const routes: routesI[] = [
     type: 'up',
   },
   {
-    path: '/dashboard/blog',
-    onPage: ['/dashboard/blog', '/dashboard/blog/[blogID]'],
+    path: '/dashboard/stories',
+    onPage: [
+      '/dashboard/stories',
+      '/dashboard/stories/new',
+      '/dashboard/stories/[postId]/edit',
+    ],
     Icon: FaBlog,
-    name: 'Manage Blog',
+    name: 'Manage Stories',
     type: 'up',
   },
   {
@@ -55,7 +59,11 @@ const routes: routesI[] = [
   },
   {
     path: '/dashboard/arduinoapps',
-    onPage: ['/dashboard/arduinoapps', '/dashboard/arduinoapps/[appID]'],
+    onPage: [
+      '/dashboard/arduinoapps',
+      '/dashboard/arduinoapps/[appID]',
+      '/dashboard/arduinoapps/[appID]/[sensorId]',
+    ],
     Icon: SiArduino,
     name: 'Arduino Apps',
     type: 'up',

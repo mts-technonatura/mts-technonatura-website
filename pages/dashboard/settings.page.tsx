@@ -70,11 +70,11 @@ function RadioCard(props: any) {
         borderWidth='1px'
         borderRadius='md'
         boxShadow='md'
-        className='border-cool-gray-300 hover:border-cool-gray-400 focus:border-cool-gray-500 dark:border-gray-500 dark:hover:border-gray-400 dark:focus:border-gray-300 text-cool-gray-500 dark:text-gray-300'
+        className=' border-cool-gray-300 hover:border-cool-gray-400 focus:border-cool-gray-500 dark:border-gray-500 dark:hover:border-gray-400 dark:focus:border-gray-300 text-cool-gray-500 dark:text-gray-300'
         _checked={{
-          bg: 'teal.600',
+          bg: 'blue.500',
           color: 'white',
-          borderColor: 'teal.600',
+          borderColor: 'blue.500',
         }}
         _focus={{
           boxShadow: 'outline',
