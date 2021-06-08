@@ -69,6 +69,12 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/dev',
+        destination: 'https://dev.mts-technonatura.vercel.app',
+        permanent: true,
+      },
+      ,
+      {
         source: '/yt',
         destination: process.env.yt,
         permanent: true,

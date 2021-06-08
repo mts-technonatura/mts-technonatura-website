@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Container } from '@chakra-ui/react';
 import { heroBG, photoBareng } from 'assets/data/Gambar';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -7,7 +8,7 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 export default function Hero(): JSX.Element {
   return (
     <div className='bg-gray-50 pt-12 lg:pt-20 pb-20 '>
-      <div className='container mx-auto px-4'>
+      <div className='container mx-auto px-24'>
         <div className='flex flex-wrap -mx-4'>
           <div className='w-full lg:w-1/2 px-4 mb-12 md:mb-20 lg:mb-0 flex items-center'>
             <div className='w-full text-center lg:text-left'>
