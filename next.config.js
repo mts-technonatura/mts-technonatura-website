@@ -73,7 +73,6 @@ const nextConfig = {
         destination: 'https://dev.mts-technonatura.vercel.app',
         permanent: true,
       },
-      ,
       {
         source: '/yt',
         destination: process.env.yt,
