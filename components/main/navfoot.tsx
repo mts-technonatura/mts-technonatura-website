@@ -14,7 +14,7 @@ export default function NavFoot({ children, page }: NavFootI): JSX.Element {
   return (
     <>
       <Navbar page={page} />
-      {children}
+      <div>{children}</div>
       <Footer />
     </>
   );
