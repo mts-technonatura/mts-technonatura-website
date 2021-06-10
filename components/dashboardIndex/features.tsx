@@ -1,7 +1,6 @@
 import { SiArduino } from 'react-icons/si';
 import { IconType } from 'react-icons';
 import Link from 'next/link';
-import styled from '@emotion/styled';
 interface FeatureCardI {
   link?: string;
   title: string;

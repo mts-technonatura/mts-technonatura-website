@@ -120,7 +120,7 @@ function Header({ pathname }: HeaderI) {
                       >
                         Profile
                       </MenuItem>
-                      <Link href={`/app/settings`}>
+                      <Link href={`/dashboard/settings`}>
                         <MenuItem
                           className='dark:hover:bg-gray-600'
                           icon={<BiCog size='20px' />}
@@ -142,11 +142,24 @@ function Header({ pathname }: HeaderI) {
                   </Menu>
                 ) : (
                   <Link href='/login'>
-                    <Button colorScheme='purple'>Login</Button>
+                    <Button
+                      bg='blue.400'
+                      color='gray.50'
+                      _hover={{ bg: 'blue.500' }}
+                      _active={{ bg: 'blue.600' }}
+                    >
+                      Login
+                    </Button>
                   </Link>
                 )
               ) : (
-                <Button isLoading colorScheme='blue'>
+                <Button
+                  isLoading
+                  bg='blue.400'
+                  color='gray.50'
+                  _hover={{ bg: 'blue.500' }}
+                  _active={{ bg: 'blue.600' }}
+                >
                   Login
                 </Button>
               )}

@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import InfoCard from 'components/Cards/InfoCard';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 /* ======================= UI ======================= */
 import {
   Button,
@@ -9,7 +12,6 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Heading,
-  Spacer,
   useDisclosure,
   useToast,
   Input,
@@ -19,15 +21,14 @@ import {
   ModalFooter,
   Divider,
   ModalContent,
-  ModalCloseButton,
   ModalOverlay,
-  useBreakpointValue,
   ModalHeader,
   ModalBody,
   Modal,
 } from '@chakra-ui/react';
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
 import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
+import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
 
 import Box from '@material-ui/core/Box';
@@ -35,9 +36,7 @@ import { IoIosTrash } from 'react-icons/io';
 import { FaRegEdit } from 'react-icons/fa';
 /* ======================= END UI ======================= */
 
-import { useSelector } from 'react-redux';
 import { RootStore } from '@/redux/index';
-import { useRouter } from 'next/router';
 
 import { sensorI, normalResponseT, arduinoAppI } from 'ts';
 import { NoItemIcon, UnhappyGhost } from 'icons';
@@ -113,7 +112,6 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/app',
         { arduinoAppId: router.query.appID, authToken: authState.token },
       );
-
       if (app.data.app?.token) {
         tokenValue = app.data.app?.token.token;
       }
@@ -281,17 +279,16 @@ function ArduinoApps() {
             <BreadcrumbLink href='#'>{router.query.appID}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        <Flex>
+        <Flex flexWrap='wrap' justifyContent='space-between'>
           <Box p='2' className=' '>
             <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
               {arduinoApp.app?.name} - Arduino App
             </Heading>
 
-            <Text className='dark:text-cool-gray-400' fontSize='xl'>
+            <Text className='dark:text-cool-gray-400 mb-4' fontSize='xl'>
               {arduinoApp.app?.desc}
             </Text>
           </Box>
-          <Spacer />
           <Box>
             <Button
               colorScheme='teal'
@@ -356,7 +353,7 @@ function ArduinoApps() {
           </Button>
         </Flex>
         <Text mt={3} className='dark:text-cool-gray-400' fontSize='sm'>
-          Token expired at:
+          Token expired at{' '}
           {new Date(arduinoApp.app.token.tokenCreated + 31536000000).toString()}
         </Text>
         {/* End of Arduino App Token */}

@@ -1,5 +1,6 @@
 import { Link } from '@chakra-ui/react';
 
+
 export default function FooterHome(): JSX.Element {
   return (
     <footer>
@@ -232,6 +233,7 @@ export default function FooterHome(): JSX.Element {
             . All rights reserved.
           </div>
         </div>
+
       </div>
     </footer>
   );

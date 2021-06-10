@@ -17,9 +17,6 @@ import {
   useBreakpointValue,
 } from '@chakra-ui/react';
 
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import style from 'react-syntax-highlighter/dist/cjs/styles/prism/dracula';
-
 import { getPostBySlug, getPostsSlugs } from '@utils/static_page';
 
 import { ReactNode } from 'react';

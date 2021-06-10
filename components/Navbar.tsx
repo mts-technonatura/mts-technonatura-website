@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
 import Link from 'next/link';
-import Sidebar from 'components/Sidebar';
-import Header from 'components/Header';
-import NavFoot from 'components/main/navfoot';
-import { SidebarContext } from 'context/SidebarContext';
+
+import React, { useContext, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useCookie } from 'next-universal-cookie';
 
 import { BellIcon } from '@chakra-ui/icons';
 import {
@@ -21,14 +20,17 @@ import {
   Box,
   CloseButton,
   Link as ChakraLink,
-  chakra,
   Container,
-  VisuallyHidden,
+  chakra,
 } from '@chakra-ui/react';
-import { useSelector, useDispatch } from 'react-redux';
+
+import Sidebar from 'components/Sidebar';
+import Header from 'components/Header';
+import NavFoot from 'components/main/navfoot';
+import { SidebarContext } from 'context/SidebarContext';
+
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
-import { useCookies } from 'react-cookie';
 
 import ms from 'ms';
 
@@ -50,7 +52,7 @@ export default function NavbarComponent({
   const router = useRouter();
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
-  const [cookies, setCookie] = useCookies(['cookieConsentBanner']);
+  const [cookies, setCookie] = useCookie(['cookieConsentBanner']);
   const dispatch = useDispatch();
 
   const authState = useSelector((state: RootStore) => state.auth);
@@ -126,6 +128,7 @@ export default function NavbarComponent({
               </Box>
             </CookieBanner>
           )}
+
           <Sidebar />
           <div className='flex  flex-col flex-1 w-full overflow-y-auto	pb-5'>
             {authState.user && !authState.user.isAccountVerified && (
@@ -161,6 +164,7 @@ export default function NavbarComponent({
                 </Link>
               </Stack>
             )}
+
             <Header pathname={router.pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
             <Box pt={100}>
@@ -172,7 +176,14 @@ export default function NavbarComponent({
                 align={{ base: 'center', md: 'center' }}
               >
                 <Text className='text-gray-400 dark:text-cool-gray-500'>
-                  © 2021 Aldhanekaa. All rights reserved
+                  © 2021 MTs TechnoNatura Contributors, all rights reserved.
+                  Made with 💖 by{' '}
+                  <chakra.a
+                    href='https://aldhanekaa.github.io'
+                    style={{ textDecoration: 'underline' }}
+                  >
+                    Aldhan
+                  </chakra.a>
                 </Text>
               </Container>
             </Box>

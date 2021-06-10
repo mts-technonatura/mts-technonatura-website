@@ -27,7 +27,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "components/admin/unverifiedusers.jsx"
+    "components/admin/unverifiedusers.jsx",
+    "components/story/renderer.jsx"
   ],
   "exclude": ["node_modules"]
 }
