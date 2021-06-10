@@ -74,7 +74,10 @@ function ArduinoApps() {
     return <LoadingPage text='Fetching Apps' />;
   }
 
-  if (!authState.user || !authState.user.isAccountVerified) {
+  if (
+    (authState.user && !authState.user.isAccountVerified) ||
+    !authState.user
+  ) {
     return (
       <CallToActionWithIllustration
         Icon={<UnhappyGhost mt={{ base: 12, sm: 16 }} />}
@@ -130,31 +133,36 @@ function ArduinoApps() {
     arduinoApps?.apps.length == 0
   ) {
     return (
-      <CallToActionWithIllustration
-        title="You Don't Have Arduino App yet"
-        Icon={<NoItemIcon mt={{ base: 12, sm: 16 }} />}
-        desc="You don't have any arduino app yet, create a new one!"
-        Buttons={
-          <>
-            <Button
-              rounded={'full'}
-              px={6}
-              colorScheme={'purple'}
-              bg='purple.600'
-              _hover={{ bg: 'purple.700' }}
-            >
-              Get started
-            </Button>
+      <>
+        <CallToActionWithIllustration
+          title="You Don't Have Arduino App yet"
+          Icon={<NoItemIcon mt={{ base: 12, sm: 16 }} />}
+          desc="You don't have any arduino app yet, create a new one!"
+          Buttons={
+            <>
+              <Button
+                rounded={'full'}
+                px={6}
+                colorScheme={'purple'}
+                bg='purple.600'
+                _hover={{ bg: 'purple.700' }}
+              >
+                Get started
+              </Button>
 
-            <Button onClick={() => {
-              console.log("onCreateNewDrawerOpen");
-                onCreateNewDrawerOpen();
-              }} rounded={'full'} px={6}>
-              Create New
-            </Button>
-          </>
-        }
-      />
+              <Button onClick={onCreateNewDrawerOpen} rounded={'full'} px={6}>
+                Create New
+              </Button>
+            </>
+          }
+        />
+        <CreateNewArduinoAppDrawer
+          token={authState.token}
+          isOpen={isCreateNewDrawerOpen}
+          onClose={onCreateNewDrawerClose}
+          onOpen={onCreateNewDrawerOpen}
+        />
+      </>
     );
   }
 

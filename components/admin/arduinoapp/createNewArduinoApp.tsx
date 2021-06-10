@@ -20,13 +20,6 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import * as yup from 'yup';
 
-interface CreateNewArduinoAppDrawerI {
-  isOpen: boolean;
-  onClose: () => void;
-  onOpen: () => void;
-  token?: string;
-}
-
 const validationSchema = yup.object({
   arduinoAppName: yup
     .string()
@@ -48,6 +41,13 @@ const validationSchema = yup.object({
 interface createArduinoAppResponseI extends APIResponse {
   errors?: Object;
   arduinoAppID?: string;
+}
+
+interface CreateNewArduinoAppDrawerI {
+  isOpen: boolean;
+  onClose: () => void;
+  onOpen: () => void;
+  token?: string;
 }
 
 export default function CreateNewArduinoAppDrawer({
