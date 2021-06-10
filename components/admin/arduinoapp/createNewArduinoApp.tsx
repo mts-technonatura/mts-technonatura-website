@@ -113,7 +113,7 @@ export default function CreateNewArduinoAppDrawer({
 
   return (
     <Drawer
-      isOpen={true}
+      isOpen={isOpen}
       placement='right'
       onClose={() => {
         if (!isCreating) {
