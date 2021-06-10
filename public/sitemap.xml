@@ -2,71 +2,76 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>http://localhost:3000/about</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
-  </url>
-
-  <url>
-    <loc>http://localhost:3000/contact</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/create-account</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
+  </url>
+
+  <url>
+    <loc>http://localhost:3000/contact</loc>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/forgot-password</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/login</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/dashboard/admin</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/dashboard</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/dashboard/settings</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/page/[slug]</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
-    <loc>http://localhost:3000/dashboard/arduinoapps</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <loc>http://localhost:3000/help</loc>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/dashboard/blog</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
+  </url>
+
+  <url>
+    <loc>http://localhost:3000/dashboard/arduinoapps</loc>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/dashboard/arduinoapps/[appID]</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 
   <url>
     <loc>http://localhost:3000/dashboard/arduinoapps/[appID]/[sensorId]</loc>
-    <lastmod>2021-06-07T21:58:30.093Z</lastmod>
+    <lastmod>2021-06-10T07:16:06.325Z</lastmod>
   </url>
 </urlset>
