@@ -148,7 +148,8 @@ function ArduinoApps() {
 
             <Button onClick={() => {
               console.log("onCreateNewDrawerOpen");
-                onCreateNewDrawerOpen();
+              onCreateNewDrawerOpen();
+              console.log(isCreateNewDrawerOpen);
               }} rounded={'full'} px={6}>
               Create New
             </Button>
