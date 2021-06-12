@@ -51,7 +51,8 @@ export default function NavbarComponent({
 }: {
   children: JSX.Element | JSX.Element[];
 }) {
-  const router = useRouter();
+  const { asPath, pathname, route } = useRouter();
+
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const [cookies, setCookie] = useCookie(['cookieConsentBanner']);
@@ -60,16 +61,16 @@ export default function NavbarComponent({
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
+
   useEffect(() => {
-    // console.log(router);
     if (authState.loading) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
+
   useEffect(() => {
-    console.log(cookies['cookieConsentBanner']);
     closeSidebar();
-  }, [router.asPath]);
+  }, [asPath]);
 
   function closeCookieBanner() {
     // console.log(tokenCookieKey);
@@ -78,9 +79,9 @@ export default function NavbarComponent({
       maxAge: ms('10y'),
     });
   }
-
-  const { asPath } = useRouter();
-
+  if (pathname == '/projects') {
+    return children;
+  }
   if (asPath.includes('/blog')) {
     return (
       <>
@@ -178,7 +179,7 @@ export default function NavbarComponent({
               </Stack>
             )}
 
-            <Header pathname={router.pathname} />
+            <Header pathname={pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
             <Box pt={100}>
               <Container
@@ -247,7 +248,7 @@ export default function NavbarComponent({
           />
         </CookieBanner>
       )}
-      <NavFoot page={router.route}>{children}</NavFoot>
+      <NavFoot page={route}>{children}</NavFoot>
     </>
   );
 }
