@@ -1,9 +1,8 @@
 import { Link } from '@chakra-ui/react';
 
-
 export default function FooterHome(): JSX.Element {
   return (
-    <footer>
+    <footer className='mt-10'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
         {/* Top area: Blocks */}
         <div className='grid sm:grid-cols-12 gap-8 py-8 md:py-12 border-t border-gray-200'>
@@ -233,7 +232,6 @@ export default function FooterHome(): JSX.Element {
             . All rights reserved.
           </div>
         </div>
-
       </div>
     </footer>
   );

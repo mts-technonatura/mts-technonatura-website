@@ -4,6 +4,9 @@ import Link from 'next/link';
 import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookie } from 'next-universal-cookie';
+import styled from '@emotion/styled';
+
+import ms from 'ms';
 
 import { BellIcon } from '@chakra-ui/icons';
 import {
@@ -27,14 +30,13 @@ import {
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
 import NavFoot from 'components/main/navfoot';
+import NavbarBlog from 'components/blog/navbar';
+import MainFooter from './main/footer';
+
 import { SidebarContext } from 'context/SidebarContext';
 
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
-
-import ms from 'ms';
-
-import styled from '@emotion/styled';
 
 const CookieBanner = styled(Alert)`
   width: 100%;
@@ -78,6 +80,17 @@ export default function NavbarComponent({
   }
 
   const { asPath } = useRouter();
+
+  if (asPath.includes('/blog')) {
+    return (
+      <>
+        <NavbarBlog />
+        {children}
+        <MainFooter />
+      </>
+    );
+  }
+
   if (asPath.includes('/dashboard')) {
     return (
       <>
