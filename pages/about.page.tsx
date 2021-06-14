@@ -64,23 +64,23 @@ export default function AboutPage() {
           />
         </div>
       </section>
-      <section class='bg-white'>
-        <div class='max-w-5xl px-6 py-16 mx-auto space-y-8 md:flex md:items-center md:space-y-0'>
-          <div class='md:w-2/3'>
-            <div class='hidden md:flex md:items-center md:space-x-10'>
+      <section className='bg-white'>
+        <div className='max-w-5xl px-6 py-16 mx-auto space-y-8 md:flex md:items-center md:space-y-0'>
+          <div className='md:w-2/3'>
+            <div className='hidden md:flex md:items-center md:space-x-10'>
               <img
-                class='object-cover object-center rounded-md shadow w-72 h-72'
+                className='object-cover object-center rounded-md shadow w-72 h-72'
                 src='https://images.unsplash.com/photo-1614030126544-b79b92e29e98?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80'
               />
               <img
-                class='object-cover object-center w-64 rounded-md shadow h-96'
+                className='object-cover object-center w-64 rounded-md shadow h-96'
                 src='https://images.unsplash.com/photo-1618506469810-282bef2b30b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1350&amp;q=80'
               />
             </div>
-            <h2 class='text-3xl font-semibold text-gray-800 md:mt-6'>
+            <h2 className='text-3xl font-semibold text-gray-800 md:mt-6'>
               Lorem ipsum dolor{' '}
             </h2>
-            <p class='max-w-lg mt-4 text-gray-600'>
+            <p className='max-w-lg mt-4 text-gray-600'>
               Duis aute irure dolor in reprehenderit in voluptate velit esse
               illum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
               cupidatat non proident, sunt in culpa qui officia deserunt mollit
@@ -89,38 +89,38 @@ export default function AboutPage() {
               deserunt mollit anim id est laborum.
             </p>
           </div>
-          <div class='md:w-1/3'>
+          <div className='md:w-1/3'>
             <img
-              class='object-cover object-center w-full rounded-md shadow'
+              className='object-cover object-center w-full rounded-md shadow'
               style={{ height: '700px' }}
               src='https://images.unsplash.com/photo-1593352216840-1aee13f45818?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=634&amp;q=80'
             />
           </div>
         </div>
       </section>
-      <section class='bg-white'>
-        <div class='max-w-5xl px-6 py-16 mx-auto'>
-          <div class='items-center md:flex md:space-x-6'>
-            <div class='md:w-1/2'>
-              <h3 class='text-2xl font-semibold text-gray-800'>
+      <section className='bg-white'>
+        <div className='max-w-5xl px-6 py-16 mx-auto'>
+          <div className='items-center md:flex md:space-x-6'>
+            <div className='md:w-1/2'>
+              <h3 className='text-2xl font-semibold text-gray-800'>
                 Lorem ipsum dolor sit <br /> amet, consectetur
               </h3>
-              <p class='max-w-md mt-4 text-gray-600'>
+              <p className='max-w-md mt-4 text-gray-600'>
                 Duis aute irure dolor in reprehenderit in voluptate velit esse
                 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
                 cupidatat non proident, sunt in culpa qui officia deserunt
                 mollit anim id est laborum.
               </p>
-              <a href='#' class='block mt-8 text-indigo-700 underline'>
+              <a href='#' className='block mt-8 text-indigo-700 underline'>
                 Experienced team
               </a>
             </div>
 
-            <div class='mt-8 md:mt-0 md:w-1/2'>
-              <div class='flex items-center justify-center'>
-                <div class='max-w-md'>
+            <div className='mt-8 md:mt-0 md:w-1/2'>
+              <div className='flex items-center justify-center'>
+                <div className='max-w-md'>
                   <img
-                    class='object-cover object-center w-full rounded-md shadow'
+                    className='object-cover object-center w-full rounded-md shadow'
                     style={{ height: '500px' }}
                     src='https://images.unsplash.com/photo-1618346136472-090de27fe8b4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=673&amp;q=80'
                   />
@@ -131,37 +131,40 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section class='bg-white'>
-        <div class='max-w-5xl px-6 py-16 mx-auto'>
-          <div class='md:flex md:justify-between'>
-            <h2 class='text-3xl font-semibold text-gray-800'>
+      <section className='bg-white'>
+        <div className='max-w-5xl px-6 py-16 mx-auto'>
+          <div className='md:flex md:justify-between'>
+            <h2 className='text-3xl font-semibold text-gray-800'>
               MTs Technonatura <br /> Projects
             </h2>
-            <a href='#' class='block mt-6 text-indigo-700 underline md:mt-0'>
+            <a
+              href='#'
+              className='block mt-6 text-indigo-700 underline md:mt-0'
+            >
               See All
             </a>
           </div>
 
-          <div class='grid gap-8 mt-10 md:grid-cols-2 lg:grid-cols-3'>
-            <div class='px-6 py-8 overflow-hidden bg-white rounded-md shadow-md'>
-              <h2 class='text-xl font-medium text-gray-800'>Audio</h2>
-              <p class='max-w-md mt-4 text-gray-400'>
+          <div className='grid gap-8 mt-10 md:grid-cols-2 lg:grid-cols-3'>
+            <div className='px-6 py-8 overflow-hidden bg-white rounded-md shadow-md'>
+              <h2 className='text-xl font-medium text-gray-800'>Audio</h2>
+              <p className='max-w-md mt-4 text-gray-400'>
                 Lorem ipsum dolor sit amet, consectetur adipiscing Ac aliquam ac
                 volutpat, viverra magna risus aliquam massa.
               </p>
             </div>
 
-            <div class='px-6 py-8 overflow-hidden bg-white rounded-md shadow-md'>
-              <h2 class='text-xl font-medium text-gray-800'>Audio</h2>
-              <p class='max-w-md mt-4 text-gray-400'>
+            <div className='px-6 py-8 overflow-hidden bg-white rounded-md shadow-md'>
+              <h2 className='text-xl font-medium text-gray-800'>Audio</h2>
+              <p className='max-w-md mt-4 text-gray-400'>
                 Lorem ipsum dolor sit amet, consectetur adipiscing Ac aliquam ac
                 volutpat, viverra magna risus aliquam massa.
               </p>
             </div>
 
-            <div class='px-6 py-8 overflow-hidden bg-white rounded-md shadow-md'>
-              <h2 class='text-xl font-medium text-gray-800'>Audio</h2>
-              <p class='max-w-md mt-4 text-gray-400'>
+            <div className='px-6 py-8 overflow-hidden bg-white rounded-md shadow-md'>
+              <h2 className='text-xl font-medium text-gray-800'>Audio</h2>
+              <p className='max-w-md mt-4 text-gray-400'>
                 Lorem ipsum dolor sit amet, consectetur adipiscing Ac aliquam ac
                 volutpat, viverra magna risus aliquam massa.
               </p>
