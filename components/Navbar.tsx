@@ -50,7 +50,7 @@ export default function NavbarComponent({
   children,
 }: {
   children: JSX.Element | JSX.Element[];
-}) {
+}): JSX.Element {
   const { asPath, pathname, route } = useRouter();
 
   const tokenCookieKey =
@@ -78,18 +78,6 @@ export default function NavbarComponent({
       path: '/',
       maxAge: ms('10y'),
     });
-  }
-  if (pathname == '/projects') {
-    return children;
-  }
-  if (asPath.includes('/blog')) {
-    return (
-      <>
-        <NavbarBlog />
-        {children}
-        <MainFooter />
-      </>
-    );
   }
 
   if (asPath.includes('/dashboard')) {
@@ -205,6 +193,24 @@ export default function NavbarComponent({
         </div>
       </>
     );
+  }
+
+  if (pathname == '/projects') {
+    return <main>{children}</main>;
+  }
+
+  if (asPath.includes('/blog') && pathname != '/blog/join') {
+    return (
+      <>
+        <NavbarBlog />
+        {children}
+        <MainFooter />
+      </>
+    );
+  }
+
+  if (pathname == '/blog/join') {
+    return <main>{children}</main>;
   }
   return (
     <>
