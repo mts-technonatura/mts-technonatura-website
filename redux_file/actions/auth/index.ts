@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import axios from 'axios';
 import {
   Auth_FAIL,
   Auth_LOADING,
@@ -15,7 +16,7 @@ import {
   Auth_SET_TOKEN,
 } from '../types/AuthActionTypes.d';
 import { UserType } from '@/ts/index';
-import axios from 'axios';
+import { auth_route } from '@/ts/api/routes.d';
 import { ssr } from '@/ts/index';
 
 interface signIn {
@@ -181,9 +182,7 @@ export const AuthSignup = (inputs: signupI) => async (
       token?: string;
       user?: UserType;
     }>(
-      process.env.SIGNUP_API ||
-        process.env.NEXT_PUBLIC_SIGNUP_API ||
-        'http://localhost:3030/auth/signup',
+      auth_route.SIGNUP_API,
       { ...inputs },
       {
         withCredentials: true,
