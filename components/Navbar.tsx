@@ -4,6 +4,9 @@ import Link from 'next/link';
 import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookie } from 'next-universal-cookie';
+import styled from '@emotion/styled';
+
+import ms from 'ms';
 
 import { BellIcon } from '@chakra-ui/icons';
 import {
@@ -27,14 +30,13 @@ import {
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
 import NavFoot from 'components/main/navfoot';
+import NavbarBlog from 'components/blog/navbar';
+import MainFooter from './main/footer';
+
 import { SidebarContext } from 'context/SidebarContext';
 
 import { RootStore } from '@/redux/index';
 import * as AuthMethods from '@/redux/actions/index';
-
-import ms from 'ms';
-
-import styled from '@emotion/styled';
 
 const CookieBanner = styled(Alert)`
   width: 100%;
@@ -48,8 +50,9 @@ export default function NavbarComponent({
   children,
 }: {
   children: JSX.Element | JSX.Element[];
-}) {
-  const router = useRouter();
+}): JSX.Element {
+  const { asPath, pathname, route } = useRouter();
+
   const tokenCookieKey =
     process.env.NEXT_PUBLIC_JWT_AUTH_TOKEN || 'jwtAuthToken';
   const [cookies, setCookie] = useCookie(['cookieConsentBanner']);
@@ -58,16 +61,16 @@ export default function NavbarComponent({
   const authState = useSelector((state: RootStore) => state.auth);
 
   const { isSidebarOpen, closeSidebar } = useContext(SidebarContext);
+
   useEffect(() => {
-    // console.log(router);
     if (authState.loading) {
       dispatch(AuthMethods.AuthVerifyJWT(cookies[tokenCookieKey]));
     }
   }, []);
+
   useEffect(() => {
-    console.log(cookies['cookieConsentBanner']);
     closeSidebar();
-  }, [router.asPath]);
+  }, [asPath]);
 
   function closeCookieBanner() {
     // console.log(tokenCookieKey);
@@ -77,7 +80,6 @@ export default function NavbarComponent({
     });
   }
 
-  const { asPath } = useRouter();
   if (asPath.includes('/dashboard')) {
     return (
       <>
@@ -165,7 +167,7 @@ export default function NavbarComponent({
               </Stack>
             )}
 
-            <Header pathname={router.pathname} />
+            <Header pathname={pathname} />
             <div className='app-content md:px-8 sm:px-20 pt-10'>{children}</div>
             <Box pt={100}>
               <Container
@@ -191,6 +193,24 @@ export default function NavbarComponent({
         </div>
       </>
     );
+  }
+
+  if (pathname == '/projects') {
+    return <main>{children}</main>;
+  }
+
+  if (asPath.includes('/blog') && pathname != '/blog/join') {
+    return (
+      <>
+        <NavbarBlog />
+        {children}
+        <MainFooter />
+      </>
+    );
+  }
+
+  if (pathname == '/blog/join') {
+    return <main>{children}</main>;
   }
   return (
     <>
@@ -234,7 +254,7 @@ export default function NavbarComponent({
           />
         </CookieBanner>
       )}
-      <NavFoot page={router.route}>{children}</NavFoot>
+      <NavFoot page={route}>{children}</NavFoot>
     </>
   );
 }

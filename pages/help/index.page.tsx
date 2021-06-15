@@ -90,7 +90,7 @@ export default function Album() {
   const searchInput = useSearchInputStyle();
 
   return (
-    <section className='bg-gray-100' style={{ padding: '20px 0px' }}>
+    <section className='bg-gray-100' style={{ padding: '40px 0px' }}>
       <Container maxWidth='sm'>
         {/* Hero unit */}
         <div

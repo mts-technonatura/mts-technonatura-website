@@ -1,9 +1,9 @@
-import { Link } from '@chakra-ui/react';
-
+import Link from 'next/link';
+import { Link as ChakraLink } from '@chakra-ui/react';
 
 export default function FooterHome(): JSX.Element {
   return (
-    <footer>
+    <footer className='mt-10'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
         {/* Top area: Blocks */}
         <div className='grid sm:grid-cols-12 gap-8 py-8 md:py-12 border-t border-gray-200'>
@@ -11,13 +11,19 @@ export default function FooterHome(): JSX.Element {
           <div className='sm:col-span-12 lg:col-span-3'>
             <div className='mb-2'>
               {/* Logo */}
-              <Link href='/' className='inline-block' aria-label='Cruip'>
-                <img
-                  className='h-12'
-                  src='/favicon.ico'
-                  alt='MTs TechnoNatura Logo'
-                  width='auto'
-                />
+              <Link href='/'>
+                <ChakraLink
+                  href='/'
+                  className='inline-block'
+                  aria-label='Cruip'
+                >
+                  <img
+                    className='h-12'
+                    src='/favicon.ico'
+                    alt='MTs TechnoNatura Logo'
+                    width='auto'
+                  />
+                </ChakraLink>
               </Link>
             </div>
             <div className='text-sm text-gray-600'>
@@ -30,43 +36,38 @@ export default function FooterHome(): JSX.Element {
             <h6 className='text-gray-800 font-medium mb-2'>Discover</h6>
             <ul className='text-sm'>
               <li className='mb-2'>
-                <Link
-                  href='/'
-                  className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                >
-                  Home
+                <Link href='/'>
+                  <ChakraLink className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'>
+                    Home
+                  </ChakraLink>
                 </Link>
               </li>
               <li className='mb-2'>
-                <Link
-                  href='/blog'
-                  className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                >
-                  Blog
+                <Link href='/blog'>
+                  <ChakraLink className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'>
+                    Blog
+                  </ChakraLink>
                 </Link>
               </li>
               <li className='mb-2'>
-                <Link
-                  href='/news'
-                  className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                >
-                  News
+                <Link href='/blog'>
+                  <ChakraLink className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'>
+                    News
+                  </ChakraLink>
                 </Link>
               </li>
               <li className='mb-2'>
-                <Link
-                  href='/projects'
-                  className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                >
-                  Projects
+                <Link href='/projects'>
+                  <ChakraLink className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'>
+                    Projects
+                  </ChakraLink>
                 </Link>
               </li>
               <li className='mb-2'>
-                <Link
-                  href='/dashboard'
-                  className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
-                >
-                  Dashboard
+                <Link href='/dashboard'>
+                  <ChakraLink className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'>
+                    Dashboard
+                  </ChakraLink>
                 </Link>
               </li>
             </ul>
@@ -77,36 +78,36 @@ export default function FooterHome(): JSX.Element {
             <h6 className='text-gray-800 font-medium mb-2'>About MTs TN</h6>
             <ul className='text-sm'>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='#'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   About us
-                </Link>
+                </ChakraLink>
               </li>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='#'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   Projects
-                </Link>
+                </ChakraLink>
               </li>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='#'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   News
-                </Link>
+                </ChakraLink>
               </li>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='#'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   Developer
-                </Link>
+                </ChakraLink>
               </li>
             </ul>
           </div>
@@ -116,28 +117,28 @@ export default function FooterHome(): JSX.Element {
             <h6 className='text-gray-800 font-medium mb-2'>Resources</h6>
             <ul className='text-sm'>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='#'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   Documentation
-                </Link>
+                </ChakraLink>
               </li>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='#'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   Tutorials & Guides
-                </Link>
+                </ChakraLink>
               </li>
               <li className='mb-2'>
-                <Link
+                <ChakraLink
                   href='/help'
                   className='text-gray-600 hover:text-gray-900 transition duration-150 ease-in-out'
                 >
                   Support Center
-                </Link>
+                </ChakraLink>
               </li>
             </ul>
           </div>
@@ -195,10 +196,10 @@ export default function FooterHome(): JSX.Element {
 
         {/* Bottom area */}
         <div className='md:flex md:items-center md:justify-between py-4 md:py-8 border-t border-gray-200'>
-          {/* Social links */}
+          {/* Social ChakraLinks */}
           <ul className='flex mb-4 md:order-1 md:ml-4 md:mb-0'>
             <li className='ml-4'>
-              <Link
+              <ChakraLink
                 href='https://github.com/mts-technonatura'
                 className='flex justify-center items-center text-gray-600 hover:text-gray-900 bg-white hover:bg-white-100 rounded-full shadow transition duration-150 ease-in-out'
                 aria-label='Github'
@@ -210,7 +211,7 @@ export default function FooterHome(): JSX.Element {
                 >
                   <path d='M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z' />
                 </svg>
-              </Link>
+              </ChakraLink>
             </li>
           </ul>
 
@@ -233,7 +234,6 @@ export default function FooterHome(): JSX.Element {
             . All rights reserved.
           </div>
         </div>
-
       </div>
     </footer>
   );
