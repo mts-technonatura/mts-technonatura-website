@@ -5,7 +5,7 @@ import _ from 'underscore';
 
 import { routesI } from 'routes/sidebar';
 import { MenuItem } from './SidebarContent';
-import { UserType } from 'ts/index';
+import { UserInterface } from 'ts/index';
 import { checkRoles } from 'utils/checkRoles';
 
 function SidebarSubmenu({
@@ -15,7 +15,7 @@ function SidebarSubmenu({
 }: {
   route: routesI;
   asPath: string;
-  user?: UserType;
+  user?: UserInterface;
 }) {
   const [isDropdownMenuOpen, setIsDropdownMenuOpen] = useState(false);
 
