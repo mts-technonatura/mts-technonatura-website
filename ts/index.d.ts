@@ -1,83 +1,17 @@
-export type UserType = {
-  follows: Array<string>;
-  name: string;
-  username: string;
-  email: string;
-  accountCreated: string;
-  isAccountVerified: boolean;
-  roles: Array<string>;
-  socialMedias: Array<SocialMedia>;
-};
+export {
+  JWTTokenResponse,
+  DeletedUserResponseType,
+  UserInterface,
+  ssr,
+  SocialMedia,
+} from './user';
+export {
+  arduinoAppI,
+  sensorI,
+  sensorsResponseI,
+  sensorsStateI,
+  arduinoAppStateI,
+  arduinoResponseI,
+} from './arduino';
 
-export type JWTTokenResponse =
-  | 'invalid password, password might has changed'
-  | 'success'
-  | 'invalid token'
-  | 'no token'
-  | 'server error'
-  | 'jwtSuccess'
-  | 'login successfully'
-  | 'account created'
-  | 'notSignedIn';
-
-export interface ssr {
-  user: UserType;
-  message: JWTTokenResponse;
-  token: string;
-}
-
-interface SocialMedia {
-  name: string;
-  url: string;
-}
-
-export interface UserInterface {
-  points: number;
-  email: string;
-  name: string;
-  username: string;
-  isAccountVerified: boolean;
-  password: string;
-  accountCreated: Date;
-  follows?: Array<string>;
-  birthDate: Date;
-  roles: Array<string>;
-  socialMedias?: Array<SocialMedia>;
-  avatar: string;
-  banner: string;
-  _id: string;
-}
-
-export type statusMessage = 'success' | 'warning' | 'error' | 'info';
-export type DeletedUserResponseType = {
-  message: string;
-  status: statusMessage;
-};
-export type normalResponseT = {
-  message: string;
-  status: statusMessage;
-};
-
-export interface arduinoAppI {
-  _id: string;
-  name: string;
-  sensors?: Array<string>;
-  desc: string;
-  own?: string;
-  token: {
-    token: string;
-    tokenCreated: number;
-  };
-}
-
-export interface sensorI {
-  _id: string;
-  name: string;
-  appID: string;
-  own: string;
-}
-
-export type APIResponse = {
-  message: string;
-  status: statusMessage;
-};
+export { normalResponseT, statusMessage, APIResponse } from './apis';

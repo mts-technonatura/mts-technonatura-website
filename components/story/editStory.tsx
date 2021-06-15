@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 
 import styled from '@emotion/styled';
 
+import CreatableSelect from 'react-select';
+
 /* ======================= UI ======================= */
 import {
   Tabs,
@@ -40,6 +42,7 @@ import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor
 
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
+import Tags from './tags';
 
 import Box from '@material-ui/core/Box';
 import { IoIosTrash } from 'react-icons/io';
@@ -90,7 +93,10 @@ export default function EditStory({
         name='title'
         value={values.title}
         onChange={handleChange}
+        mb={5}
       />
+
+      <Tags />
 
       <Text
         mt={10}

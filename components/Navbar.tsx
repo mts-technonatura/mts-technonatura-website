@@ -1,13 +1,13 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useCookie } from 'next-universal-cookie';
 
 import React, { useContext, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useCookie } from 'next-universal-cookie';
-import styled from '@emotion/styled';
 
 import ms from 'ms';
 
+import styled from '@emotion/styled';
 import { BellIcon } from '@chakra-ui/icons';
 import {
   HStack,
@@ -30,6 +30,7 @@ import {
 import Sidebar from 'components/Sidebar';
 import Header from 'components/Header';
 import NavFoot from 'components/main/navfoot';
+
 import NavbarBlog from 'components/blog/navbar';
 import MainFooter from './main/footer';
 

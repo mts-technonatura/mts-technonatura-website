@@ -15,7 +15,7 @@ import {
   Auth_LOGIN_SUCCESS,
   Auth_SET_TOKEN,
 } from '../types/AuthActionTypes.d';
-import { UserType } from '@/ts/index';
+import { UserInterface } from '@/ts/index';
 import { auth_route } from '@/ts/api/routes.d';
 import { ssr } from '@/ts/index';
 
@@ -42,7 +42,7 @@ export const AuthLogin = (Auth: signIn) => async (
     const res = await axios.post<{
       errors?: any;
       token?: string;
-      user?: UserType;
+      user?: UserInterface;
     }>(
       process.env.NEXT_PUBLIC_LOGIN_API || 'http://localhost:3030/auth/login',
       Auth,
@@ -87,7 +87,7 @@ export const SetToken = (token: string) => async (
   });
 };
 
-export const SavedUserToRedux = (Auth: UserType, token: string) => (
+export const SavedUserToRedux = (Auth: UserInterface, token: string) => (
   dispatch: Dispatch<AuthDispatchTypes>,
 ) => {
   dispatch({
@@ -180,7 +180,7 @@ export const AuthSignup = (inputs: signupI) => async (
     const res = await axios.post<{
       errors?: any;
       token?: string;
-      user?: UserType;
+      user?: UserInterface;
     }>(
       auth_route.SIGNUP_API,
       { ...inputs },

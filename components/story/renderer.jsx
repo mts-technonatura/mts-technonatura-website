@@ -88,6 +88,16 @@ export default function StoryRenderer({ value }) {
           );
         },
         a({ node, inline, className, children, ...props }) {
+          if (
+            props.href.includes('https://www.youtube.com/embed/') ||
+            props.href.includes('https://codesandbox.io/embed/')
+          ) {
+            return (
+              <AspectRatio mt={10} mb={10} height='500px'>
+                <iframe title='social embed' src={props.href} allowFullScreen />
+              </AspectRatio>
+            );
+          }
           return (
             <chakra.a
               className='text-blue-500'
@@ -102,22 +112,21 @@ export default function StoryRenderer({ value }) {
           const app = className && className.replace('language-', '');
 
           if (
-            app && (
-            app == 'embed' ||
-             [
-              'spotify',
-              'youtube',
-              'twitch',
-              'giphy',
-              'codesandbox',
-              'codepen',
-            ].includes(app))
+            app &&
+            ['youtube', 'giphy', 'codesandbox', 'codepen'].includes(app)
           ) {
-            return (
-              <AspectRatio mt={10} mb={10} maxW='100%' ratio={1}>
-                <iframe title='naruto' src={children} allowFullScreen />
-              </AspectRatio>
-            );
+            if (
+              (app == 'youtube' &&
+                children[0].includes('https://www.youtube.com/embed/')) ||
+              (app == 'codesandbox' &&
+                children[0].includes('https://codesandbox.io/embed/'))
+            ) {
+              return (
+                <AspectRatio mt={10} mb={10} height='500px'>
+                  <iframe title={app} src={children} allowFullScreen />
+                </AspectRatio>
+              );
+            }
           }
           // https://www.youtube.com/embed/QhBnZ6NPOY0
           const match = /language-(\w+)/.exec(className || '');
@@ -171,18 +180,20 @@ export default function StoryRenderer({ value }) {
             {children}
           </Text>
         ),
-        p: ({ node, children }) => (
-          <Text
-            className='text-gray-800 dark:text-cool-gray-500'
-            fontWeight={400}
-            lineHeight={1.2}
-            mt={2}
-            mb={2}
-            fontSize={useBreakpointValue({ base: '1xl', md: '1xl' })}
-          >
-            {children}
-          </Text>
-        ),
+        p: ({ node, children, ...props }) => {
+          return (
+            <Text
+              className='text-gray-800 dark:text-cool-gray-500'
+              fontWeight={400}
+              lineHeight={1.2}
+              mt={2}
+              mb={2}
+              fontSize={useBreakpointValue({ base: '1xl', md: '1xl' })}
+            >
+              {children}
+            </Text>
+          );
+        },
       }}
       className='mb-4 prose lg:prose-lg dark:prose-dark'
       skipHtml={false}
