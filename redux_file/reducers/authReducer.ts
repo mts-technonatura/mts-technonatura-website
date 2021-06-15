@@ -12,12 +12,12 @@ import {
   Auth_INIT,
   Auth_SET_TOKEN,
 } from '../actions/types/AuthActionTypes.d';
-import { UserType } from '@/ts/index';
+import { UserInterface } from '@/ts/index';
 import { JWTTokenResponse } from '@/ts/index';
 
 export interface AuthState {
   loading: boolean;
-  user?: UserType;
+  user?: UserInterface;
   errors?: any;
   token?: string;
   fetched?: boolean;

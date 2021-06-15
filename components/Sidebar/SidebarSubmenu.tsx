@@ -3,10 +3,13 @@ import { DropdownIcon } from 'icons';
 import { Transition } from '@windmill/react-ui';
 import _ from 'underscore';
 
-import { routesI } from 'routes/sidebar';
-import { MenuItem } from './SidebarContent';
 import { UserInterface } from 'ts/index';
+
+import { routesI } from 'routes/sidebar';
+
 import { checkRoles } from 'utils/checkRoles';
+
+import { MenuItem } from './SidebarContent';
 
 function SidebarSubmenu({
   route,
