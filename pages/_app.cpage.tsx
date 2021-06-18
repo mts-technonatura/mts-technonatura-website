@@ -69,6 +69,12 @@ function MyApp({ Component, pageProps }: AppProps) {
           integrity='sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X'
           crossOrigin='anonymous'
         />
+         <script src="https://cdn.rawgit.com/Ademking/CoolConsole/23c8707c/CoolConsole.min.js"></script>
+        
+        <script dangerouslySetInnerHTML={{
+              __html: `cc_rainbow("PRIDE");`
+            }}/>
+         
       </Head>
       <style jsx global>{`
         html {
