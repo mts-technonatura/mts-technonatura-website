@@ -72,7 +72,12 @@ function MyApp({ Component, pageProps }: AppProps) {
          <script src="https://cdn.rawgit.com/Ademking/CoolConsole/23c8707c/CoolConsole.min.js"></script>
         
         <script dangerouslySetInnerHTML={{
-              __html: `cc_rainbow("PRIDE");`
+              __html: `
+                  cc_icon(icon_github, "https://github.com/Aldhanekaa", "Follow the project leader!");
+
+                  cc_icon(icon_github, "https://github.com/mts-technonatura/mts-technonatura-website", "Interested to contribute? Check this website source code!");
+
+              `
             }}/>
          
       </Head>
