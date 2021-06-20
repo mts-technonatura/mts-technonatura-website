@@ -52,18 +52,21 @@ function ArduinoApps() {
           'http://localhost:3030/arduino/apps',
         { authToken: authState.token },
       );
-      // console.log(apps);
+      console.log(apps);
 
       setArduinoApps({
         apps: apps.data.apps,
         fetched: true,
       });
     } catch (err) {
+      console.log('ERRRR!', err);
       setArduinoApps({
         apps: [],
         fetched: true,
       });
     }
+
+    console.log(arduinoApps);
   }
 
   // if the website checking the jwt token
