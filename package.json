@@ -55,10 +55,10 @@
     "remark-math": "^4.0.0",
     "remark-oembed": "^1.2.2",
     "responsive-loader": "^2.3.0",
+    "socket.io-client": "^4.1.2",
     "swr": "^0.5.5",
     "underscore": "^1.13.1",
-    "yup": "^0.32.9",
-    "socket.io-client": "latest"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
