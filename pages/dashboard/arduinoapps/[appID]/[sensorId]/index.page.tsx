@@ -3,9 +3,14 @@ import { useSelector } from 'react-redux';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
 import { io } from 'socket.io-client';
+
 import axios from 'axios';
 import _ from 'underscore';
+
+import { Parser } from 'json2csv';
+
 /* ======================= UI ======================= */
 import {
   Button,
@@ -25,6 +30,16 @@ import {
   ModalHeader,
   ModalBody,
   Modal,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
 } from '@chakra-ui/react';
 
 // material UI
@@ -42,6 +57,9 @@ import LoadingPage from 'components/loadingpage';
 //#icons
 import { IoIosTrash } from 'react-icons/io';
 import { FaRegEdit } from 'react-icons/fa';
+import { CgMenuRight } from 'react-icons/cg';
+import { GrDocumentCsv } from 'react-icons/gr';
+import { VscJson } from 'react-icons/vsc';
 //#endicons
 
 /* ======================= END UI ======================= */
@@ -658,6 +676,77 @@ function ArduinoApps() {
         </div>
 
         <Divider mt={5} />
+
+        <Flex flexWrap='wrap' justifyContent='space-between' mt={5}>
+          <Box p='2' className=' '>
+            <Heading size='md' className='dark:text-cool-gray-200 mb-3'>
+              Data You Have Added
+            </Heading>
+          </Box>
+          <Box>
+            <Menu>
+              <MenuButton as={Button} aria-label='Options' variant='outline'>
+                <CgMenuRight />
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  onClick={() => {
+                    if (sensor.sensor?.data) {
+                      const copyOfSensorData = [...sensor.sensor?.data];
+                      copyOfSensorData.forEach((sensorData, i) => {
+                        sensorData.id = String(i);
+                      });
+                      const json2csvParser = new Parser();
+                      const csv = json2csvParser.parse(sensor.sensor?.data);
+                      let csvContent = 'data:text/csv;charset=utf-8,' + csv;
+
+                      // console.log(csvContent);
+                      var encodedUri = encodeURI(csvContent);
+                      var link = document.createElement('a');
+                      link.setAttribute('href', encodedUri);
+                      link.setAttribute(
+                        'download',
+                        `${sensor.sensor.name}_data.csv`,
+                      );
+                      document.body.appendChild(link); // Required for FF
+
+                      link.click(); // This will download the data file named "my_data.csv".
+                    }
+                  }}
+                >
+                  <GrDocumentCsv style={{ marginRight: '5px' }} /> Export to CSV
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    if (sensor.sensor?.data) {
+                      let csvContent =
+                        'data:text/json;charset=utf-8,' +
+                        JSON.stringify(sensor.sensor?.data);
+
+                      // console.log(csvContent);
+                      var encodedUri = encodeURI(csvContent);
+                      var link = document.createElement('a');
+                      link.setAttribute('href', encodedUri);
+                      link.setAttribute(
+                        'download',
+                        `${sensor.sensor.name}_data.json`,
+                      );
+                      document.body.appendChild(link); // Required for FF
+
+                      link.click(); // This will download the data file named "my_data.csv".
+                    }
+                  }}
+                >
+                  <VscJson style={{ marginRight: '5px' }} /> Export to JSON
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem>
+                  <IoIosTrash style={{ marginRight: '5px' }} /> Delete All Data
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Flex>
 
         {!sensor.fetched ? (
           <LoadingPage text='Fetching sensors' />
