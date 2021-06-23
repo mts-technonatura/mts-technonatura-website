@@ -236,6 +236,15 @@ function ArduinoApps() {
         sensor: app.data.sensor,
         fetched: true,
       });
+
+      socket.emit(
+        'arduino.subscribe.sensor.realtimeData',
+        app.data.sensor?._id,
+      );
+      socket.emit(
+        'arduino.subscribe.sensor.realtimedata',
+        app.data.sensor?._id,
+      );
     } catch (err) {
       setSensor({
         fetched: true,
