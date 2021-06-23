@@ -58,7 +58,8 @@ interface sensorStateI extends sensorResponseI {
 }
 
 const socket = io(
-  process.env.NEXT_PUBLIC_ARDUINO_SOCKET || 'http://localhost:3030/arduino',
+  process.env.NEXT_PUBLIC_ARDUINO_SOCKET ||
+    'http://localhost:3030/websocket/arduino',
   {
     transports: ['websocket'],
   },
