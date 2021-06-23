@@ -385,7 +385,7 @@ function ArduinoApps() {
         <Flex flexWrap='wrap' justifyContent='space-between'>
           <Box p='2' className=' '>
             <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
-              {sensor.sensor?.name} - Sensor
+              {sensor.sensor?.name} - Sensor A
             </Heading>
           </Box>
           <Box>
