@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
+import { io } from 'socket.io-client';
 import axios from 'axios';
 import _ from 'underscore';
 
@@ -25,6 +25,7 @@ import {
   ModalContent,
   ModalOverlay,
   ModalFooter,
+  Spinner,
   ModalHeader,
   ModalBody,
   Modal,
@@ -82,13 +83,40 @@ interface sensorStateI extends sensorResponseI {
 }
 
 const socket = io(
-  process.env.NEXT_PUBLIC_ARDUINO_SOCKET || 'http://localhost:3030/arduino',
+  process.env.NEXT_PUBLIC_ARDUINO_SOCKET || 'http://localhost:3030/websocket/arduino',
   {
     transports: ['websocket'],
   },
 );
+    
 function ArduinoAppSensorPage() {
   const authState = useSelector((state: RootStore) => state.auth);
+
+  const [datasCard, setDatasCard] = useState<{
+    realtime_data: {
+      previous?: number;
+      current?: number;
+      dateAdded?: number;
+      loading: boolean;
+      error: boolean;
+    };
+    data: {
+      previous?: number;
+      current?: number;
+      dateAdded?: number;
+      loading: boolean;
+      error: boolean;
+    };
+  }>({
+    realtime_data: {
+      loading: true,
+      error: false,
+    },
+    data: {
+      loading: true,
+      error: false,
+    },
+  });
 
   const router = useRouter();
   const toast = useToast();
@@ -381,7 +409,6 @@ function ArduinoAppSensorPage() {
           100,
       );
     }
-
     return (
       <>
         {/* Modal Alert Delete */}
@@ -456,7 +483,7 @@ function ArduinoAppSensorPage() {
         <Flex flexWrap='wrap' justifyContent='space-between'>
           <Box p='2' className=' '>
             <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
-              {sensor.sensor?.name} - Sensor
+              {sensor.sensor?.name} - Sensor A
             </Heading>
           </Box>
           <Box>
