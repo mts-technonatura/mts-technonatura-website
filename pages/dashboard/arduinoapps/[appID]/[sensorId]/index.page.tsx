@@ -169,7 +169,7 @@ function ArduinoAppSensorPage() {
               copyOfState.sensor?.data?.unshift({
                 data: data.data,
                 date: data.dateAdded,
-                _id: id
+                _id: data.id
               });
             }
 
