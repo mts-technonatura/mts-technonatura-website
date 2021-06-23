@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
+import { io } from 'socket.io-client';
 import axios from 'axios';
 import _ from 'underscore';
 /* ======================= UI ======================= */
@@ -75,6 +75,12 @@ interface arduinoI extends sensorResponseI {
   fetched: boolean;
 }
 
+const socket = io(
+  process.env.NEXT_PUBLIC_ARDUINO_SOCKET || 'http://localhost:3030/arduino',
+  {
+    transports: ['websocket'],
+  },
+);
 function ArduinoApps() {
   const authState = useSelector((state: RootStore) => state.auth);
 
