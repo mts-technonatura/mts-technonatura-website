@@ -100,7 +100,7 @@ export default function NavbarComponent({
               position='fixed'
             >
               <Box display='flex' alignItems='start'>
-                <AlertIcon mt={1} />
+                <AlertIcon />
                 <Box flex='1'>
                   <AlertTitle>Cookies Consent 🍪</AlertTitle>
                   <AlertDescription display='block'>
@@ -160,7 +160,6 @@ export default function NavbarComponent({
                     colorScheme='red'
                     variant='solid'
                     className='cursor-pointer	'
-                    flexShrink={0}
                   >
                     Send Request
                   </Button>
@@ -225,7 +224,7 @@ export default function NavbarComponent({
           alignItems='start'
           right='0'
         >
-          <AlertIcon mt={1} />
+          <AlertIcon />
           <Box flex='1'>
             <AlertTitle>Cookies Consent 🍪</AlertTitle>
             <AlertDescription display='block'>

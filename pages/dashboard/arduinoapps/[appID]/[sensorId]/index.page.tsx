@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
+import { io } from 'socket.io-client';
+
 import Link from 'next/link';
+import Router from 'next/router';
 import { useRouter } from 'next/router';
 
-import { io } from 'socket.io-client';
 
 import axios from 'axios';
 import _ from 'underscore';
@@ -48,7 +50,6 @@ import Box from '@material-ui/core/Box';
 
 // costum components
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
-import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
 
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
@@ -65,7 +66,14 @@ import { VscJson } from 'react-icons/vsc';
 /* ======================= END UI ======================= */
 
 import { RootStore } from '@/redux/index';
-import { sensorI, normalResponseT } from 'ts';
+import {
+  normalResponseT,
+  sensorI,
+  arduinoResponseI,
+  sensorsStateI,
+  sensorsResponseI,
+  arduinoAppStateI,
+} from 'ts';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
 interface sensorResponseI {
@@ -83,7 +91,7 @@ const socket = io(
     transports: ['websocket'],
   },
 );
-function ArduinoApps() {
+function ArduinoAppSensorPage() {
   const authState = useSelector((state: RootStore) => state.auth);
 
   const [datasCard, setDatasCard] = useState<{
@@ -140,7 +148,7 @@ function ArduinoApps() {
 
   socket.on(
     'arduino.sensor.realtimedata',
-    (data: { sensorId: string; data: number; dateAdded: number }) => {
+    (data: { sensorId: string; data: number; dateAdded: number; id: string }) => {
       console.log('arduino.sensor.realtimedata', data);
 
       setDatasCard((state) => {
@@ -161,6 +169,7 @@ function ArduinoApps() {
               copyOfState.sensor?.data?.unshift({
                 data: data.data,
                 date: data.dateAdded,
+                _id: id
               });
             }
 
@@ -242,6 +251,16 @@ function ArduinoApps() {
 
   async function fetchSensor() {
     try {
+      setDatasCard({
+        realtime_data: {
+          loading: true,
+          error: false,
+        },
+        data: {
+          loading: true,
+          error: false,
+        },
+      });
       const app = await axios.post<sensorResponseI>(
         process.env.NEXT_PUBLIC_ARDUINO_SENSOR ||
           'http://localhost:3030/arduino/sensor',
@@ -265,9 +284,23 @@ function ArduinoApps() {
         'arduino.subscribe.sensor.realtimedata',
         app.data.sensor?._id,
       );
+
+      socket.emit('arduino.sensor.get.realtimeData', app.data.sensor?._id);
+      socket.emit('arduino.sensor.get.realtimedata', app.data.sensor?._id);
     } catch (err) {
+      console.log('error occured!', err);
       setSensor({
         fetched: true,
+      });
+      setDatasCard({
+        realtime_data: {
+          loading: false,
+          error: true,
+        },
+        data: {
+          loading: false,
+          error: true,
+        },
       });
     }
   }
@@ -426,6 +459,7 @@ function ArduinoApps() {
             <BreadcrumbLink>{router.query.sensorId}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
+
         <Flex flexWrap='wrap' justifyContent='space-between'>
           <Box p='2' className=' '>
             <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
@@ -482,7 +516,7 @@ function ArduinoApps() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.realtime_data.previous ? (
+              ) : !isNaN(Number(datasCard?.realtime_data.previous)) ? (
                 <div className='text-2xl font-bold text-gray-900 '>
                   {datasCard?.realtime_data.previous}
                 </div>
@@ -506,7 +540,7 @@ function ArduinoApps() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.realtime_data.current ? (
+              ) : !isNaN(Number(datasCard?.realtime_data.current)) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
                     {datasCard?.realtime_data.current}
@@ -583,7 +617,7 @@ function ArduinoApps() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.data.previous ? (
+              ) : !isNaN(Number(datasCard?.data.previous)) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
                     {datasCard?.data.previous}
@@ -610,7 +644,7 @@ function ArduinoApps() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.data.current ? (
+              ) : !isNaN(Number(datasCard?.data.current)) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
                     {datasCard?.data.current}
@@ -694,7 +728,8 @@ function ArduinoApps() {
                     if (sensor.sensor?.data) {
                       const copyOfSensorData = [...sensor.sensor?.data];
                       copyOfSensorData.forEach((sensorData, i) => {
-                        sensorData.id = String(i);
+                        sensorData.id = i;
+
                       });
                       const json2csvParser = new Parser();
                       const csv = json2csvParser.parse(sensor.sensor?.data);
@@ -757,7 +792,7 @@ function ArduinoApps() {
               desc='Upload the your sensor data through your arduino'
             />
           ) : (
-            <div className='mt-10 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
+            <div className='mt-5 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
               {sensor.sensor.data.reverse().map((sensor, id) => (
                 <InfoCard
                   value={String(new Date(sensor.date))}
@@ -780,4 +815,4 @@ function ArduinoApps() {
   return <LoadingPage />;
 }
 
-export default ArduinoApps;
+export default ArduinoAppSensorPage;

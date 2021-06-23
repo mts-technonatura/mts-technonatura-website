@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 import axios from 'axios';
 import _ from 'underscore';
-
 /* ======================= UI ======================= */
 import {
   Button,
@@ -43,9 +42,7 @@ import LoadingPage from 'components/loadingpage';
 import { RootStore } from '@/redux/index';
 
 import {
-  sensorI,
   normalResponseT,
-  arduinoAppI,
   arduinoResponseI,
   sensorsStateI,
   sensorsResponseI,

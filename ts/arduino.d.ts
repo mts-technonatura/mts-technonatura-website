@@ -10,8 +10,10 @@ export interface arduinoAppI {
   };
 }
 
-interface sensorsDataInterface {
-  id?: string;
+
+interface sensorDataInterface {
+  id?: number;
+  _id: string;
   date: number;
   data: number;
 }
@@ -21,7 +23,11 @@ export interface sensorI {
   name: string;
   appID: string;
   own: string;
-  data?: Array<sensorsDataInterface>;
+  data?: Array<sensorDataInterface>;
+  realtimeData?: {
+    data?: number;
+    dateAdded?: number;
+  };
 }
 
 export interface sensorsResponseI {
