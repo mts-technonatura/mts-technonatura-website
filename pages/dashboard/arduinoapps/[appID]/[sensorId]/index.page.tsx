@@ -21,6 +21,7 @@ import {
   ModalContent,
   ModalOverlay,
   ModalFooter,
+  Spinner,
   ModalHeader,
   ModalBody,
   Modal,
@@ -313,6 +314,30 @@ function ArduinoApps() {
   }
 
   if (sensor.fetched && sensor.sensor) {
+    let currentRealtimeDataToPreviousRealtimeDataPrecentage: number | undefined;
+    let currentRealtimedataToPreviousRealtimedataPrecentage: number | undefined;
+
+    if (datasCard?.realtime_data.current && datasCard?.realtime_data.previous) {
+      // console.log(
+      //   datasCard?.realtime_data.current,
+      //   datasCard?.realtime_data.previous,
+      //   datasCard?.realtime_data.current - datasCard?.realtime_data.previous,
+      // );
+
+      currentRealtimeDataToPreviousRealtimeDataPrecentage = Math.floor(
+        ((datasCard?.realtime_data.current -
+          datasCard?.realtime_data.previous) /
+          datasCard?.realtime_data.previous) *
+          100,
+      );
+    }
+    if (datasCard?.data.current && datasCard?.data.previous) {
+      currentRealtimedataToPreviousRealtimedataPrecentage = Math.floor(
+        ((datasCard?.data.current - datasCard?.data.previous) /
+          datasCard?.data.previous) *
+          100,
+      );
+    }
     return (
       <>
         {/* Modal Alert Delete */}
@@ -424,6 +449,214 @@ function ArduinoApps() {
             {/* END OF DELETE APP BUTTON */}
           </Box>
         </Flex>
+
+        <div className='grid mt-5 bg-white divide-y divide-gray-100 rounded shadow-sm sm:divide-x lg:divide-y-0 sm:grid-cols-2 lg:grid-cols-4'>
+          <div className='p-5 lg:px-8 '>
+            <div className='text-base text-gray-400 '>
+              Previous Realtime Data
+            </div>
+            <div className='flex items-center pt-1'>
+              {datasCard?.realtime_data.loading ? (
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              ) : datasCard?.realtime_data.previous ? (
+                <div className='text-2xl font-bold text-gray-900 '>
+                  {datasCard?.realtime_data.previous}
+                </div>
+              ) : (
+                <div className='text-2xl font-bold text-gray-900 '>
+                  You Don't Have yet
+                </div>
+              )}
+            </div>
+          </div>
+          <div className='p-5 lg:px-8 '>
+            <div className='text-base text-gray-400 '>
+              Current Realtime Data
+            </div>
+            <div className='flex items-center pt-1'>
+              {datasCard?.realtime_data.loading ? (
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              ) : datasCard?.realtime_data.current ? (
+                <>
+                  <div className='text-2xl font-bold text-gray-900 '>
+                    {datasCard?.realtime_data.current}
+                  </div>
+                  {currentRealtimeDataToPreviousRealtimeDataPrecentage != 0 &&
+                    currentRealtimeDataToPreviousRealtimeDataPrecentage && (
+                      <span
+                        className={`flex items-center px-2 py-0.5 mx-2 text-sm ${
+                          currentRealtimeDataToPreviousRealtimeDataPrecentage >=
+                          0
+                            ? 'text-green-600 bg-green-100'
+                            : 'text-red-600 bg-red-100'
+                        } rounded-full`}
+                      >
+                        {/* text-green-600 bg-green-100 */}
+                        {currentRealtimeDataToPreviousRealtimeDataPrecentage >=
+                        0 ? (
+                          <svg
+                            className='w-4 h-4'
+                            viewBox='0 0 24 24'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M18 15L12 9L6 15'
+                              stroke='currentColor'
+                              stroke-width='2'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            ></path>
+                          </svg>
+                        ) : (
+                          <svg
+                            className='w-4 h-4'
+                            viewBox='0 0 24 24'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M6 9L12 15L18 9'
+                              stroke='currentColor'
+                              stroke-width='2'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            ></path>
+                          </svg>
+                        )}
+
+                        <span>
+                          {currentRealtimeDataToPreviousRealtimeDataPrecentage}{' '}
+                          %
+                        </span>
+                      </span>
+                    )}
+                </>
+              ) : (
+                <div className='text-2xl font-bold text-gray-900 '>
+                  You Don't Have yet
+                </div>
+              )}
+            </div>
+          </div>
+          <div className='p-5 lg:px-8 '>
+            <div className='text-base text-gray-400 '>Previous Data</div>
+            <div className='flex items-center pt-1'>
+              {datasCard?.data.loading &&
+              sensor.sensor &&
+              sensor.sensor.data &&
+              sensor.sensor.data?.length > 0 ? (
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              ) : datasCard?.data.previous ? (
+                <>
+                  <div className='text-2xl font-bold text-gray-900 '>
+                    {datasCard?.data.previous}
+                  </div>
+                </>
+              ) : (
+                <div className='text-2xl font-bold text-gray-900 '>
+                  You Don't Have yet
+                </div>
+              )}
+            </div>
+          </div>
+          <div className='p-5 lg:px-8 '>
+            <div className='text-base text-gray-400 '>Current Data</div>
+            <div className='flex items-center pt-1'>
+              {datasCard?.data.loading &&
+              sensor.sensor &&
+              sensor.sensor.data &&
+              sensor.sensor.data?.length > 0 ? (
+                <Spinner
+                  thickness='4px'
+                  speed='0.65s'
+                  emptyColor='gray.200'
+                  color='blue.500'
+                  size='lg'
+                />
+              ) : datasCard?.data.current ? (
+                <>
+                  <div className='text-2xl font-bold text-gray-900 '>
+                    {datasCard?.data.current}
+                  </div>
+                  {currentRealtimedataToPreviousRealtimedataPrecentage != 0 &&
+                    currentRealtimedataToPreviousRealtimedataPrecentage && (
+                      <span
+                        className={`flex items-center px-2 py-0.5 mx-2 text-sm ${
+                          currentRealtimedataToPreviousRealtimedataPrecentage >=
+                          0
+                            ? 'text-green-600 bg-green-100'
+                            : 'text-red-600 bg-red-100'
+                        } rounded-full`}
+                      >
+                        {/* text-green-600 bg-green-100 */}
+                        {currentRealtimedataToPreviousRealtimedataPrecentage >=
+                        0 ? (
+                          <svg
+                            className='w-4 h-4'
+                            viewBox='0 0 24 24'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M18 15L12 9L6 15'
+                              stroke='currentColor'
+                              stroke-width='2'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            ></path>
+                          </svg>
+                        ) : (
+                          <svg
+                            className='w-4 h-4'
+                            viewBox='0 0 24 24'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              d='M6 9L12 15L18 9'
+                              stroke='currentColor'
+                              stroke-width='2'
+                              stroke-linecap='round'
+                              stroke-linejoin='round'
+                            ></path>
+                          </svg>
+                        )}
+
+                        <span>
+                          {currentRealtimedataToPreviousRealtimedataPrecentage}{' '}
+                          %
+                        </span>
+                      </span>
+                    )}
+                </>
+              ) : (
+                <div className='text-2xl font-bold text-gray-900 '>
+                  You Don't Have yet
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         <Divider mt={5} />
 
         {!sensor.fetched ? (
