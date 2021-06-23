@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
+import { io } from 'socket.io-client';
+
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { io } from 'socket.io-client';
 import axios from 'axios';
 import _ from 'underscore';
+
+import { Parser } from 'json2csv';
 /* ======================= UI ======================= */
 import {
   Button,
@@ -25,6 +29,17 @@ import {
   ModalHeader,
   ModalBody,
   Modal,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuIcon,
+  MenuCommand,
+  MenuDivider,
+  Spinner,
 } from '@chakra-ui/react';
 
 // material UI
@@ -33,7 +48,6 @@ import Box from '@material-ui/core/Box';
 
 // costum components
 import CallToActionWithIllustration from '@/components/CallToActionWithIllustration';
-import CreateNewSensorDrawer from '@/components/admin/arduinoapp/createNewSensor';
 
 import InfoCard from 'components/Cards/InfoCard';
 import LoadingPage from 'components/loadingpage';
@@ -42,12 +56,22 @@ import LoadingPage from 'components/loadingpage';
 //#icons
 import { IoIosTrash } from 'react-icons/io';
 import { FaRegEdit } from 'react-icons/fa';
+import { CgMenuRight } from 'react-icons/cg';
+import { GrDocumentCsv } from 'react-icons/gr';
+import { VscJson } from 'react-icons/vsc';
 //#endicons
 
 /* ======================= END UI ======================= */
 
 import { RootStore } from '@/redux/index';
-import { sensorI, normalResponseT } from 'ts';
+import {
+  normalResponseT,
+  sensorI,
+  arduinoResponseI,
+  sensorsStateI,
+  sensorsResponseI,
+  arduinoAppStateI,
+} from 'ts';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
 interface sensorResponseI {
@@ -59,13 +83,13 @@ interface sensorStateI extends sensorResponseI {
 }
 
 const socket = io(
-  process.env.NEXT_PUBLIC_ARDUINO_SOCKET ||
-    'http://localhost:3030/websocket/arduino',
+  process.env.NEXT_PUBLIC_ARDUINO_SOCKET || 'http://localhost:3030/websocket/arduino',
   {
     transports: ['websocket'],
   },
 );
-function ArduinoApps() {
+    
+function ArduinoAppSensorPage() {
   const authState = useSelector((state: RootStore) => state.auth);
 
   const [datasCard, setDatasCard] = useState<{
@@ -96,6 +120,32 @@ function ArduinoApps() {
 
   const router = useRouter();
   const toast = useToast();
+
+  const [datasCard, setDatasCard] = useState<{
+    realtime_data: {
+      previous?: number;
+      current?: number;
+      dateAdded?: number;
+      loading: boolean;
+      error: boolean;
+    };
+    data: {
+      previous?: number;
+      current?: number;
+      dateAdded?: number;
+      loading: boolean;
+      error: boolean;
+    };
+  }>({
+    realtime_data: {
+      loading: true,
+      error: false,
+    },
+    data: {
+      loading: true,
+      error: false,
+    },
+  });
 
   const [deletingSensor, setDeletingSensor] = useState<boolean>(false);
   const {
@@ -224,6 +274,16 @@ function ArduinoApps() {
 
   async function fetchSensor() {
     try {
+      setDatasCard({
+        realtime_data: {
+          loading: true,
+          error: false,
+        },
+        data: {
+          loading: true,
+          error: false,
+        },
+      });
       const app = await axios.post<sensorResponseI>(
         process.env.NEXT_PUBLIC_ARDUINO_SENSOR ||
           'http://localhost:3030/arduino/sensor',
@@ -248,8 +308,19 @@ function ArduinoApps() {
         app.data.sensor?._id,
       );
     } catch (err) {
+      console.log('error occured!', err);
       setSensor({
         fetched: true,
+      });
+      setDatasCard({
+        realtime_data: {
+          loading: false,
+          error: true,
+        },
+        data: {
+          loading: false,
+          error: true,
+        },
       });
     }
   }
@@ -408,6 +479,7 @@ function ArduinoApps() {
             <BreadcrumbLink>{router.query.sensorId}</BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
+
         <Flex flexWrap='wrap' justifyContent='space-between'>
           <Box p='2' className=' '>
             <Heading size='lg' className='dark:text-cool-gray-200 mb-3'>
@@ -659,6 +731,77 @@ function ArduinoApps() {
 
         <Divider mt={5} />
 
+        <Flex flexWrap='wrap' justifyContent='space-between' mt={5}>
+          <Box p='2' className=' '>
+            <Heading size='md' className='dark:text-cool-gray-200 mb-3'>
+              Data You Have Added
+            </Heading>
+          </Box>
+          <Box>
+            <Menu>
+              <MenuButton as={Button} aria-label='Options' variant='outline'>
+                <CgMenuRight />
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  onClick={() => {
+                    if (sensor.sensor?.data) {
+                      const copyOfSensorData = [...sensor.sensor?.data];
+                      copyOfSensorData.forEach((sensorData, i) => {
+                        sensorData.id = i;
+                      });
+                      const json2csvParser = new Parser();
+                      const csv = json2csvParser.parse(sensor.sensor?.data);
+                      let csvContent = 'data:text/csv;charset=utf-8,' + csv;
+
+                      // console.log(csvContent);
+                      var encodedUri = encodeURI(csvContent);
+                      var link = document.createElement('a');
+                      link.setAttribute('href', encodedUri);
+                      link.setAttribute(
+                        'download',
+                        `${sensor.sensor.name}_data.csv`,
+                      );
+                      document.body.appendChild(link); // Required for FF
+
+                      link.click(); // This will download the data file named "my_data.csv".
+                    }
+                  }}
+                >
+                  <GrDocumentCsv style={{ marginRight: '5px' }} /> Export to CSV
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    if (sensor.sensor?.data) {
+                      let csvContent =
+                        'data:text/json;charset=utf-8,' +
+                        JSON.stringify(sensor.sensor?.data);
+
+                      // console.log(csvContent);
+                      var encodedUri = encodeURI(csvContent);
+                      var link = document.createElement('a');
+                      link.setAttribute('href', encodedUri);
+                      link.setAttribute(
+                        'download',
+                        `${sensor.sensor.name}_data.json`,
+                      );
+                      document.body.appendChild(link); // Required for FF
+
+                      link.click(); // This will download the data file named "my_data.csv".
+                    }
+                  }}
+                >
+                  <VscJson style={{ marginRight: '5px' }} /> Export to JSON
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem>
+                  <IoIosTrash style={{ marginRight: '5px' }} /> Delete All Data
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
+        </Flex>
+
         {!sensor.fetched ? (
           <LoadingPage text='Fetching sensors' />
         ) : Array.isArray(sensor.sensor.data) ? (
@@ -668,7 +811,7 @@ function ArduinoApps() {
               desc='Upload the your sensor data through your arduino'
             />
           ) : (
-            <div className='mt-10 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
+            <div className='mt-5 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
               {sensor.sensor.data.reverse().map((sensor, id) => (
                 <InfoCard
                   value={String(new Date(sensor.date))}
@@ -691,4 +834,4 @@ function ArduinoApps() {
   return <LoadingPage />;
 }
 
-export default ArduinoApps;
+export default ArduinoAppSensorPage;
