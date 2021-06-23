@@ -49,29 +49,11 @@ import { RootStore } from '@/redux/index';
 import { sensorI, normalResponseT } from 'ts';
 import { NoItemIcon, UnhappyGhost } from 'icons';
 
-interface sensorsResponseI {
-  sensors?: sensorI[];
-}
-
-interface sensorsI extends sensorsResponseI {
-  fetched: boolean;
-}
-
-interface sensorsDataInterface {
-  date: number;
-  data: number;
-}
-
 interface sensorResponseI {
-  sensor?: {
-    name: string;
-    appID: string;
-    own: string;
-    data?: Array<sensorsDataInterface>;
-  };
+  sensor?: sensorI;
 }
 
-interface arduinoI extends sensorResponseI {
+interface sensorStateI extends sensorResponseI {
   fetched: boolean;
 }
 
@@ -84,6 +66,32 @@ const socket = io(
 function ArduinoApps() {
   const authState = useSelector((state: RootStore) => state.auth);
 
+  const [datasCard, setDatasCard] = useState<{
+    realtime_data: {
+      previous?: number;
+      current?: number;
+      dateAdded?: number;
+      loading: boolean;
+      error: boolean;
+    };
+    data: {
+      previous?: number;
+      current?: number;
+      dateAdded?: number;
+      loading: boolean;
+      error: boolean;
+    };
+  }>({
+    realtime_data: {
+      loading: true,
+      error: false,
+    },
+    data: {
+      loading: true,
+      error: false,
+    },
+  });
+
   const router = useRouter();
   const toast = useToast();
 
@@ -94,7 +102,7 @@ function ArduinoApps() {
     onClose: onModalDeleteClose,
   } = useDisclosure();
 
-  const [sensor, setSensor] = useState<arduinoI>({
+  const [sensor, setSensor] = useState<sensorStateI>({
     fetched: false,
   });
 
@@ -109,6 +117,108 @@ function ArduinoApps() {
       fetchSensor();
     }
   });
+
+  socket.on(
+    'arduino.sensor.realtimedata',
+    (data: { sensorId: string; data: number; dateAdded: number }) => {
+      console.log('arduino.sensor.realtimedata', data);
+
+      setDatasCard((state) => {
+        if (
+          sensor.sensor?._id == data.sensorId &&
+          state.data.dateAdded != data.dateAdded
+        ) {
+          setSensor((state) => {
+            const copyOfState = { ...state };
+
+            const isThere =
+              // @ts-ignore
+              copyOfState.sensor.data.find(
+                (sensorData) => sensorData.date == data.dateAdded,
+              );
+
+            if (!isThere) {
+              copyOfState.sensor?.data?.unshift({
+                data: data.data,
+                date: data.dateAdded,
+              });
+            }
+
+            return copyOfState;
+          });
+
+          console.log('state realtimedata', state, state.data.current);
+          console.log(
+            'state realtimedata',
+            datasCard.data,
+            data.dateAdded,
+            Number(datasCard.data.dateAdded) != Number(data.dateAdded),
+          );
+
+          return {
+            data: {
+              loading: false,
+              error: false,
+              dateAdded: data.dateAdded,
+              previous: state.data.current,
+              current: data.data,
+            },
+            realtime_data: {
+              ...state.realtime_data,
+            },
+          };
+        }
+
+        return state;
+      });
+    },
+  );
+
+  socket.on(
+    'arduino.sensor.realtimeData',
+    (data: { sensorId: string; data: number; dateAdded: number }) => {
+      console.log(
+        data,
+        sensor.sensor?._id == data.sensorId,
+        datasCard.realtime_data.dateAdded != data.dateAdded,
+      );
+      setDatasCard((state) => {
+        if (
+          sensor.sensor?._id == data.sensorId &&
+          state.realtime_data.dateAdded != data.dateAdded
+        ) {
+          console.log('state', state);
+          return {
+            realtime_data: {
+              loading: false,
+              error: false,
+              dateAdded: data.dateAdded,
+              previous: state.realtime_data.current,
+              current: data.data,
+            },
+            data: {
+              ...state.data,
+            },
+          };
+        }
+        if (
+          sensor.sensor?._id == data.sensorId &&
+          state.realtime_data.loading
+        ) {
+          return {
+            realtime_data: {
+              loading: false,
+              error: false,
+            },
+            data: {
+              ...state.data,
+            },
+          };
+        }
+        return state;
+      });
+    },
+  );
 
   async function fetchSensor() {
     try {
