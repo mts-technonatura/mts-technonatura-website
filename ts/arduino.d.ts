@@ -11,7 +11,7 @@ export interface arduinoAppI {
 }
 
 interface sensorsDataInterface {
-  id: string;
+  id?: string;
   date: number;
   data: number;
 }
