@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 import { io } from 'socket.io-client';
 
 import Link from 'next/link';
+import Router from 'next/router';
 import { useRouter } from 'next/router';
 
 import axios from 'axios';
@@ -25,6 +26,7 @@ import {
   ModalContent,
   ModalOverlay,
   ModalFooter,
+  Spinner,
   ModalHeader,
   ModalBody,
   Modal,
@@ -38,7 +40,6 @@ import {
   MenuIcon,
   MenuCommand,
   MenuDivider,
-  Spinner,
 } from '@chakra-ui/react';
 
 // material UI
@@ -82,16 +83,14 @@ interface sensorStateI extends sensorResponseI {
 }
 
 const socket = io(
-  process.env.NEXT_PUBLIC_ARDUINO_SOCKET || 'http://localhost:3030/arduino',
+  process.env.NEXT_PUBLIC_ARDUINO_SOCKET ||
+    'http://localhost:3030/websocket/arduino',
   {
     transports: ['websocket'],
   },
 );
 function ArduinoAppSensorPage() {
   const authState = useSelector((state: RootStore) => state.auth);
-
-  const router = useRouter();
-  const toast = useToast();
 
   const [datasCard, setDatasCard] = useState<{
     realtime_data: {
@@ -118,6 +117,9 @@ function ArduinoAppSensorPage() {
       error: false,
     },
   });
+
+  const router = useRouter();
+  const toast = useToast();
 
   const [deletingSensor, setDeletingSensor] = useState<boolean>(false);
   const {
@@ -279,6 +281,9 @@ function ArduinoAppSensorPage() {
         'arduino.subscribe.sensor.realtimedata',
         app.data.sensor?._id,
       );
+
+      socket.emit('arduino.sensor.get.realtimeData', app.data.sensor?._id);
+      socket.emit('arduino.sensor.get.realtimedata', app.data.sensor?._id);
     } catch (err) {
       console.log('error occured!', err);
       setSensor({
@@ -381,7 +386,6 @@ function ArduinoAppSensorPage() {
           100,
       );
     }
-
     return (
       <>
         {/* Modal Alert Delete */}
@@ -509,7 +513,7 @@ function ArduinoAppSensorPage() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.realtime_data.previous ? (
+              ) : !isNaN(Number(datasCard?.realtime_data.previous)) ? (
                 <div className='text-2xl font-bold text-gray-900 '>
                   {datasCard?.realtime_data.previous}
                 </div>
@@ -533,7 +537,7 @@ function ArduinoAppSensorPage() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.realtime_data.current ? (
+              ) : !isNaN(Number(datasCard?.realtime_data.current)) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
                     {datasCard?.realtime_data.current}
@@ -610,7 +614,7 @@ function ArduinoAppSensorPage() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.data.previous ? (
+              ) : !isNaN(Number(datasCard?.data.previous)) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
                     {datasCard?.data.previous}
@@ -637,7 +641,7 @@ function ArduinoAppSensorPage() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : datasCard?.data.current ? (
+              ) : !isNaN(Number(datasCard?.data.current)) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
                     {datasCard?.data.current}
