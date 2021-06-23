@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<<<<<<< HEAD
   <url>
     <loc>http://localhost:3000/about</loc>
     <lastmod>2021-06-23T06:54:24.960Z</lastmod>
@@ -99,4 +100,7 @@
     <loc>http://localhost:3000/dashboard/arduinoapps/[appID]/[sensorId]</loc>
     <lastmod>2021-06-23T06:54:24.960Z</lastmod>
   </url>
+=======
+ 
+>>>>>>> cc24567c600a6a86504d1b811b8eccad753ef4a9
 </urlset>
