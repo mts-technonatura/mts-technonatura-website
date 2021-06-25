@@ -217,20 +217,13 @@ export default function FooterHome(): JSX.Element {
 
           {/* Copyrights note */}
           <div className='text-sm text-gray-600 mr-4'>
-            Made by{' '}
+            (c) 2021 MTs TechnoNatura, made by{' '}
             <a
               className='text-blue-600 hover:underline'
-              href='https://cruip.com/'
+              href='https://github.com/aldhanekaa'
             >
               Aldhaneka
             </a>{' '}
-            and{' '}
-            <a
-              className='text-blue-600 hover:underline'
-              href='https://cruip.com/'
-            >
-              friends
-            </a>
             . All rights reserved.
           </div>
         </div>

@@ -1,6 +1,6 @@
 ---
 title: Syarat Penggunaan akun sosial mts-technonatura
-description: Terms of use for mts-technonatura social account network
+description: Prasyarat Untuk Dapat Menggunakan MTs TechnoNatura Koneksi Akun Sosial.
 ---
 
 # TERMS OF USE
@@ -9,13 +9,11 @@ Last updated October 27, 2020
 
 ## AGREEMENT TO TERMS
 
-These Terms of Use constitute a legally binding agreement made between you, whether personally or on behalf of an entity (“you”) and mts-technonatura ("Company", “we”, “us”, or “our”), concerning your access to and use of the https://mts-technonatura.vercel.app website as well as any other media form, media channel, mobile website or mobile application related, linked, or otherwise connected thereto (collectively, the “Site”). You agree that by accessing the Site, you have read, understood, and agreed to be bound by all of these Terms of Use. IF YOU DO NOT AGREE WITH ALL OF THESE TERMS OF USE, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SITE AND YOU MUST DISCONTINUE USE IMMEDIATELY.
+Ketentuan Penggunaan ini merupakan perjanjian yang mengikat secara hukum yang dibuat antara Anda, baik secara pribadi atau atas nama entitas (“Anda”) dan mts-technonatura (“Perusahaan”, “kami”, atau “milik kami”), mengenai akses Anda ke dan penggunaan situs web https://mts-technonatura.vercel.app serta segala bentuk media lainnya, saluran media, situs web seluler, atau aplikasi seluler yang terkait, tertaut, atau terhubung dengannya (secara kolektif, "Situs" ). Anda setuju bahwa dengan mengakses Situs, Anda telah membaca, memahami, dan setuju untuk terikat dengan semua Ketentuan Penggunaan ini. JIKA ANDA TIDAK SETUJU DENGAN SEMUA KETENTUAN PENGGUNAAN INI, MAKA ANDA SECARA TEGAS DILARANG MENGGUNAKAN SITUS DAN ANDA HARUS MENGHENTIKAN PENGGUNAAN SEGERA.
 
-Supplemental terms and conditions or documents that may be posted on the Site from time to time are hereby expressly incorporated herein by reference. We reserve the right, in our sole discretion, to make changes or modifications to these Terms of Use at any time and for any reason. We will alert you about any changes by updating the “Last updated” date of these Terms of Use, and you waive any right to receive specific notice of each such change. It is your responsibility to periodically review these Terms of Use to stay informed of updates. You will be subject to, and will be deemed to have been made aware of and to have accepted, the changes in any revised Terms of Use by your continued use of the Site after the date such revised Terms of Use are posted.
+Syarat dan ketentuan tambahan atau dokumen yang mungkin diposting di Situs dari waktu ke waktu dengan ini secara tegas dimasukkan di sini sebagai referensi. Kami berhak, atas kebijakan kami sendiri, untuk membuat perubahan atau modifikasi pada Ketentuan Penggunaan ini kapan saja dan untuk alasan apa pun. Kami akan memberi tahu Anda tentang perubahan apa pun dengan memperbarui tanggal “Terakhir diperbarui” dari Ketentuan Penggunaan ini, dan Anda melepaskan hak apa pun untuk menerima pemberitahuan khusus tentang setiap perubahan tersebut. Merupakan tanggung jawab Anda untuk secara berkala meninjau Ketentuan Penggunaan ini untuk tetap mendapat informasi tentang pembaruan. Anda akan tunduk pada, dan akan dianggap telah diberi tahu dan telah menerima, perubahan dalam Ketentuan Penggunaan yang direvisi oleh Anda yang terus menggunakan Situs setelah tanggal Ketentuan Penggunaan yang direvisi tersebut diposting.
 
-The information provided on the Site is not intended for distribution to or use by any person or entity in any jurisdiction or country where such distribution or use would be contrary to law or regulation or which would subject us to any registration requirement within such jurisdiction or country. Accordingly, those persons who choose to access the Site from other locations do so on their own initiative and are solely responsible for compliance with local laws, if and to the extent local laws are applicable.
-
-All users who are minors in the jurisdiction in which they reside (generally under the age of 18) must have the permission of, and be directly supervised by, their parent or guardian to use the Site. If you are a minor, you must have your parent or guardian read and agree to these Terms of Use prior to you using the Site.
+Informasi yang disediakan di Situs tidak dimaksudkan untuk didistribusikan atau digunakan oleh orang atau entitas mana pun di yurisdiksi atau negara mana pun di mana distribusi atau penggunaan tersebut akan bertentangan dengan hukum atau peraturan atau yang akan membuat kami tunduk pada persyaratan pendaftaran apa pun dalam yurisdiksi atau negara tersebut. . Oleh karena itu, orang-orang yang memilih untuk mengakses Situs dari lokasi lain melakukannya atas inisiatif mereka sendiri dan bertanggung jawab penuh untuk mematuhi hukum setempat, jika dan sejauh hukum setempat berlaku.
 
 ## INTELLECTUAL PROPERTY RIGHTS
 

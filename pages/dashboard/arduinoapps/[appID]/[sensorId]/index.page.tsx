@@ -128,7 +128,8 @@ function ArduinoAppSensorPage() {
   }, [authState.user]);
 
   useEffect(() => {
-    if (router.query.sensorId && authState.user && !sensor.fetched) {
+    console.log(router.query.sensorId);
+    if (router.query.sensorId && !sensor.fetched) {
       fetchSensor();
     }
   }, [router.query.sensorId]);

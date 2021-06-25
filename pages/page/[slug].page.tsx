@@ -23,6 +23,7 @@ import { ReactNode } from 'react';
 import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 
+import MarkdownRenderer from '@/components/story/renderer';
 const SocialButton = ({
   children,
   label,
@@ -126,143 +127,8 @@ export default function Post({
 
       {/* </Container> */}
       <div className='px-16'>
-        <ReactMarkdown
-          components={{
-            h1: ({ node, children }) => (
-              <Text
-                color='black'
-                fontWeight={700}
-                lineHeight={1.2}
-                mb={5}
-                mt={5}
-                fontSize={useBreakpointValue({ base: '1xl', md: '4xl' })}
-              >
-                {children}
-              </Text>
-            ),
-            h2: ({ node, children }) => (
-              <Text
-                color='black'
-                fontWeight={700}
-                lineHeight={1.2}
-                mt={5}
-                mb={5}
-                fontSize={useBreakpointValue({ base: '1xl', md: '3xl' })}
-              >
-                {children}
-              </Text>
-            ),
-            h3: ({ node, children }) => (
-              <Text
-                color='black'
-                fontWeight={700}
-                lineHeight={1.2}
-                mt={4}
-                mb={4}
-                fontSize={useBreakpointValue({ base: '1xl', md: '2xl' })}
-              >
-                {children}
-              </Text>
-            ),
-            p: ({ node, children }) => (
-              <Text
-                color='blackAlpha.700'
-                fontWeight={400}
-                lineHeight={1.2}
-                mt={2}
-                mb={2}
-                fontSize={useBreakpointValue({ base: '1xl', md: '1xl' })}
-              >
-                {children}
-              </Text>
-            ),
-          }}
-          className='mb-4 prose lg:prose-lg dark:prose-dark'
-          skipHtml={false}
-          children={post.content}
-        />
+        <MarkdownRenderer value={post.content} />
       </div>
-      <Box
-        mt={20}
-        bg={useColorModeValue('gray.50', 'gray.900')}
-        color={useColorModeValue('gray.700', 'gray.200')}
-      >
-        <Container as={Stack} maxW={'6xl'} py={10}>
-          <SimpleGrid
-            templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }}
-            spacing={8}
-          >
-            <Stack spacing={6}>
-              <Flex
-                backgroundSize={'cover'}
-                backgroundImage={
-                  'url(https://mts-technonatura.vercel.app/favicon.ico)'
-                }
-                height='100%'
-                width='100px'
-              ></Flex>
-              <Text fontSize={'sm'}>
-                © 2020 Chakra Templates. All rights reserved
-              </Text>
-              <Stack direction={'row'} spacing={6}>
-                <SocialButton label={'Twitter'} href={'#'}>
-                  <FaTwitter />
-                </SocialButton>
-                <SocialButton label={'YouTube'} href={'#'}>
-                  <FaYoutube />
-                </SocialButton>
-                <SocialButton label={'Instagram'} href={'#'}>
-                  <FaInstagram />
-                </SocialButton>
-              </Stack>
-            </Stack>
-            <Stack align={'flex-start'}>
-              <ListHeader>Connections</ListHeader>
-              <Link href='/'>Home</Link>
-              <Link href='https://mts-technonatura.vercel.app/about'>
-                About Us
-              </Link>
-              <Link href='https://mts-technonatura.vercel.app/contact'>
-                Contact us
-              </Link>
-              <Link href='/app'>Dashboard</Link>
-              <Link href='https://mts-technonatura-server.herokuapp.com'>
-                API
-              </Link>
-            </Stack>
-            <Stack align={'flex-start'}>
-              <ListHeader>Support</ListHeader>
-              <Link href='/help'>Help Center</Link>
-              <Link href='/page/terms-of-use'>Terms of Service</Link>
-              <Link href='/page/legal'>Legal</Link>
-              <Link href='/page/privacy-policy'>Privacy Policy</Link>
-              <Link href='https://mts-technonatura.instatus.com/'>Satus</Link>
-            </Stack>
-            <Stack align={'flex-start'}>
-              <ListHeader>Stay up to date</ListHeader>
-              <Stack direction={'row'}>
-                <Input
-                  placeholder={'Your email address'}
-                  bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
-                  border={0}
-                  _focus={{
-                    bg: 'whiteAlpha.300',
-                  }}
-                />
-                <IconButton
-                  bg={useColorModeValue('green.400', 'green.800')}
-                  color={useColorModeValue('white', 'gray.800')}
-                  _hover={{
-                    bg: 'green.600',
-                  }}
-                  aria-label='Subscribe'
-                  icon={<BiMailSend />}
-                />
-              </Stack>
-            </Stack>
-          </SimpleGrid>
-        </Container>
-      </Box>
     </>
   );
 }
@@ -285,13 +151,3 @@ export async function getStaticProps({
 
   return { props: postData };
 }
-
-// const MarkdownImage = ({ alt, src }) => (
-//   <Image
-//     alt={alt}
-//     src={require(`../../content/assets/${src}`)}
-//     webpSrc={require(`../../content/assets/${src}?webp`)}
-//     previewSrc={require(`../../content/assets/${src}?lqip`)}
-//     className='w-full'
-//   />
-// );
