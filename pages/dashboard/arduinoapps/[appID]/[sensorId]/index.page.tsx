@@ -100,19 +100,8 @@ function ArduinoAppSensorPage() {
       loading: boolean;
       error: boolean;
     };
-    data: {
-      previous?: number;
-      current?: number;
-      dateAdded?: number;
-      loading: boolean;
-      error: boolean;
-    };
   }>({
     realtime_data: {
-      loading: true,
-      error: false,
-    },
-    data: {
       loading: true,
       error: false,
     },
@@ -146,57 +135,43 @@ function ArduinoAppSensorPage() {
 
   socket.on(
     'arduino.sensor.realtimedata',
-    (data: { sensorId: string; data: number; dateAdded: number }) => {
+    (data: {
+      sensorId: string;
+      data: number;
+      dateAdded: number;
+      id: string;
+    }) => {
       console.log('arduino.sensor.realtimedata', data);
 
-      setDatasCard((state) => {
-        if (
-          sensor.sensor?._id == data.sensorId &&
-          state.data.dateAdded != data.dateAdded
-        ) {
-          setSensor((state) => {
-            const copyOfState = { ...state };
+      if (
+        sensor.sensor &&
+        sensor.sensor.data &&
+        sensor.sensor.data[sensor.sensor.data.length - 1] &&
+        sensor.sensor?._id == data.sensorId &&
+        sensor.sensor.data[sensor.sensor.data.length - 1].date != data.dateAdded
+      ) {
+        const copyOfState = { ...sensor };
 
-            const isThere =
-              // @ts-ignore
-              copyOfState.sensor.data.find(
-                (sensorData) => sensorData.date == data.dateAdded,
-              );
-
-            if (!isThere) {
-              copyOfState.sensor?.data?.unshift({
-                data: data.data,
-                date: data.dateAdded,
-              });
-            }
-
-            return copyOfState;
-          });
-
-          console.log('state realtimedata', state, state.data.current);
-          console.log(
-            'state realtimedata',
-            datasCard.data,
-            data.dateAdded,
-            Number(datasCard.data.dateAdded) != Number(data.dateAdded),
+        const isThere =
+          // @ts-ignore
+          copyOfState.sensor.data.find(
+            (sensorData) => sensorData.date == data.dateAdded,
           );
 
-          return {
-            data: {
-              loading: false,
-              error: false,
-              dateAdded: data.dateAdded,
-              previous: state.data.current,
-              current: data.data,
-            },
-            realtime_data: {
-              ...state.realtime_data,
-            },
-          };
+        if (!isThere) {
+          copyOfState.sensor?.data?.push({
+            _id: data.id,
+            data: data.data,
+            date: data.dateAdded,
+          });
+          setSensor((state) => {
+            return copyOfState;
+          });
         }
 
-        return state;
-      });
+        console.log('state realtimedata');
+        console.log('state realtimedata', data.dateAdded);
+      }
     },
   );
 
@@ -222,9 +197,6 @@ function ArduinoAppSensorPage() {
               previous: state.realtime_data.current,
               current: data.data,
             },
-            data: {
-              ...state.data,
-            },
           };
         }
         if (
@@ -235,9 +207,6 @@ function ArduinoAppSensorPage() {
             realtime_data: {
               loading: false,
               error: false,
-            },
-            data: {
-              ...state.data,
             },
           };
         }
@@ -250,10 +219,6 @@ function ArduinoAppSensorPage() {
     try {
       setDatasCard({
         realtime_data: {
-          loading: true,
-          error: false,
-        },
-        data: {
           loading: true,
           error: false,
         },
@@ -291,10 +256,6 @@ function ArduinoAppSensorPage() {
       });
       setDatasCard({
         realtime_data: {
-          loading: false,
-          error: true,
-        },
-        data: {
           loading: false,
           error: true,
         },
@@ -379,10 +340,16 @@ function ArduinoAppSensorPage() {
           100,
       );
     }
-    if (datasCard?.data.current && datasCard?.data.previous) {
+    if (
+      sensor.sensor &&
+      sensor.sensor.data &&
+      sensor.sensor.data[sensor.sensor.data.length - 1] &&
+      sensor.sensor.data[sensor.sensor.data.length - 2]
+    ) {
       currentRealtimedataToPreviousRealtimedataPrecentage = Math.floor(
-        ((datasCard?.data.current - datasCard?.data.previous) /
-          datasCard?.data.previous) *
+        ((sensor.sensor.data[sensor.sensor.data.length - 1].data -
+          sensor.sensor.data[sensor.sensor.data.length - 2].data) /
+          sensor.sensor.data[sensor.sensor.data.length - 2].data) *
           100,
       );
     }
@@ -603,10 +570,7 @@ function ArduinoAppSensorPage() {
           <div className='p-5 lg:px-8 '>
             <div className='text-base text-gray-400 '>Previous Data</div>
             <div className='flex items-center pt-1'>
-              {datasCard?.data.loading &&
-              sensor.sensor &&
-              sensor.sensor.data &&
-              sensor.sensor.data?.length > 0 ? (
+              {!sensor.fetched ? (
                 <Spinner
                   thickness='4px'
                   speed='0.65s'
@@ -614,10 +578,17 @@ function ArduinoAppSensorPage() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : !isNaN(Number(datasCard?.data.previous)) ? (
+              ) : sensor.sensor &&
+                sensor.sensor.data &&
+                sensor.sensor.data[sensor.sensor.data.length - 2] &&
+                !isNaN(
+                  Number(
+                    sensor.sensor.data[sensor.sensor.data.length - 2].data,
+                  ),
+                ) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
-                    {datasCard?.data.previous}
+                    {sensor.sensor.data[sensor.sensor.data.length - 2].data}
                   </div>
                 </>
               ) : (
@@ -630,10 +601,7 @@ function ArduinoAppSensorPage() {
           <div className='p-5 lg:px-8 '>
             <div className='text-base text-gray-400 '>Current Data</div>
             <div className='flex items-center pt-1'>
-              {datasCard?.data.loading &&
-              sensor.sensor &&
-              sensor.sensor.data &&
-              sensor.sensor.data?.length > 0 ? (
+              {!sensor.fetched ? (
                 <Spinner
                   thickness='4px'
                   speed='0.65s'
@@ -641,10 +609,17 @@ function ArduinoAppSensorPage() {
                   color='blue.500'
                   size='lg'
                 />
-              ) : !isNaN(Number(datasCard?.data.current)) ? (
+              ) : sensor.sensor &&
+                sensor.sensor.data &&
+                sensor.sensor.data[sensor.sensor.data.length - 1] &&
+                !isNaN(
+                  Number(
+                    sensor.sensor.data[sensor.sensor.data.length - 1].data,
+                  ),
+                ) ? (
                 <>
                   <div className='text-2xl font-bold text-gray-900 '>
-                    {datasCard?.data.current}
+                    {sensor.sensor.data[sensor.sensor.data.length - 1].data}
                   </div>
                   {currentRealtimedataToPreviousRealtimedataPrecentage != 0 &&
                     currentRealtimedataToPreviousRealtimedataPrecentage && (
@@ -789,7 +764,7 @@ function ArduinoAppSensorPage() {
             />
           ) : (
             <div className='mt-5 grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4'>
-              {sensor.sensor.data.reverse().map((sensor, id) => (
+              {sensor.sensor.data.map((sensor, id) => (
                 <InfoCard
                   value={String(new Date(sensor.date))}
                   title={String(sensor.data)}
