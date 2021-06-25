@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { io } from 'socket.io-client';
@@ -138,11 +138,11 @@ function ArduinoAppSensorPage() {
     }
   }, [authState.user]);
 
-  useEffect(() => {
+  useMemo(() => {
     if (router.query.sensorId && authState.user && !sensor.fetched) {
       fetchSensor();
     }
-  });
+  }, [router.query.sensorId]);
 
   socket.on(
     'arduino.sensor.realtimedata',
