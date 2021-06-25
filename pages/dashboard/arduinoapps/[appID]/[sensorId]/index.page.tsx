@@ -123,11 +123,11 @@ function ArduinoAppSensorPage() {
 
   useEffect(() => {
     if (!authState.user && authState.fetched) {
-      router.push('/app/arduinoapps');
+      router.push('/dashboard/arduinoapps');
     }
   }, [authState.user]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (router.query.sensorId && authState.user && !sensor.fetched) {
       fetchSensor();
     }
