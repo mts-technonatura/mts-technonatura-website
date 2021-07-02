@@ -133,7 +133,7 @@ export default class Root extends Document {
                   __html: `
                     // before React is loaded
             if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') {
-                __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+               ${process.env.NODE_ENV == 'production' ? "window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function(){}" : ""}
             }
                   `,
                 }}/>
